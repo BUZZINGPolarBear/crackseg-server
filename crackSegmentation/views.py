@@ -17,7 +17,7 @@ def fileUpload(request):
             imgfile=img,
         )
         fileupload.save()
-        return HttpResponse("file-Uploaded")
+        return HttpResponse(str(img)+" file-Uploaded")
     else:
         fileuploadForm = FileUploadForm
         context = {
