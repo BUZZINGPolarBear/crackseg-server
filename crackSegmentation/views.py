@@ -22,11 +22,8 @@ def fileUpload(request):
         )
         fileupload.save()
         print(str(img))
-        print(os.path.isdir('media/images/' + str(img)))
-        print(os.path.isdir('media/images/KakaoTalk_Photo_2022-08-23-23-07-58_002.jpeg'))
 
-
-        resized_img = cv2.imread('media/images/KakaoTalk_Photo_2022-08-23-23-07-58_002.jpeg')
+        resized_img = cv2.imread('media/images/' + str(img).replace(' ', '_'))
         resized_img = cv2.resize(resized_img, (448, 448))
         cv2.imwrite('media/resized/' +'resized_'+ str(img), resized_img)
         # os.system("명령어")
