@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     "crackSegmentation.apps.CracksegmentationConfig",
+    "pages",
     "bootstrap4",
     "django.contrib.admin",
     "django.contrib.auth",

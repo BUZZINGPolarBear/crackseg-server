@@ -18,5 +18,6 @@ from django.urls import path, include
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("crack-seg/", include('crackSegmentation.urls'))
+    path("crack-seg/", include('crackSegmentation.urls')),
+    path("", include('pages.urls'))
 ]
