@@ -1,17 +1,14 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <title>아이클롭스 균열검출기</title>
 
+    <link rel="stylesheet" href="{% static 'css/index-second.css' %}">
     <!-- CDNS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
     <script  src="https://code.jquery.com/jquery-3.6.1.slim.js"  integrity="sha256-tXm+sa1uzsbFnbXt8GJqsgi2Tw+m4BLGDof6eUPjbtk=" crossorigin="anonymous"></script>
-
-    <!-- customs -->
-    <link rel="stylesheet" href="/templates/static/css/index.css">
-
-
 </head>
 <body>
     <div class="top-nav">
@@ -20,9 +17,9 @@
     </div>
 
     <div class="status-area">
-        <div class="status-info" id="now-status"><div style="text-align: center">1</div>사진 업로드 </div>
+        <div class="status-info" ><div style="text-align: center">1</div>사진 업로드 </div>
         <div>..........</div>
-        <div class="status-info"><div style="text-align: center">2</div>균열 검출</div>
+        <div class="status-info" id="now-status"><div style="text-align: center">2</div>균열 검출</div>
         <div>..........</div>
         <div class="status-info"><div style="text-align: center">3</div>결과 확인</div>
     </div>
@@ -40,7 +37,7 @@
                     <input type='file' accept="image/*"  capture="environment" id="imgInp">
                 </div>
                 <div class="submit-btn-area">
-                    <a id="crack-img-submit-btn" >균열 검출하기</a>
+                    <button class="button is-success" onclick="/loading/">균열 검출하기</button>
                 </div>
             </div>
 
@@ -48,5 +45,5 @@
         </form>
     </div>
 </body>
-<script type="text/javascript" src="/templates/static/js/index.js"></script>
+
 </html>

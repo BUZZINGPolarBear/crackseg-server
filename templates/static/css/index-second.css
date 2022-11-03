@@ -81,14 +81,3 @@
 
     margin-top: 0.5vh;
 }
-
-#crack-img-submit-btn{
-    background-color: rgb(62, 190, 122);
-    color: white;
-    border-radius: 5px;
-
-    padding-left: 20px;
-    padding-right: 20px;
-    padding-top:8px;
-    padding-bottom:8px;
-}

@@ -6,5 +6,6 @@ from . import views
 from .views import *
 
 urlpatterns = [
-    path('', views.indexPage)
+    path('', views.indexPage, name="home"),
+    path('loading/', views.loadingPage, name="loadingPage")
 ]
