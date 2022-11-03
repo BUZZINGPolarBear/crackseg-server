@@ -27,6 +27,8 @@
 }
 
 .file-upload-area{
+    height: 30vh;
+    width: 100vw;
     display: flex;
     justify-content: space-around;
     align-items: center;
