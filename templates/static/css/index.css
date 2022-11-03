@@ -1,3 +1,12 @@
 .top-nav{
     display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    height: 5vh;
+    background-color: rgb(1, 26, 93);
+    border-radius: 10px;
+    color: white;
+    font-weight: bolder;
+    font-size: 3vh;
 }
