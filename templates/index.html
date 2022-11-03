@@ -6,11 +6,44 @@
     <title>아이클롭스 균열검출기</title>
 
     <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <!-- CDNS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <script  src="https://code.jquery.com/jquery-3.6.1.slim.js"  integrity="sha256-tXm+sa1uzsbFnbXt8GJqsgi2Tw+m4BLGDof6eUPjbtk=" crossorigin="anonymous"></script>
 </head>
 <body>
     <div class="top-nav">
         <div class="nav-left">균열 검출기</div>
         <div class="nav-right" style="font-size: 2vh;">Aiclops X KAU</div>
     </div>
+
+    <div class="status-area">
+        <div class="status-info" id="now-status"><div style="text-align: center">1</div>사진 업로드 </div>
+        <div>..........</div>
+        <div class="status-info"><div style="text-align: center">2</div>균열 검출</div>
+        <div>..........</div>
+        <div class="status-info"><div style="text-align: center">3</div>결과 확인</div>
+    </div>
+
+    <div class="file-upload-area">
+        <form runat="server">
+            <div class="image-preview-area">
+                <img id="crack_img" src="#" alt="균열 사진을 업로드 해주세요." style="max-height:100%; max-width:100%;" />
+
+            </div>
+            <div>
+
+{#                <input accept="image/*" type='file' capture="environment" id="imgInp" />#}
+
+                <div class="filebox">
+                    <input class="upload-name" value="첨부파일" placeholder="첨부파일">
+                    <label for="imgInp">파일찾기</label>
+                    <input type='file' accept="image/*"  capture="environment" id="imgInp">
+                </div>
+            </div>
+
+
+        </form>
+    </div>
 </body>
+<script type="text/javascript" src="{% static 'js/index.js' %}"></script>
 </html>
