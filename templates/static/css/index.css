@@ -73,3 +73,11 @@
     overflow: hidden;
     border: 0;
 }
+
+.submit-btn-area{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    margin-top: 0.5vh;
+}
