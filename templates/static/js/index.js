@@ -20,12 +20,31 @@ function toLoadingPage(){
   location.href="loading/"
 }
 
-crackImgSubmitBtn.onclick = function(){
+crackImgSubmitBtn.onclick = async function(){
   if(fileName.length==0){
     alert("사진 파일을 입력해주세요.")
   }
   else{
-    location.href="loading/"
+    var formdata = new FormData();
+    const file = imgInp.files[0]
+    formdata.append("title", "Test");
+    formdata.append("imgfile", file, fileName);
+
+    var requestOptions = {
+      method: 'POST',
+      body: formdata,
+      redirect: 'follow'
+    };
+
+    await postPic("http://localhost:8000/crack-seg/fileupload/", requestOptions)
   }
 
+}
+
+
+async function postPic(host, options){
+  fetch(host, options)
+  .then(response => response.text())
+  .then(result => console.log(result))
+  .catch(error => console.log('error', error));
 }
