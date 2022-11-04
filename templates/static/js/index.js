@@ -12,11 +12,10 @@ imgInp.onchange = evt => {
 $("#imgInp").on('change',function(){
   fileName = $("#imgInp").val();
   $(".upload-name").val(fileName);
-  localStorage.setItem("pic_name", fileName)
+  localStorage.setItem("pic_name", fileName.split("\\")[2].replace(' ', '_'))
 });
 
 function toLoadingPage(){
-  console.log("hi")
   location.href="loading/"
 }
 
@@ -38,7 +37,8 @@ crackImgSubmitBtn.onclick = async function(){
       redirect: 'follow'
     };
     toLoadingPage()
-    await postPic("http://localhost:8000/crack-seg/fileupload/", requestOptions)
+    await postAPI("http://localhost:8000/crack-seg/fileupload/", requestOptions)
+    location.href = "result/"
   }
 
 }
@@ -49,6 +49,13 @@ async function postPic(host, options){
   .then(response => response.text())
   .then(result => console.log(result))
   .catch(error => console.log('error', error));
+}
+
+//post API AS JSON
+async function postAPI(host, options) {
+  const res = await fetch(host, options)
+  const data = res.json();
+  console.log(res)
 }
 
 function toLoadingPage(){

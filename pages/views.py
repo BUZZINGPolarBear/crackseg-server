@@ -6,3 +6,6 @@ def indexPage(request):
 
 def loadingPage(request):
     return render(request, 'index-second.html')
+
+def resultPage(request):
+    return render(request, 'index-third.html')

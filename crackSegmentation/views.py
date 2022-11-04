@@ -9,6 +9,7 @@ from django.views.decorators.csrf import csrf_exempt
 from PIL import Image
 import cv2
 import os
+import json
 
 @csrf_exempt
 def fileUpload(request):
@@ -27,7 +28,7 @@ def fileUpload(request):
         resized_img = cv2.resize(resized_img, (448, 448))
         cv2.imwrite('media/resized' +'/resized_'+ str(img).replace(' ', '_'), resized_img)
 
-        run_inference_code = "torchrun crack_segmentation/inference_unet.py -model_type resnet34 -img_dir media/resized/ -model_path crack_segmentation/unet_pretrained_false_2/model_best.pt -out_pred_dir media/predicted"
+        run_inference_code = "torchrun crack_segmentation/inference_unet.py -model_type resnet34 -img_dir media/resized/ -model_path crack_segmentation/unet_pretrained_false_2/model_best.pt -out_pred_dir templates/static/images/predicted"
         os.system(run_inference_code)
         return HttpResponse(str(img)+" segmantation end")
     else:
@@ -41,6 +42,11 @@ def fileUpload(request):
 def testResponse(request):
     return HttpResponse("Hello world!")
 
+@csrf_exempt
+def predictionEnd(request):
+    if(request.method == 'POST'):
+        body = json.loads(request.body.decode('utf-8'))
+        print(body["name"])
 
 def rescale(image, width):
     img = Image.open(image)

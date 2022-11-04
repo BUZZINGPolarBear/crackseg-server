@@ -7,5 +7,6 @@ from .views import *
 
 urlpatterns = [
     path('', views.indexPage, name="home"),
-    path('loading/', views.loadingPage, name="loadingPage")
+    path('loading/', views.loadingPage, name="loadingPage"),
+    path('result/', views.resultPage, name="segmantationResult")
 ]
