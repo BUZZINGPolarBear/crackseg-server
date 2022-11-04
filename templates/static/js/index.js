@@ -25,6 +25,8 @@ crackImgSubmitBtn.onclick = async function(){
     alert("사진 파일을 입력해주세요.")
   }
   else{
+
+
     var formdata = new FormData();
     const file = imgInp.files[0]
     formdata.append("title", "Test");
@@ -35,7 +37,7 @@ crackImgSubmitBtn.onclick = async function(){
       body: formdata,
       redirect: 'follow'
     };
-
+    toLoadingPage()
     await postPic("http://localhost:8000/crack-seg/fileupload/", requestOptions)
   }
 
@@ -47,4 +49,26 @@ async function postPic(host, options){
   .then(response => response.text())
   .then(result => console.log(result))
   .catch(error => console.log('error', error));
+}
+
+function toLoadingPage(){
+  html = `
+        <div class="status-info" >
+          <div style="text-align: center">1</div>사진 업로드 </div>
+          <div>..........</div>
+          <div class="status-info" id="now-status"><div style="text-align: center">2</div>균열 검출</div>
+          <div>..........</div>
+        <div class="status-info"><div style="text-align: center">3</div>결과 확인</div>
+  `
+  $('.status-area').empty()
+  $('.status-area').append(html)
+
+  html  = `
+         <img class="crack_img" src="/templates/static/images/loading.gif" style="z-index: 9999" />
+  `
+  $('.file-upload-area').empty()
+  $('.file-upload-area').css("height", "30vh")
+  $('.file-upload-area').append(html)
+
+  $('#loading_status').append('균열검출중...')
 }
