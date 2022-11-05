@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     "crackSegmentation.apps.CracksegmentationConfig",
     "pages",
     "bootstrap4",
+    "django_crontab",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -126,3 +127,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/images')
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+#Cron jobs
+CRONJOBS = [
+    ('*/1 * * * *', 'aiclops_server.cron.delete_files')
+]

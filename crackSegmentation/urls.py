@@ -8,5 +8,5 @@ from .views import *
 urlpatterns = [
     path('test/', views.testResponse),
     path('fileupload/', fileUpload, name="fileupload"),
-    path('prediction-end/', predictionEnd, name="prediction-end")
+    path('remove-imgs/', removeImgs, name="remove-images")
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

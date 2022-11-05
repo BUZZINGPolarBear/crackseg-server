@@ -43,10 +43,22 @@ def testResponse(request):
     return HttpResponse("Hello world!")
 
 @csrf_exempt
-def predictionEnd(request):
-    if(request.method == 'POST'):
-        body = json.loads(request.body.decode('utf-8'))
-        print(body["name"])
+def removeImgs(request):
+    media_imgs = "media/images/"
+    media_resized = "media/resized/"
+    media_predicted = "templates/static/images/predicted"
+    if (os.path.exists(media_imgs)):
+        for file in os.scandir((media_imgs)):
+            os.remove(file.path)
+
+    if (os.path.exists(media_resized)):
+        for file in os.scandir((media_resized)):
+            os.remove(file.path)
+
+    if (os.path.exists(media_predicted)):
+        for file in os.scandir((media_predicted)):
+            os.remove(file.path)
+    return HttpResponse("img remove complated")
 
 def rescale(image, width):
     img = Image.open(image)
