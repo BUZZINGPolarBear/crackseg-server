@@ -37,7 +37,7 @@ crackImgSubmitBtn.onclick = async function(){
       redirect: 'follow'
     };
     toLoadingPage()
-    await postAPI("http://localhost:8000/crack-seg/fileupload/", requestOptions)
+    await postAPI(hostAddr+"crack-seg/fileupload/", requestOptions)
     location.href = "result/"
   }
 
