@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>아이클롭스 균열검출기</title>
 
-    <link rel="stylesheet" href="{% static 'css/index-second.css' %}">
+    <link rel="stylesheet" href="{% static 'css/index-third.css' %}">
     <!-- CDNS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
     <script  src="https://code.jquery.com/jquery-3.6.1.slim.js"  integrity="sha256-tXm+sa1uzsbFnbXt8GJqsgi2Tw+m4BLGDof6eUPjbtk=" crossorigin="anonymous"></script>
@@ -27,15 +27,9 @@
     <div style="width: 100vw; text-align: center; font-size: 5em; font-weight: bolder">균열 검출 결과</div>
     <div class="loading-area">
         <div class="file-upload-area">
-            <img class="crack_img" id="predicted_img" src="#" style="z-index: 9999" />
+            <img class="crack_img" id="resized_img" src="#" />
+            <img class="crack_img" id="predicted_img" src="#" />
         </div>
-    </div>
-
-    <div style="width: 100vw; text-align: center; font-size: 5em; font-weight: bolder">원본 이미지</div>
-        <div class="loading-area">
-            <div class="file-upload-area">
-                <img class="crack_img" id="resized_img" src="#" style="z-index: 9999" />
-            </div>
     </div>
 
 </body>
