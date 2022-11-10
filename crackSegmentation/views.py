@@ -27,6 +27,7 @@ def fileUpload(request):
         resized_img = cv2.imread('media/images/' + str(img).replace(' ', '_'))
         resized_img = cv2.resize(resized_img, (448, 448))
         cv2.imwrite('media/resized' +'/resized_'+ str(img).replace(' ', '_'), resized_img)
+        cv2.imwrite('templates/static/images/resized/' +'/resized_'+ str(img).replace(' ', '_'), resized_img)
 
         run_inference_code = "torchrun crack_segmentation/inference_unet.py -model_type resnet34 -img_dir media/resized/ -model_path crack_segmentation/unet_pretrained_false_2/model_best.pt -out_pred_dir templates/static/images/predicted"
         os.system(run_inference_code)
@@ -47,6 +48,7 @@ def removeImgs(request):
     media_imgs = "media/images/"
     media_resized = "media/resized/"
     media_predicted = "templates/static/images/predicted"
+    media_tempalte_resized = "templates/static/images/resized"
     if (os.path.exists(media_imgs)):
         for file in os.scandir((media_imgs)):
             os.remove(file.path)
@@ -57,6 +59,10 @@ def removeImgs(request):
 
     if (os.path.exists(media_predicted)):
         for file in os.scandir((media_predicted)):
+            os.remove(file.path)
+
+    if (os.path.exists(media_tempalte_resized)):
+        for file in os.scandir((media_tempalte_resized)):
             os.remove(file.path)
     return HttpResponse("img remove complated")
 
