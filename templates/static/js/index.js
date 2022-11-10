@@ -12,7 +12,7 @@ imgInp.onchange = evt => {
 $("#imgInp").on('change',function(){
   fileName = $("#imgInp").val();
   $(".upload-name").val(fileName);
-  localStorage.setItem("pic_name", fileName.split("\\")[2].replace(' ', '_'))
+  localStorage.setItem("pic_name", fileName.split("\\")[2].replace(/ /g, '_'))
 });
 
 function toLoadingPage(){
