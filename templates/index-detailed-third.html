@@ -25,13 +25,42 @@
     </div>
 
     <div style="width: 100vw; text-align: center; font-size: 5em; font-weight: bolder">정밀 균열 검출 결과</div>
+    <!-- 상단 -->
     <div class="loading-area">
         <div class="file-upload-area">
-            <img class="crack_img" id="resized_img" src="#" />
-            <img class="crack_img" id="predicted_img" src="#" />
+            <div class="img-left"></div>
+            <div class="img-mid"></div>
+            <div class="img-right"></div>
         </div>
     </div>
+    <div class="slidecontainer">
+        <div id="slider-info">예측 이미지의 투명도를 조절해보세요.</div>
+        <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+        <p id="value-container">투명도: <span id="value"></span>%</p>
+    </div>
 
+    <!-- 중단 -->
+    <div class="loading-area">
+        <div class="file-upload-area">
+            <div class="img-left"></div>
+            <div class="img-mid"></div>
+            <div class="img-right"></div>
+        </div>
+    </div>
+    <div class="slidecontainer">
+        <div id="slider-info">예측 이미지의 투명도를 조절해보세요.</div>
+        <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+        <p id="value-container">투명도: <span id="value"></span>%</p>
+    </div>
+
+    <!-- 하단 -->
+    <div class="loading-area">
+        <div class="file-upload-area">
+            <div class="img-left"></div>
+            <div class="img-mid"></div>
+            <div class="img-right"></div>
+        </div>
+    </div>
     <div class="slidecontainer">
         <div id="slider-info">예측 이미지의 투명도를 조절해보세요.</div>
         <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
@@ -40,5 +69,5 @@
 
 
 </body>
-<script type="text/javascript" src="/templates/static/js/index-detailed-third.js"></script>
+{#<script type="text/javascript" src="/templates/static/js/index-detailed-third.js"></script>#}
 </html>

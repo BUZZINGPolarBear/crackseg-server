@@ -27,11 +27,27 @@
 }
 
 .file-upload-area{
-    height: 30vh;
+    height: 20vh;
     width: 100vw;
     display: flex;
-    justify-content: space-around;
     align-items: center;
+    justify-content: center;
+}
+
+.img-left{
+    height: 30vw;
+    width: 30vw;
+    background-color: #04AA6D;
+}
+.img-mid{
+    height: 30vw;
+    width: 30vw;
+    background-color: aqua;
+}
+.img-right{
+    height: 30vw;
+    width: 30vw;
+    background-color: antiquewhite;
 }
 
 .image-preview-area{
