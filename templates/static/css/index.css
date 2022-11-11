@@ -92,3 +92,29 @@
     padding-top:8px;
     padding-bottom:8px;
 }
+
+#detailed_crack-img-submit-btn{
+    background-color: rgb(253, 219, 190);
+    color: black;
+    border-radius: 5px;
+
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top:8px;
+    padding-bottom:8px;
+}
+
+#detailed_info{
+    width: 60%;
+    margin-left: 20%;
+    margin-right: 20%;
+    margin-top: 15px;
+
+    text-align: center;
+    font-weight: bolder;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-radius: 7px;
+
+    background-color: rgb(241, 228, 212);
+}
