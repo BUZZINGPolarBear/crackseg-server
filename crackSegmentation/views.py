@@ -11,6 +11,9 @@ import cv2
 import os
 import json
 
+'''
+이미지를 다운받아서 한번에 균열 검출
+'''
 @csrf_exempt
 def fileUpload(request):
     if request.method == 'POST':
@@ -39,6 +42,24 @@ def fileUpload(request):
         }
         return render(request, 'fileupload.html', context)
 
+'''
+이미지를 3*3으로 잘라서 균열 검출
+'''
+@csrf_exempt
+def detailInference(request):
+    if request.method == 'POST':
+        title = request.POST['title']
+        img = request.FILES["imgfile"]
+
+        fileupload = FileUpload(
+            title=title,
+            imgfile=img,
+        )
+        fileupload.save()
+        print(str(img))
+        resized_img = cv2.imread('media/images/' + str(img).replace(' ', '_'))
+        resized_img = cv2.resize(resized_img, (1344, 1344))
+        # TO DO: 이미지 3*3으로 잘라서 저장하기
 
 def testResponse(request):
     return HttpResponse("Hello world!")
