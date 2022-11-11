@@ -59,8 +59,50 @@ def detailInference(request):
         print(str(img))
         resized_img = cv2.imread('media/images/' + str(img).replace(' ', '_'))
         resized_img = cv2.resize(resized_img, (1344, 1344))
-        # TO DO: 이미지 3*3으로 잘라서 저장하기
 
+        leftTop = resized_img[0:448, 0:448]
+        midTop = resized_img[0: 448, 448: 896]
+        rightTop = resized_img[0: 448, 896: 1344]
+
+        leftMid = resized_img[448:896, 0: 448]
+        midMid = resized_img[448:896, 448: 896]
+        rightMid = resized_img[448:896, 896:1344]
+
+        leftBot = resized_img[896:1344, 0:448]
+        midBot = resized_img[896:1344, 448:896]
+        rightBot = resized_img[896:1344, 896:1344]
+
+        cv2.imwrite('media/resized' + '/resized_leftTop_' + str(img).replace(' ', '_'), leftTop)
+        cv2.imwrite('templates/static/images/resized/' + '/resized_leftTop_' + str(img).replace(' ', '_'), leftTop)
+        cv2.imwrite('media/resized' + '/resized_midTop_' + str(img).replace(' ', '_'), midTop)
+        cv2.imwrite('templates/static/images/resized/' + '/resized_midTop_' + str(img).replace(' ', '_'), midTop)
+        cv2.imwrite('media/resized' + '/resized_rightTop_' + str(img).replace(' ', '_'), rightTop)
+        cv2.imwrite('templates/static/images/resized/' + '/resized_rightTop_' + str(img).replace(' ', '_'), rightTop)
+
+        cv2.imwrite('media/resized' + '/resized_leftMid_' + str(img).replace(' ', '_'), leftMid)
+        cv2.imwrite('templates/static/images/resized/' + '/resized_leftMid_' + str(img).replace(' ', '_'), leftMid)
+        cv2.imwrite('media/resized' + '/resized_midMid_' + str(img).replace(' ', '_'), midMid)
+        cv2.imwrite('templates/static/images/resized/' + '/resized_midMid_' + str(img).replace(' ', '_'), midMid)
+        cv2.imwrite('media/resized' + '/resized_rightMid_' + str(img).replace(' ', '_'), rightMid)
+        cv2.imwrite('templates/static/images/resized/' + '/resized_rightMid_' + str(img).replace(' ', '_'), rightMid)
+
+        cv2.imwrite('media/resized' + '/resized_leftBot_' + str(img).replace(' ', '_'), leftBot)
+        cv2.imwrite('templates/static/images/resized/' + '/resized_leftBot_' + str(img).replace(' ', '_'), leftBot)
+        cv2.imwrite('media/resized' + '/resized_midBot_' + str(img).replace(' ', '_'), midBot)
+        cv2.imwrite('templates/static/images/resized/' + '/resized_midBot_' + str(img).replace(' ', '_'), midBot)
+        cv2.imwrite('media/resized' + '/resized_rightBot_' + str(img).replace(' ', '_'), rightBot)
+        cv2.imwrite('templates/static/images/resized/' + '/resized_rightBot_' + str(img).replace(' ', '_'), rightBot)
+        # TO DO: 이미지 3*3으로 잘라서 저장하기
+        # https://wjh2307.tistory.com/7
+        run_inference_code = "torchrun crack_segmentation/inference_unet.py -model_type resnet34 -img_dir media/resized/ -model_path crack_segmentation/unet_pretrained_false_2/model_best.pt -out_pred_dir templates/static/images/predicted"
+        os.system(run_inference_code)
+        return HttpResponse(str(img) + " segmantation end")
+    else:
+        fileuploadForm = FileUploadForm
+        context = {
+            'fileuploadForm': fileuploadForm,
+        }
+        return render(request, 'fileupload.html', context)
 def testResponse(request):
     return HttpResponse("Hello world!")
 
