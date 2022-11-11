@@ -9,3 +9,6 @@ def loadingPage(request):
 
 def resultPage(request):
     return render(request, 'index-third.html')
+
+def detailedResultPage(request):
+    return render(request, 'index-detailed-third.html')
