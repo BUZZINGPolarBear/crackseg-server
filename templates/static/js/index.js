@@ -1,4 +1,5 @@
 const crackImgSubmitBtn = document.getElementById("crack-img-submit-btn")
+const detailedCrackImgSubmitBtn = document.getElementById("detailed-crack-img-submit-btn")
 var fileName = $("#imgInp").val();
 
 imgInp.onchange = evt => {
@@ -24,8 +25,6 @@ crackImgSubmitBtn.onclick = async function(){
     alert("사진 파일을 입력해주세요.")
   }
   else{
-
-
     var formdata = new FormData();
     const file = imgInp.files[0]
     formdata.append("title", "Test");
@@ -40,7 +39,27 @@ crackImgSubmitBtn.onclick = async function(){
     await postAPI(hostAddr+"crack-seg/fileupload/", requestOptions)
     location.href = "result/"
   }
+}
 
+detailedCrackImgSubmitBtn.onclick = async function(){
+  if(fileName.length==0){
+    alert("사진 파일을 입력해주세요.")
+  }
+  else{
+    var formdata = new FormData();
+    const file = imgInp.files[0]
+    formdata.append("title", "Test");
+    formdata.append("imgfile", file, fileName);
+
+    var requestOptions = {
+      method: 'POST',
+      body: formdata,
+      redirect: 'follow'
+    };
+    toLoadingPage()
+    await postAPI(hostAddr+"crack-seg/fileuplaod/detailed", requestOptions)
+    location.href = "result/detailed"
+  }
 }
 
 
