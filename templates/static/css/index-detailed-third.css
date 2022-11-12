@@ -37,17 +37,15 @@
 .img-left{
     height: 30vw;
     width: 30vw;
-    background-color: #04AA6D;
 }
 .img-mid{
     height: 30vw;
     width: 30vw;
-    background-color: aqua;
 }
 .img-right{
     height: 30vw;
     width: 30vw;
-    background-color: antiquewhite;
+    background-color: #000000;
 }
 
 .image-preview-area{
@@ -99,11 +97,21 @@
 
     margin-top: 0.5vh;
 }
-
-#predicted_img{
-    z-index: 9999;
+.crack_img{
     position: absolute;
+    width: 30vw;
+}
+.crack_img.predicted_img{
+    z-index: 9999;
+}
+.crack_img.predicted_img.topRow{
     opacity: 0.5;
+}
+
+img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
 }
 
 
