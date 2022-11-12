@@ -34,6 +34,14 @@
     justify-content: center;
 }
 
+.position-information{
+    width: 100%;
+    font-size: 1.3em;
+    font-weight: bolder;
+    text-align: center;
+
+    margin-top: 5vh;
+}
 .img-left{
     height: 30vw;
     width: 30vw;
@@ -100,6 +108,11 @@
 .crack_img{
     position: absolute;
     width: 30vw;
+
+    animation-name: backgroundColorPalette;
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
 }
 .crack_img.predicted_img{
     z-index: 9999;
@@ -167,4 +180,23 @@ img {
     font-size: 1.5em;
     font-weight: bolder;
     text-align: center;
+}
+
+
+@keyframes backgroundColorPalette {
+  0% {
+    background: #999999;
+  }
+  25% {
+    background: #777777;
+  }
+  50% {
+    background: #555555;
+  }
+  75% {
+    background: #777777;
+  }
+  100% {
+    background: #999999;
+  }
 }
