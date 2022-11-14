@@ -36,6 +36,7 @@ crackImgSubmitBtn.onclick = async function(){
       redirect: 'follow'
     };
     toLoadingPage()
+    await getAPI(hostAddr + "crack-seg/remove-imgs")
     await postAPI(hostAddr+"crack-seg/fileupload/", requestOptions)
     location.href = "result/"
   }
@@ -57,6 +58,7 @@ detailedCrackImgSubmitBtn.onclick = async function(){
       redirect: 'follow'
     };
     toLoadingPage()
+    await getAPI(hostAddr + "crack-seg/remove-imgs")
     await postAPI(hostAddr+"crack-seg/fileuplaod/detailed", requestOptions)
     location.href = "result/detailed"
   }
@@ -72,6 +74,13 @@ async function postPic(host, options){
 
 //post API AS JSON
 async function postAPI(host, options) {
+  const res = await fetch(host, options)
+  const data = res.json();
+  console.log(res)
+}
+
+//get API
+async function getAPI(host, options) {
   const res = await fetch(host, options)
   const data = res.json();
   console.log(res)
