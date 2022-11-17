@@ -27,63 +27,16 @@
 }
 
 .file-upload-area{
-    height: 30vh;
+    height: 100vw;
     width: 100vw;
     display: flex;
     justify-content: space-around;
-    align-items: center;
 }
 
-.image-preview-area{
-    width: 80vw;
-    height: 80vw;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-
-    background-color: rgb(240, 240, 240);
-    border-radius: 10px;
-    border: dotted;
+.crack_img{
+    width: 90vw;
+    height: 90vw;
 }
-
-.filebox .upload-name {
-    display: inline-block;
-    height: 40px;
-    padding: 0 10px;
-    vertical-align: middle;
-    border: 1px solid #dddddd;
-    width: 78%;
-    color: #999999;
-}
-
-.filebox label {
-    display: inline-block;
-    padding: 10px 20px;
-    color: #fff;
-    vertical-align: middle;
-    background-color: #999999;
-    cursor: pointer;
-    height: 40px;
-    margin-left: 10px;
-}
-
-.filebox input[type="file"] {
-    position: absolute;
-    width: 0;
-    height: 0;
-    padding: 0;
-    overflow: hidden;
-    border: 0;
-}
-
-.submit-btn-area{
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-
-    margin-top: 0.5vh;
-}
-
 #predicted_img{
     z-index: 9999;
     position: absolute;
