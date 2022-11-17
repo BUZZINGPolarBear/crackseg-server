@@ -32,7 +32,11 @@ def fileUpload(request):
         cv2.imwrite('media/resized' +'/resized_'+ str(img).replace(' ', '_'), resized_img)
         cv2.imwrite('templates/static/images/resized/' +'/resized_'+ str(img).replace(' ', '_'), resized_img)
 
-        run_inference_code = "torchrun crack_segmentation/inference_unet.py -model_type resnet34 -img_dir media/resized/ -model_path crack_segmentation/model/model_best.pt -out_pred_dir templates/static/images/predicted"
+        run_inference_code = "torchrun crack_segmentation/inference_unet.py -model_type resnet34 -img_dir media/resized/ -model_path crack_segmentation/model/model_best.pt " \
+                             "-out_pred_dir templates/static/images/predicted " \
+                             "-out_viz_dir templates/static/images/visualized " \
+                             "-out_synthesize_dir templates/static/images/synthesized"
+
         os.system(run_inference_code)
         return HttpResponse(str(img)+" segmantation end")
     else:
@@ -94,7 +98,9 @@ def detailInference(request):
         cv2.imwrite('templates/static/images/resized/' + '/resized_rightBot_' + str(img).replace(' ', '_'), rightBot)
         # TO DO: 이미지 3*3으로 잘라서 저장하기
         # https://wjh2307.tistory.com/7
-        run_inference_code = "torchrun crack_segmentation/inference_unet.py -model_type resnet34 -img_dir media/resized/ -model_path crack_segmentation/model/model_best.pt -out_pred_dir templates/static/images/predicted"
+        run_inference_code = "torchrun crack_segmentation/inference_unet.py -model_type resnet34 -img_dir media/resized/ -model_path crack_segmentation/model/model_best.pt " \
+                             "-out_pred_dir templates/static/images/predicted " \
+                             "-out_viz_dir templates/static/images/visualized "
         os.system(run_inference_code)
         return HttpResponse(str(img) + " segmantation end")
     else:
