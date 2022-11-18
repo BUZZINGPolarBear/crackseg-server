@@ -13,7 +13,6 @@ imgInp.onchange = evt => {
 $("#imgInp").on('change',function(){
   fileName = $("#imgInp").val();
   $(".upload-name").val(fileName);
-  localStorage.setItem("pic_name", fileName.split("\\")[2].replace(/ /g, '_'))
 });
 
 function toLoadingPage(){
@@ -26,8 +25,9 @@ crackImgSubmitBtn.onclick = async function(){
   }
   else{
     var formdata = new FormData();
-    const file = imgInp.files[0]
-    formdata.append("title", "Test");
+    const file = imgInp.files[0];
+    const pic_rand_id = makeid(15);
+    formdata.append("title", pic_rand_id);
     formdata.append("imgfile", file, fileName);
 
     var requestOptions = {
@@ -36,6 +36,7 @@ crackImgSubmitBtn.onclick = async function(){
       redirect: 'follow'
     };
     toLoadingPage()
+     localStorage.setItem("pic_name", pic_rand_id+'.jpg')
     await getAPI(hostAddr + "crack-seg/remove-imgs")
     await postAPI(hostAddr+"crack-seg/fileupload/", requestOptions)
     location.href = "result/"
@@ -48,9 +49,9 @@ detailedCrackImgSubmitBtn.onclick = async function(){
   }
   else{
     var formdata = new FormData();
-    const file = imgInp.files[0]
+    const file = imgInp.files[0];
     formdata.append("title", "Test");
-    formdata.append("imgfile", file, fileName);
+    formdata.append("imgfile", file, 'test1');
 
     var requestOptions = {
       method: 'POST',
@@ -84,6 +85,16 @@ async function getAPI(host, options) {
   const res = await fetch(host, options)
   const data = res.json();
   console.log(res)
+}
+
+function makeid(length) {
+    var result           = '';
+    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ ) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
 }
 
 function toLoadingPage(){

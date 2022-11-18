@@ -25,12 +25,11 @@ def fileUpload(request):
             imgfile=img,
         )
         fileupload.save()
-        print(str(img))
 
         resized_img = cv2.imread('media/images/' + str(img).replace(' ', '_'))
         resized_img = cv2.resize(resized_img, (448, 448))
-        cv2.imwrite('media/resized' +'/resized_'+ str(img).replace(' ', '_'), resized_img)
-        cv2.imwrite('templates/static/images/resized/' +'/resized_'+ str(img).replace(' ', '_'), resized_img)
+        cv2.imwrite('media/resized' +'/resized_'+ str(title)+'.jpg', resized_img)
+        cv2.imwrite('templates/static/images/resized/' +'/resized_'+ str(title)+'.jpg', resized_img)
 
         run_inference_code = "torchrun crack_segmentation/inference_unet.py -model_type resnet34 -img_dir media/resized/ -model_path crack_segmentation/model/model_best.pt " \
                              "-out_pred_dir templates/static/images/predicted " \
