@@ -27,6 +27,7 @@ crackImgSubmitBtn.onclick = async function(){
     var formdata = new FormData();
     const file = imgInp.files[0];
     const pic_rand_id = makeid(15);
+
     formdata.append("title", pic_rand_id);
     formdata.append("imgfile", file, fileName);
 
@@ -36,7 +37,7 @@ crackImgSubmitBtn.onclick = async function(){
       redirect: 'follow'
     };
     toLoadingPage()
-     localStorage.setItem("pic_name", pic_rand_id+'.jpg')
+    localStorage.setItem("pic_name", pic_rand_id+'.jpg')
     await getAPI(hostAddr + "crack-seg/remove-imgs")
     await postAPI(hostAddr+"crack-seg/fileupload/", requestOptions)
     location.href = "result/"
@@ -50,8 +51,10 @@ detailedCrackImgSubmitBtn.onclick = async function(){
   else{
     var formdata = new FormData();
     const file = imgInp.files[0];
-    formdata.append("title", "Test");
-    formdata.append("imgfile", file, 'test1');
+    const pic_rand_id = makeid(15);
+
+    formdata.append("title", pic_rand_id);
+    formdata.append("imgfile", file, fileName);
 
     var requestOptions = {
       method: 'POST',
@@ -59,18 +62,11 @@ detailedCrackImgSubmitBtn.onclick = async function(){
       redirect: 'follow'
     };
     toLoadingPage()
+    localStorage.setItem("pic_name", pic_rand_id+'.jpg')
     await getAPI(hostAddr + "crack-seg/remove-imgs")
     await postAPI(hostAddr+"crack-seg/fileuplaod/detailed", requestOptions)
     location.href = "result/detailed"
   }
-}
-
-
-async function postPic(host, options){
-  fetch(host, options)
-  .then(response => response.text())
-  .then(result => console.log(result))
-  .catch(error => console.log('error', error));
 }
 
 //post API AS JSON
