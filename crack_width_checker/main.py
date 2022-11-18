@@ -15,7 +15,7 @@ from function import closing_func, opening_func, opening_closing_func, closing_o
 
 
 # 디렉토리를 로컬 폴더 상황에 맞게 변경 요망
-PATH = '/Users/joonhwi/Desktop/KAU/4-2/capstone/aiclops_midterm/'+'aiclops_v5'
+PATH = os.getcwd()
 IMG_PATH = PATH+'/data/'
 SAVE_DIR = PATH+'/results/'
 

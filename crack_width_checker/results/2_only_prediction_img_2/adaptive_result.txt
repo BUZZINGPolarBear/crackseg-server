@@ -6,22 +6,22 @@ real_max_width: 0.00000
 average_width: 0.00000
 real_average_width: 0.00000
 [2]
-length: 105.94113
-real_length: 7.94877
+length: 109.25483
+real_length: 8.19739
 max_width: 0.00000
 real_max_width: 0.00000
 average_width: 0.00000
 real_average_width: 0.00000
 [3]
-length: 27.31371
-real_length: 2.04935
+length: 29.79899
+real_length: 2.23582
 max_width: 0.00000
 real_max_width: 0.00000
 average_width: 0.00000
 real_average_width: 0.00000
 
-total_length: 155.91169
-real_total_length: 11.69806
+total_length: 161.71068
+real_total_length: 12.13316
 total_max_width: 0.00000
 real_total_max_width: 0.00000
 total_average_width: 0.00000

@@ -1,12 +1,13 @@
 import math
 import argparse
 import cv2
+import os
 
 PIXEL_MAX_VALUE = 255
 
-PATH = '/Users/joonhwi/Desktop/KAU/4-2/capstone/aiclops_midterm/aiclops'
+PATH = os.getcwd()
 IMG_PATH = PATH+'/data'
-SAVE_DIR = '/Users/joonhwi/Desktop/KAU/4-2/capstone/aiclops_midterm/results'
+SAVE_DIR = os.getcwd() + '/results'
 
 class Lens:
     # 0.25, 0.4, 0.65, 1.2mm
