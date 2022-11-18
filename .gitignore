@@ -4,3 +4,5 @@ templates/static/images/resized/
 *.jpg
 *.jpeg
 *.png
+*.txt
+*.csv

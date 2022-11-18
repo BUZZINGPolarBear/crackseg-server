@@ -1,3 +1,0 @@
-total_max_width: 3.00000
-real_total_max_width: 0.22509
-

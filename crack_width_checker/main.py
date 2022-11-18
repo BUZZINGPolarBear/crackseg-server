@@ -15,7 +15,7 @@ from function import closing_func, opening_func, opening_closing_func, closing_o
 
 
 # 디렉토리를 로컬 폴더 상황에 맞게 변경 요망
-PATH = os.getcwd()
+PATH = os.getcwd()+'/crack_width_checker'
 IMG_PATH = PATH+'/data/'
 SAVE_DIR = PATH+'/results/'
 

@@ -5,7 +5,7 @@ import os
 
 PIXEL_MAX_VALUE = 255
 
-PATH = os.getcwd()
+PATH = os.getcwd() + '/crack_width_checker'
 IMG_PATH = PATH+'/data'
 SAVE_DIR = os.getcwd() + '/results'
 

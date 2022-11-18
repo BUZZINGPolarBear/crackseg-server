@@ -13,7 +13,7 @@ from importlib.resources import Package
 from skimage.morphology import medial_axis
 from function import closing_func, opening_func, erode_func, sharpening_func, otsu_func, noise_reduction_func, circle_noise_removal_using_packing_density_func, boundary_func, thinning_func, search_start_interval_point_direction_key, display_start_interval_point, search_edge_segment, display_edge_segment, crack_length_func, adaptive_crack_width_func, profiling_crack_width_func, normal_crack_width_func, profiling_crack_width_func_new
 
-PATH = os.getcwd()
+PATH = os.getcwd() + '/crack_width_checker'
 IMG_PATH = PATH+'/data/'
 SAVE_DIR = PATH+'/results/'
 
