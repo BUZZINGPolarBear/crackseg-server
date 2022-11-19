@@ -30,7 +30,15 @@ async function showCrackInfo(){
     redirect: 'follow'
   };
   const crack_info = await postAPI(hostAddr+"crack-seg/vision-inference/info/", requestOptions)
-  console.log(crack_info)
+
+  $('#max-width-td').empty()
+  $('#average-width-td').empty()
+  $('#total-width-td').empty()
+
+  $('#max-width-td').append(crack_info.real_max_width)
+  $('#average-width-td').append(crack_info.average_crack_width)
+  $('#total-width-td').append(crack_info.all_crack_length)
+
 }
 
 //post API AS JSON

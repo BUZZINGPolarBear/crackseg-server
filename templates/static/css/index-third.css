@@ -97,3 +97,17 @@
     font-weight: bolder;
     text-align: center;
 }
+/* Table */
+.table-area{
+    margin-top: 3vh;
+}
+.table .first-info{
+    width: 80vw;
+    margin-left: 10vw;
+    margin-right: 10vw;
+}
+.table .main{
+    text-align: center;
+    font-weight: bolder;
+    font-size: 1.2em;
+}

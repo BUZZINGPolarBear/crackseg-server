@@ -40,28 +40,35 @@
         <p id="value-container">투명도: <span id="value"></span>%</p>
     </div>
 
-    <table class="table">
-        <thad>
-            <tr>
-                <td class="tg-0lax"></td>
-                <td class="tg-0lax">길이(cm)</td>
-            </tr>
-        </thad>
-        <tbody>
-            <tr>
-                <td class="tg-0lax">가장 긴 균열 너비</td>
-                <td class="tg-0lax"></td>
-            </tr>
-            <tr>
-                <td class="tg-0lax">평균 균열 너비</td>
-                <td class="tg-0lax"></td>
-            </tr>
-            <tr>
-                <td class="tg-0lax">총 균열 길이</td>
-                <td class="tg-0lax"></td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="table-area">
+        <div style="width: 100vw; text-align: center; font-size: 5em; font-weight: bolder">균열 분석 결과</div>
+        <table class="table is-striped" style="
+        width: 80vw;
+        margin-left: 10vw;
+        margin-right: 10vw;
+        ">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th class="table main" style="text-align: center">길이(cm)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="table main" style="width: 30%;">가장 긴 균열 너비</td>
+                    <td id="max-width-td" style="text-align: center"></td>
+                </tr>
+                <tr>
+                    <td class="table main left" style="width: 30%;">평균 균열 너비</td>
+                    <td id="average-width-td" style="text-align: center"></td>
+                </tr>
+                <tr>
+                    <td class="table main left" style="width: 30%;">총 균열 길이</td>
+                    <td id="total-width-td" style="text-align: center"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
 </body>
 <script type="text/javascript" src="/templates/static/js/index-third.js"></script>
