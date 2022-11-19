@@ -12,6 +12,7 @@ import cv2
 import os
 import json
 import re
+import shutil
 
 '''
 이미지를 다운받아서 한번에 균열 검출
@@ -102,7 +103,7 @@ def detailInference(request):
         run_inference_code = "torchrun crack_segmentation/inference_unet.py -model_type resnet34 -img_dir media/resized/ -model_path crack_segmentation/model/model_best.pt " \
                              "-out_pred_dir templates/static/images/predicted " \
                              "-out_viz_dir templates/static/images/visualized " \
-                             "-out_synthesize_dir templates/static/images/synthesized"
+                             "-out_synthesize_dir templates/static/images/analyzed"
         os.system(run_inference_code)
         return HttpResponse(str(img) + " segmantation end")
     else:
@@ -152,9 +153,10 @@ def visionInferenceInfo(request):
     if request.method == 'POST':
         request_body = json.loads(request.body)
         pic_name = request_body['img_name']
+        length = request_body['length']
         pic_name = pic_name.split('.')[0]
 
-        textFile = open(r'crack_width_checker/results/resized_'+pic_name+'/3000adaptive_result_summary.txt', "r")
+        textFile = open(r'crack_width_checker/results/resized_'+pic_name+'/'+str(length)+'000adaptive_result_summary.txt', "r")
         first_line = textFile.readline().split(' ')[1]
         second_line = textFile.readline().split(' ')[1]
         first_line = re.sub(r'[\n]', '', first_line)
@@ -178,6 +180,8 @@ def visionInferenceInfo(request):
             'all_crack_length' : all_crack_length,
             'average_crack_width': average_crack_width
         }
+        shutil.copyfile('crack_width_checker/results/resized_'+pic_name+'/resized_'+pic_name+'_8_mask_width_visualization.jpg',
+                        'templates/static/images/analyzed/analyzed_'+pic_name+'.jpg')
 
         return JsonResponse(crack_info_dict)
 

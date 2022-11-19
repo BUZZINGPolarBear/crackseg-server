@@ -3,8 +3,14 @@ var reader = new FileReader();
 window.onload = function(){
   const location = "/templates/static/images/predicted/resized_"+ localStorage.getItem("pic_name").split(".")[0] + ".jpg"
   const resized_img_location = "/templates/static/images/resized/resized_"+ localStorage.getItem("pic_name")
+  const colored_crack_img = `
+  crack_width_checker/results/resized_${localStorage.getItem("pic_name").split(".")[0]}
+  /resized_${localStorage.getItem("pic_name").split(".")[0]}_8_mask_width_visualization.jpg
+  `
+  console.log(colored_crack_img)
   predicted_img.src = location
   resized_img.src = resized_img_location
+  colored_img.src = colored_crack_img
 }
 
 var slider = document.getElementById("myRange");

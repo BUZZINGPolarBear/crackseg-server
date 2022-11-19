@@ -97,6 +97,12 @@
     font-weight: bolder;
     text-align: center;
 }
+/* 균열 검출 사진*/
+#colored_img{
+    z-index: 9999;
+    position: absolute;
+    opacity: 0.5;
+}
 /* Table */
 .table-area{
     margin-top: 3vh;
