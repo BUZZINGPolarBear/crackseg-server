@@ -66,24 +66,29 @@ crackImgModalBtn.onclick = function(){
     }
     else{
         var formdata = new FormData();
-          const file = imgInp.files[0];
-          const pic_rand_id = makeid(15);
+        const file = imgInp.files[0];
+        const pic_rand_id = makeid(15);
 
-          formdata.append("title", pic_rand_id);
-          formdata.append("imgfile", file, fileName);
-          formdata.append("length", length);
+        formdata.append("title", pic_rand_id);
+        formdata.append("imgfile", file, fileName);
+        formdata.append("length", length);
 
-          var requestOptions = {
-            method: 'POST',
-            body: formdata,
-            redirect: 'follow'
-          };
-          modal.style.display = "none"
-          toLoadingPage()
-          localStorage.setItem("pic_name", pic_rand_id+`_${length}`+'.jpg')
-          await getAPI(hostAddr + "crack-seg/remove-imgs")
-          await postAPI(hostAddr+"crack-seg/fileupload/", requestOptions)
-          location.href = "result/"
+        var requestOptions = {
+        method: 'POST',
+        body: formdata,
+        redirect: 'follow'
+        };
+        modal.style.display = "none"
+        toLoadingPage()
+        localStorage.setItem("pic_name", pic_rand_id+`_${length}`+'.jpg')
+
+        await getAPI(hostAddr + "crack-seg/remove-imgs")
+        await postAPI(hostAddr+"crack-seg/fileupload/", requestOptions)
+
+        $('#loading_status').empty();
+        $('#loading_status').append('검출된 균열 분석중...')
+        await getAPI(hostAddr + "crack-seg/vision-inference")
+        location.href = "result/"
         }
     }
 }
@@ -118,6 +123,8 @@ detailedImgModalBtn.onclick = function(){
       localStorage.setItem("pic_name", pic_rand_id+'.jpg')
       await getAPI(hostAddr + "crack-seg/remove-imgs")
       await postAPI(hostAddr+"crack-seg/fileuplaod/detailed", requestOptions)
+
+
       location.href = "result/detailed"
     }
   }

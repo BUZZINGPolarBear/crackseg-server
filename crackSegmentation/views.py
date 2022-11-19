@@ -20,9 +20,6 @@ def fileUpload(request):
         title = request.POST['title']
         img = request.FILES["imgfile"]
         length = request.POST['length']
-        print("--------------")
-        print(length)
-        print("--------------")
 
         fileupload = FileUpload(
             title=title,
