@@ -21,32 +21,6 @@ function toLoadingPage(){
   location.href="loading/"
 }
 
-
-
-//post API AS JSON
-async function postAPI(host, options) {
-  const res = await fetch(host, options)
-  const data = res.json();
-  console.log(res)
-}
-
-//get API
-async function getAPI(host, options) {
-  const res = await fetch(host, options)
-  const data = res.json();
-  console.log(res)
-}
-
-function makeid(length) {
-    var result           = '';
-    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    var charactersLength = characters.length;
-    for ( var i = 0; i < length; i++ ) {
-        result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-    return result;
-}
-
 const lengthSelectChange = (target) => {
         length = target.value;
         console.log(length)
@@ -155,4 +129,28 @@ function toLoadingPage(){
   $('.file-upload-area').append(html)
 
   $('#loading_status').append('균열검출중...')
+}
+
+//post API AS JSON
+async function postAPI(host, options) {
+  const res = await fetch(host, options)
+  const data = res.json();
+  console.log(res)
+}
+
+//get API
+async function getAPI(host, options) {
+  const res = await fetch(host, options)
+  const data = res.json();
+  console.log(res)
+}
+
+function makeid(length) {
+    var result           = '';
+    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ ) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
 }
