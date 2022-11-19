@@ -56,6 +56,7 @@ crackImgModalBtn.onclick = function(){
         modal.style.display = "none"
         toLoadingPage()
         localStorage.setItem("pic_name", pic_rand_id+`_${length}`+'.jpg')
+        localStorage.setItem("length", length)
 
         await getAPI(hostAddr + "crack-seg/remove-imgs")
         await postAPI(hostAddr+"crack-seg/fileupload/", requestOptions)

@@ -4,8 +4,7 @@ window.onload = function(){
   const location = "/templates/static/images/predicted/resized_"+ localStorage.getItem("pic_name").split(".")[0] + ".jpg"
   const resized_img_location = "/templates/static/images/resized/resized_"+ localStorage.getItem("pic_name")
   const colored_crack_img = `
-  crack_width_checker/results/resized_${localStorage.getItem("pic_name").split(".")[0]}
-  /resized_${localStorage.getItem("pic_name").split(".")[0]}_8_mask_width_visualization.jpg
+  /templates/static/images/analyzed/analyzed_${localStorage.getItem("pic_name")}
   `
   console.log(colored_crack_img)
   predicted_img.src = location
@@ -27,7 +26,8 @@ slider.oninput = function() {
 //분석된 균열 정보 보여주기
 async function showCrackInfo(){
   var raw = JSON.stringify({
-  "img_name": localStorage.getItem("pic_name")
+  "img_name": localStorage.getItem("pic_name"),
+  "length": localStorage.getItem("length")
   });
 
   var requestOptions = {

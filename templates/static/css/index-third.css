@@ -27,7 +27,7 @@
 }
 
 .file-upload-area{
-    height: 100vw;
+    height: 95vw;
     width: 100vw;
     display: flex;
     justify-content: space-around;
@@ -101,12 +101,8 @@
 #colored_img{
     z-index: 9999;
     position: absolute;
-    opacity: 0.5;
 }
 /* Table */
-.table-area{
-    margin-top: 3vh;
-}
 .table .first-info{
     width: 80vw;
     margin-left: 10vw;
