@@ -55,12 +55,12 @@
             <div class="close-area">X</div>
             <div class="content">
                 <div class="select is-link" id="length-select-btn">
-                  <select id="select-btn">
-                    <option>1m</option>
-                    <option>2m</option>
-                    <option>3m</option>
-                    <option>4m</option>
-                    <option>5m</option>
+                  <select id="select-btn" onchange="lengthSelectChange(this)">
+                    <option value="1">1m</option>
+                    <option value="2" selected>2m</option>
+                    <option value="3">3m</option>
+                    <option value="4">4m</option>
+                    <option value="5">5m</option>
                   </select>
                 </div>
                 <div class="buttons" style="margin-top: 6vh;" id="modal-btn-area">
