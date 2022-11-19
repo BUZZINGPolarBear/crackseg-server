@@ -1,4 +1,5 @@
-const crackImgSubmitBtn = document.getElementById("crack-img-submit-btn")
+const crackImgModalBtn = document.getElementById("crack-img-submit-btn");
+const crackImgSubmitBtn = document.getElementById("normal-crack-btn")
 const detailedCrackImgSubmitBtn = document.getElementById("detailed-crack-img-submit-btn")
 var fileName = $("#imgInp").val();
 
@@ -36,6 +37,7 @@ crackImgSubmitBtn.onclick = async function(){
       body: formdata,
       redirect: 'follow'
     };
+    modal.style.display = "none"
     toLoadingPage()
     localStorage.setItem("pic_name", pic_rand_id+'.jpg')
     await getAPI(hostAddr + "crack-seg/remove-imgs")
@@ -61,6 +63,7 @@ detailedCrackImgSubmitBtn.onclick = async function(){
       body: formdata,
       redirect: 'follow'
     };
+    modal.style.display = "none"
     toLoadingPage()
     localStorage.setItem("pic_name", pic_rand_id+'.jpg')
     await getAPI(hostAddr + "crack-seg/remove-imgs")
@@ -92,6 +95,15 @@ function makeid(length) {
     }
     return result;
 }
+
+//modals
+crackImgModalBtn.onclick = function(){
+   modal.style.display = "flex"
+}
+const closeBtn = modal.querySelector(".close-area")
+closeBtn.addEventListener("click", e => {
+    modal.style.display = "none"
+})
 
 function toLoadingPage(){
   html = `

@@ -46,6 +46,32 @@
             </div>
         </form>
     </div>
+
+    <div id="modal" class="modal-overlay">
+        <div class="modal-window">
+            <div class="title">
+                카메라와 균열 물체의 거리를 선택해주세요.
+            </div>
+            <div class="close-area">X</div>
+            <div class="content">
+                <div class="select is-link" id="length-select-btn">
+                  <select id="select-btn">
+                    <option>1m</option>
+                    <option>2m</option>
+                    <option>3m</option>
+                    <option>4m</option>
+                    <option>5m</option>
+                  </select>
+                </div>
+                <div class="buttons" style="margin-top: 6vh;">
+                  <button class="button is-primary" id="normal-crack-btn">일반 균열 검출하기</button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
     <div id="loading_status" style="width: 100vw; text-align: center; font-size: 5em; font-weight: bolder"></div>
 </body>
 <script type="text/javascript" src="/templates/static/js/index.js"></script>
