@@ -9,5 +9,6 @@ urlpatterns = [
     path('test/', views.testResponse),
     path('fileupload/', fileUpload, name="fileupload"),
     path('fileuplaod/detailed', detailInference, name="detailInference"),
+    path('vision-inference/', visionInference, name="computerVisionInference"),
     path('remove-imgs/', removeImgs, name="remove-images"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

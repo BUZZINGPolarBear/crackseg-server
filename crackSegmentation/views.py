@@ -34,7 +34,7 @@ def fileUpload(request):
         run_inference_code = "torchrun crack_segmentation/inference_unet.py -model_type resnet34 -img_dir media/resized/ -model_path crack_segmentation/model/model_best.pt " \
                              "-out_pred_dir templates/static/images/predicted " \
                              "-out_viz_dir templates/static/images/visualized " \
-                             "-out_synthesize_dir templates/static/images/synthesized"
+                             "-out_synthesize_dir crack_width_checker/data"
         os.system(run_inference_code)
         return HttpResponse(str(img)+" segmantation end")
     else:
@@ -132,7 +132,14 @@ def removeImgs(request):
     if (os.path.exists(media_tempalte_resized)):
         for file in os.scandir((media_tempalte_resized)):
             os.remove(file.path)
-    return HttpResponse("img remove complated")
+    return HttpResponse("img remove completed")
+
+'''
+ 비전 추론 알고리즘(오츄) 돌리기
+'''
+def visionInference(request):
+    os.system("python crack_width_checker/main.py")
+    return HttpResponse("crack inference algorithm completed")
 
 def rescale(image, width):
     img = Image.open(image)
