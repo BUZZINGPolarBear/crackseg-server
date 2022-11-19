@@ -47,17 +47,18 @@ function makeid(length) {
 
 //modals
 crackImgModalBtn.onclick = function(){
-  $('#modal-btn-area').append(`
-    <button class="button is-primary" id="normal-crack-btn">일반 균열 검출하기</button>
-  `)
-   modal.style.display = "flex";
+    $('#modal-btn-area').empty()
+    $('#modal-btn-area').append(`
+    <button class="button is-primary modal-btn" id="normal-crack-btn">일반 균열 검출하기</button>
+    `)
+    modal.style.display = "flex";
 
-  const crackImgSubmitBtn = document.getElementById("normal-crack-btn");
-  crackImgSubmitBtn.onclick = async function(){
-  if(fileName.length==0){
+    const crackImgSubmitBtn = document.getElementById("normal-crack-btn");
+    crackImgSubmitBtn.onclick = async function(){
+    if(fileName.length==0){
     alert("사진 파일을 입력해주세요.")
-  }
-  else{
+    }
+    else{
     var formdata = new FormData();
       const file = imgInp.files[0];
       const pic_rand_id = makeid(15);
@@ -77,10 +78,11 @@ crackImgModalBtn.onclick = function(){
       await postAPI(hostAddr+"crack-seg/fileupload/", requestOptions)
       location.href = "result/"
     }
-  }
+    }
 }
 
 detailedImgModalBtn.onclick = function(){
+  $('#modal-btn-area').empty()
   $('#modal-btn-area').append(`
    <button class="button is-warning modal-btn" id="detailed-crack-btn">정밀 균열 검출하기</button>
   `)
