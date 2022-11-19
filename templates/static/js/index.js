@@ -3,6 +3,7 @@ const detailedImgModalBtn = document.getElementById("detailed-crack-img-submit-b
 var fileName = $("#imgInp").val();
 var length = 2;
 
+
 imgInp.onchange = evt => {
   const [file] = imgInp.files
   if (file) {

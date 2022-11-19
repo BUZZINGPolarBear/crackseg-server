@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 # Create your views here.
 
 from django.shortcuts import render, redirect
@@ -7,9 +7,11 @@ from .forms import FileUploadForm
 from .models import FileUpload
 from django.views.decorators.csrf import csrf_exempt
 from PIL import Image
+import csv
 import cv2
 import os
 import json
+import re
 
 '''
 이미지를 다운받아서 한번에 균열 검출
@@ -141,6 +143,45 @@ def removeImgs(request):
 def visionInference(request):
     os.system("python crack_width_checker/main.py")
     return HttpResponse("crack inference algorithm completed")
+
+'''
+비전추론 결과 가져오기
+'''
+@csrf_exempt
+def visionInferenceInfo(request):
+    if request.method == 'POST':
+        request_body = json.loads(request.body)
+        pic_name = request_body['img_name']
+        pic_name = pic_name.split('.')[0]
+
+        textFile = open(r'crack_width_checker/results/resized_'+pic_name+'/3000adaptive_result_summary.txt', "r")
+        first_line = textFile.readline().split(' ')[1]
+        second_line = textFile.readline().split(' ')[1]
+        first_line = re.sub(r'[\n]', '', first_line)
+        second_line = re.sub(r'[\n]', '', second_line)
+        first_line = float(first_line)
+        second_line = float(second_line)
+
+        csvFile = open(r'crack_width_checker/results/resized_'+pic_name+'/adaptive_result_summary.csv', "r")
+        csvReader = csv.reader(csvFile)
+
+        index = 0
+        all_crack_length = 0.0
+        average_crack_width = 0.0
+        for line in csvReader:
+            if index == 1: all_crack_length = float(line[0])
+            if index == 5: average_crack_width = float(line[0])
+            index += 1
+
+        crack_info_dict = {
+            'real_max_width': second_line,
+            'all_crack_length' : all_crack_length,
+            'average_crack_width': average_crack_width
+        }
+
+        return JsonResponse(crack_info_dict)
+
+
 
 def rescale(image, width):
     img = Image.open(image)
