@@ -120,7 +120,12 @@ def removeImgs(request):
     media_imgs = "media/images/"
     media_resized = "media/resized/"
     media_predicted = "templates/static/images/predicted"
-    media_tempalte_resized = "templates/static/images/resized"
+    media_template_resized = "templates/static/images/resized"
+    media_template_analyzed = "templates/static/images/analyzed"
+    media_template_visualized = "templates/static/images/visualized"
+    otsu_data = "crack_width_checker/data"
+    otsu_result = "crack_width_checker/results/"
+
     if (os.path.exists(media_imgs)):
         for file in os.scandir((media_imgs)):
             os.remove(file.path)
@@ -133,9 +138,26 @@ def removeImgs(request):
         for file in os.scandir((media_predicted)):
             os.remove(file.path)
 
-    if (os.path.exists(media_tempalte_resized)):
-        for file in os.scandir((media_tempalte_resized)):
+    if (os.path.exists(media_template_resized)):
+        for file in os.scandir((media_template_resized)):
             os.remove(file.path)
+
+    if (os.path.exists(media_template_analyzed)):
+        for file in os.scandir((media_template_analyzed)):
+            os.remove(file.path)
+
+    if (os.path.exists(media_template_visualized)):
+        for file in os.scandir((media_template_visualized)):
+            os.remove(file.path)
+
+    if (os.path.exists(otsu_data)):
+        for file in os.scandir((otsu_data)):
+            os.remove(file.path)
+
+    if (os.path.exists(otsu_result)):
+        shutil.rmtree(otsu_result)
+        os.makedirs(otsu_result)
+
     return HttpResponse("img remove completed")
 
 '''
