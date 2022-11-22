@@ -147,8 +147,8 @@
     -webkit-backdrop-filter: blur( 13.5px );
     border-radius: 10px;
     border: 1px solid rgba( 255, 255, 255, 0.18 );
-    width: 80vw;
-    height: 20vh;
+    width: 800px;
+    height: 400px;
     position: relative;
     top: -100px;
     padding: 10px;
@@ -190,19 +190,20 @@
 #select-btn{
     padding-left: 30px;
     padding-right: 60px;
-    height: 5vh;
-    width: 40vw;
+    height: 2.5em;
+    width: 400px;
     font-size: 2em;
     font-weight: bolder;
     text-align: center;
-
-    margin-left: 15vw;
-    margin-right: 15vw;
+    margin-left: 150px;
+    margin-right: 150px;
 }
 
 .modal-btn{
     font-size: 1.3em;
     font-weight: bolder;
     padding: 10px 30px 10px 30px;
-    margin-left: 25vw;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
 }
