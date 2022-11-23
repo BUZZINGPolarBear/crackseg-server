@@ -5,6 +5,7 @@ import os
 
 PIXEL_MAX_VALUE = 255
 
+# 디렉토리 수정
 PATH = os.getcwd()+'/crack_width_checker'
 IMG_PATH = PATH+'/data/'
 SAVE_DIR = PATH+'/results/'

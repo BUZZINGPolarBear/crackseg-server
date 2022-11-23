@@ -4,7 +4,6 @@ import time
 import os.path
 import cv2
 import numpy as np
-import params as pm
 from skimage.morphology import medial_axis
 from tqdm import tqdm
 
@@ -29,7 +28,7 @@ n_f_table = direction_set[5:] + direction_set[:5]  # 진행 방향의 멀리의 
 # ['E', 'NE', 'N', 'NW', 'W', 'SW', 'S', 'SE']
 neighbor_key = ['NW', 'N', 'NE', 'E', 'SE', 'S', 'SW', 'W']
 
-
+from . import params_utils as pm
 
 color = pm.Color()
 
@@ -447,30 +446,31 @@ def finding_white_until_black(img, img_th, start, direction, LorR=0):
     # while 끝!!
     return width
 
+
 # 추가된 너비 측정 방식 - 길이 수정 - new one
 def fill_crack_width_func(img, img_th, total_segment_list, total_chain_list, total_width_list):
     img_BGR = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
     num_1st_lowest, num_2nd, num_3th, num_4th_highest = (0, 4, 5, 60)
-    try:
-        for j in range(len(total_width_list)):
-            segment_block = total_chain_list[j]
-            center_pixel_block = total_segment_list[j]
-            width_block = total_width_list[j]
 
-            for i in range(0, len(segment_block)):
-                start = center_pixel_block[i-1]
-                if i == 0 : direc = segment_block[1]
-                else :      direc = segment_block[i]
-                width = width_block[i]
-                clr = color.pick_color_paint(num_1st_lowest, num_2nd, num_3th, num_4th_highest, width)
-                # left : 진행 방향 기준 왼쪽 수직 방향
-                img_BGR  = fill_color_until_black(img_BGR, img, img_th, start, direc, LorR=0, clr = clr)
-                # right : 진행 방향 기준 오른쪽 수직 방향
-                img_BGR = fill_color_until_black(img_BGR, img, img_th, start, direc, LorR=1, clr = clr)
-            #
+    for j in range(len(total_width_list)):
+        segment_block = total_chain_list[j]
+        center_pixel_block = total_segment_list[j]
+        width_block = total_width_list[j]
+        for i in range(len(segment_block)):
+            start = center_pixel_block[i - 1]
+            if i == 0:
+                direc = segment_block[1]
+            else:
+                direc = segment_block[i]
+
+            width = width_block[i]
+            clr = color.pick_color_paint(num_1st_lowest, num_2nd, num_3th, num_4th_highest, width)
+            # left : 진행 방향 기준 왼쪽 수직 방향
+            img_BGR = fill_color_until_black(img_BGR, img, img_th, start, direc, LorR=0, clr=clr)
+            # right : 진행 방향 기준 오른쪽 수직 방향
+            img_BGR = fill_color_until_black(img_BGR, img, img_th, start, direc, LorR=1, clr=clr)
         #
-    except IndexError:
-        print("Index Error")
+    #
     return img_BGR
 
 

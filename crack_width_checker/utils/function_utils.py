@@ -4,16 +4,15 @@ import time
 import os.path
 import cv2
 import numpy as np
-import params as pm
+
+from . import params_utils as pm
 from skimage.morphology import medial_axis
 from tqdm import tqdm
 
 PIXEL_MAX_VALUE = 255
 
-# 디렉토리 수정
 PATH = os.getcwd()+'/crack_width_checker'
-IMG_PATH = PATH+'/data/'
-SAVE_DIR = PATH+'/results/'
+SAVE_DIR = PATH + '/results/'
 
 MIN_CIRCULAR_MASK_RADIUS_RANGE = 7
 MAX_CIRCULAR_MASK_RADIUS_RANGE = 15
@@ -28,8 +27,6 @@ n_c_table = direction_set[7:] + direction_set[:7]  # 진행 방향의 가까이�
 n_f_table = direction_set[5:] + direction_set[:5]  # 진행 방향의 멀리의  음의 수직
 # ['E', 'NE', 'N', 'NW', 'W', 'SW', 'S', 'SE']
 neighbor_key = ['NW', 'N', 'NE', 'E', 'SE', 'S', 'SW', 'W']
-
-
 
 color = pm.Color()
 
@@ -393,30 +390,30 @@ def direction_func(direction, LorR=-1):
 
 
 # 한 방향으로 연속되는 흰색 픽셀 수 구하기
-def fill_color_until_black(img_BGR, img, img_th, start, direction, LorR=0, clr=[0, 0, 0]):
+def fill_color_until_black(img, img_th, start, direction, LorR=0, clr=[0, 0, 0]):
     row, col = (start[0], start[1])
     d_next, d_next_cl, d_next_fr = direction_func(direction, LorR=LorR)  # type: ignore
 
     while True:
-        img_BGR[row, col] = clr
         direction_dict = direction_dictionary(row, col)
         next = direction_dict[d_next]  # 정중앙의 수직방향 다음 픽셀
-        # next_c = direction_dict[d_next_cl]  # 가까이의 수직방향 다음 픽셀
-        # next_f = direction_dict[d_next_fr]  # 더멀리의 수직방향 다음 픽셀
+        next_c = direction_dict[d_next_cl]  # 가까이의 수직방향 다음 픽셀
+        next_f = direction_dict[d_next_fr]  # 더멀리의 수직방향 다음 픽셀
 
         # 0: 선분 진행 방향의 수직 균열 밖이면! : 검은색 픽셀이면
         if img[next[0], next[1]] != 255: break
-        # if img[next_c[0], next_c[1]] != 255: break
-        # if img[next_f[0], next_f[1]] != 255: break
+        if img[next_c[0], next_c[1]] != 255: break
+        if img[next_f[0], next_f[1]] != 255: break
 
         # 1-0: 선분 진행 방향의 수직 균열 내부라면! (흰색 픽셀) : 다른 균열의 중심부일 때! - 너비 끝
         if img_th[next[0], next[1]] == 255: break
-        # if img_th[next_c[0], next_c[1]] != 0: break
-        # if img_th[next_f[0], next_f[1]] != 0: break
+        if img_th[next_c[0], next_c[1]] != 0: break
+        if img_th[next_f[0], next_f[1]] != 0: break
 
+        img[row, col] = clr
         row, col = (next[0], next[1])
     # while 끝!!
-    return img_BGR
+    return img
 
 
 # 한 방향으로 연속되는 흰색 픽셀 수 구하기
@@ -447,36 +444,37 @@ def finding_white_until_black(img, img_th, start, direction, LorR=0):
     # while 끝!!
     return width
 
+
 # 추가된 너비 측정 방식 - 길이 수정 - new one
 def fill_crack_width_func(img, img_th, total_segment_list, total_chain_list, total_width_list):
-    img_BGR = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
+    total_width_list = []
     num_1st_lowest, num_2nd, num_3th, num_4th_highest = (0, 4, 5, 60)
-    try:
-        for j in range(len(total_width_list)):
-            segment_block = total_chain_list[j]
-            center_pixel_block = total_segment_list[j]
-            width_block = total_width_list[j]
 
-            for i in range(0, len(segment_block)):
-                start = center_pixel_block[i-1]
-                if i == 0 : direc = segment_block[1]
-                else :      direc = segment_block[i]
-                width = width_block[i]
-                clr = color.pick_color_paint(num_1st_lowest, num_2nd, num_3th, num_4th_highest, width)
-                # left : 진행 방향 기준 왼쪽 수직 방향
-                img_BGR  = fill_color_until_black(img_BGR, img, img_th, start, direc, LorR=0, clr = clr)
-                # right : 진행 방향 기준 오른쪽 수직 방향
-                img_BGR = fill_color_until_black(img_BGR, img, img_th, start, direc, LorR=1, clr = clr)
-            #
+    for j in range(len(total_width_list)):
+        segment_block = total_chain_list[j]
+        center_pixel_block = total_segment_list[j]
+        width_block = total_width_list[j]
+        for i in range(len(segment_block)):
+            start = center_pixel_block[i - 1]
+            if i == 0:
+                direc = segment_block[1]
+            else:
+                direc = segment_block[i]
+            width = width_block[i]
+            clr = color.pick_color_paint(num_1st_lowest, num_2nd, num_3th, num_4th_highest, width)
+            # left : 진행 방향 기준 왼쪽 수직 방향
+            img = fill_color_until_black(img, img_th, start, direc, LorR=0, clr=clr)
+            # right : 진행 방향 기준 오른쪽 수직 방향
+            img = fill_color_until_black(img, img_th, start, direc, LorR=1, clr=clr)
         #
-    except IndexError:
-        print("Index Error")
-    return img_BGR
+    #
+    return img
 
 
 # 추가된 너비 측정 방식 - 길이 수정 - new one
 def renewal_profiling_crack_width_func(img, img_th, total_segment_list, total_chain_list):
     total_width_list = []
+    print("ssdd")
     for j in range(len(total_chain_list)):
         segment_block = total_chain_list[j]
         center_pixel_block = total_segment_list[j]
@@ -614,7 +612,7 @@ def adaptive_crack_width_func(img, total_segment_list):
             except ValueError:
                 # 이미지의 4방면의 끝은 원 마스크의 인덱스를 적용하지 못하기 때문에, 연산 불가 에러가 나왔으며, 이경우 너비 구하기를 포기하고 너비를 0으로 선언한다.
                 width_list.append(0)
-
+        width_list.append(0)
         total_width_list.append(width_list)
 
     return total_width_list
