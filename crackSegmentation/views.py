@@ -117,48 +117,92 @@ def testResponse(request):
 
 @csrf_exempt
 def removeImgs(request):
-    media_imgs = "media/images/"
-    media_resized = "media/resized/"
-    media_predicted = "templates/static/images/predicted"
-    media_template_resized = "templates/static/images/resized"
-    media_template_analyzed = "templates/static/images/analyzed"
-    media_template_visualized = "templates/static/images/visualized"
-    otsu_data = "crack_width_checker/data"
-    otsu_result = "crack_width_checker/results/"
+    if request.method == 'POST':
+        request_body = json.loads(request.body)
+        file_name = request_body["img_name"]
+        original_file_name = request_body["original_file_name"]
 
-    if (os.path.exists(media_imgs)):
-        for file in os.scandir((media_imgs)):
-            os.remove(file.path)
+        media_imgs = "media/images/"+original_file_name
+        media_resized = "media/resized/resized_"+file_name.split('.')[0]+".jpg"
+        media_predicted = "templates/static/images/predicted/resized_"+file_name.split('.')[0]+".jpg"
+        media_predicted2 = "templates/static/images/predicted/1344*1344_converted_resized_" + file_name.split('.')[0] + ".jpg"
+        media_template_resized = "templates/static/images/resized/resized_"+file_name.split('.')[0]+".jpg"
+        media_template_analyzed = "templates/static/images/analyzed/analyzed_"+file_name.split('.')[0]+".jpg"
+        media_template_visualized = "templates/static/images/visualized/resized_"+file_name.split('.')[0]+".jpg"
+        otsu_data = "crack_width_checker/data/resized_"+file_name.split('.')[0]+".jpg"
+        otsu_result = "crack_width_checker/results/resized_"+file_name.split('.')[0]
 
-    if (os.path.exists(media_resized)):
-        for file in os.scandir((media_resized)):
-            os.remove(file.path)
+        if (os.path.isfile(media_imgs)):
+                os.remove(media_imgs)
 
-    if (os.path.exists(media_predicted)):
-        for file in os.scandir((media_predicted)):
-            os.remove(file.path)
+        if (os.path.isfile(media_resized)):
+                os.remove(media_resized)
 
-    if (os.path.exists(media_template_resized)):
-        for file in os.scandir((media_template_resized)):
-            os.remove(file.path)
+        if (os.path.isfile(media_predicted)):
+                os.remove(media_predicted)
 
-    if (os.path.exists(media_template_analyzed)):
-        for file in os.scandir((media_template_analyzed)):
-            os.remove(file.path)
+        if (os.path.isfile(media_predicted2)):
+            os.remove(media_predicted2)
 
-    if (os.path.exists(media_template_visualized)):
-        for file in os.scandir((media_template_visualized)):
-            os.remove(file.path)
+        if (os.path.isfile(media_template_resized)):
+                os.remove(media_template_resized)
 
-    if (os.path.exists(otsu_data)):
-        for file in os.scandir((otsu_data)):
-            os.remove(file.path)
+        if (os.path.isfile(media_template_analyzed)):
+                os.remove(media_template_analyzed)
 
-    if (os.path.exists(otsu_result)):
-        shutil.rmtree(otsu_result)
-        os.makedirs(otsu_result)
+        if (os.path.isfile(media_template_visualized)):
+                os.remove(media_template_visualized)
 
-    return HttpResponse("img remove completed")
+        if (os.path.isfile(otsu_data)):
+                os.remove(otsu_data)
+
+        if (os.path.isfile(otsu_result)):
+            os.remove(otsu_result)
+
+        return HttpResponse("img remove completed")
+    if request.method == 'GET':
+        media_imgs = "media/images/"
+        media_resized = "media/resized/"
+        media_predicted = "templates/static/images/predicted"
+        media_template_resized = "templates/static/images/resized"
+        media_template_analyzed = "templates/static/images/analyzed"
+        media_template_visualized = "templates/static/images/visualized"
+        otsu_data = "crack_width_checker/data"
+        otsu_result = "crack_width_checker/results/"
+
+        if (os.path.exists(media_imgs)):
+            for file in os.scandir((media_imgs)):
+                os.remove(file.path)
+
+        if (os.path.exists(media_resized)):
+            for file in os.scandir((media_resized)):
+                os.remove(file.path)
+
+        if (os.path.exists(media_predicted)):
+            for file in os.scandir((media_predicted)):
+                os.remove(file.path)
+
+        if (os.path.exists(media_template_resized)):
+            for file in os.scandir((media_template_resized)):
+                os.remove(file.path)
+
+        if (os.path.exists(media_template_analyzed)):
+            for file in os.scandir((media_template_analyzed)):
+                os.remove(file.path)
+
+        if (os.path.exists(media_template_visualized)):
+            for file in os.scandir((media_template_visualized)):
+                os.remove(file.path)
+
+        if (os.path.exists(otsu_data)):
+            for file in os.scandir((otsu_data)):
+                os.remove(file.path)
+
+        if (os.path.exists(otsu_result)):
+            shutil.rmtree(otsu_result)
+            os.makedirs(otsu_result)
+
+        return HttpResponse("img remove completed")
 
 '''
  비전 추론 알고리즘(오츄) 돌리기

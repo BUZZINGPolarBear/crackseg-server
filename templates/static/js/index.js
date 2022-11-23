@@ -14,6 +14,7 @@ imgInp.onchange = evt => {
 
 $("#imgInp").on('change',function(){
   fileName = $("#imgInp").val();
+  localStorage.setItem("original_img_name", fileName.split('\\')[2])
   $(".upload-name").val(fileName);
 });
 
@@ -40,25 +41,27 @@ crackImgModalBtn.onclick = function(){
     alert("사진 파일을 입력해주세요.")
     }
     else{
-        var formdata = new FormData();
+        var file_upload_formdata = new FormData(), remove_photo_formdata = new FormData();
         const file = imgInp.files[0];
         const pic_rand_id = makeid(15);
 
-        formdata.append("title", pic_rand_id);
-        formdata.append("imgfile", file, fileName);
-        formdata.append("length", length);
-
-        var requestOptions = {
-        method: 'POST',
-        body: formdata,
-        redirect: 'follow'
-        };
         modal.style.display = "none"
         toLoadingPage()
         localStorage.setItem("pic_name", pic_rand_id+`_${length}`+'.jpg')
         localStorage.setItem("length", length)
 
-        await getAPI(hostAddr + "crack-seg/remove-imgs")
+        remove_photo_formdata.append("img_name", localStorage.getItem("pic_name"))
+        remove_photo_formdata.append("original_file_name", localStorage.getItem("original_img_name"))
+        await postAPI(hostAddr + "crack-seg/remove-imgs")
+
+        file_upload_formdata.append("title", pic_rand_id);
+        file_upload_formdata.append("imgfile", file, fileName);
+        file_upload_formdata.append("length", length);
+        var requestOptions = {
+        method: 'POST',
+        body: file_upload_formdata,
+        redirect: 'follow'
+        };
         await postAPI(hostAddr+"crack-seg/fileupload/", requestOptions)
 
         $('#loading_status').empty();
