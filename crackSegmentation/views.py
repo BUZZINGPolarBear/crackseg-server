@@ -164,7 +164,7 @@ def removeImgs(request):
  비전 추론 알고리즘(오츄) 돌리기
 '''
 def visionInference(request):
-    os.system("python crack_width_checker/main.py")
+    os.system("python crack_width_checker/vision.py --width_func profiling_re")
     return HttpResponse("crack inference algorithm completed")
 
 '''
@@ -178,7 +178,7 @@ def visionInferenceInfo(request):
         length = request_body['length']
         pic_name = pic_name.split('.')[0]
 
-        textFile = open(r'crack_width_checker/results/resized_'+pic_name+'/'+str(length)+'000adaptive_result_summary.txt', "r")
+        textFile = open(r'crack_width_checker/results/resized_'+pic_name+'/'+str(length)+'000profiling_re_result_summary.txt', "r")
         first_line = textFile.readline().split(' ')[1]
         second_line = textFile.readline().split(' ')[1]
         first_line = re.sub(r'[\n]', '', first_line)
@@ -186,7 +186,7 @@ def visionInferenceInfo(request):
         first_line = float(first_line)
         second_line = float(second_line)
 
-        csvFile = open(r'crack_width_checker/results/resized_'+pic_name+'/adaptive_result_summary.csv', "r")
+        csvFile = open(r'crack_width_checker/results/resized_'+pic_name+'/profiling_re_result_summary.csv', "r")
         csvReader = csv.reader(csvFile)
 
         index = 0
@@ -202,7 +202,7 @@ def visionInferenceInfo(request):
             'all_crack_length' : all_crack_length,
             'average_crack_width': average_crack_width
         }
-        shutil.copyfile('crack_width_checker/results/resized_'+pic_name+'/resized_'+pic_name+'_8_mask_width_visualization.jpg',
+        shutil.copyfile('crack_width_checker/results/resized_'+pic_name+'/resized_'+pic_name+'_9_full_width_visualization.jpg',
                         'templates/static/images/analyzed/analyzed_'+pic_name+'.jpg')
 
         return JsonResponse(crack_info_dict)
