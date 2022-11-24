@@ -24,3 +24,4 @@ window.onload = function(){
   rightBotResized.src = "/templates/static/images/resized/resized_rightBot_"+ localStorage.getItem("pic_name")
 }
 
+
