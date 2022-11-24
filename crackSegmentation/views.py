@@ -98,14 +98,13 @@ def detailInference(request):
         cv2.imwrite('templates/static/images/resized/' + '/resized_midBot_' + str(title)+'.jpg', midBot)
         cv2.imwrite('media/resized' + '/resized_rightBot_' + str(title)+'.jpg', rightBot)
         cv2.imwrite('templates/static/images/resized/' + '/resized_rightBot_' + str(title)+'.jpg', rightBot)
-        # TO DO: 이미지 3*3으로 잘라서 저장하기
-        # https://wjh2307.tistory.com/7
-        run_inference_code = "torchrun crack_segmentation/inference_unet.py -model_type resnet34 -img_dir media/resized/ -model_path crack_segmentation/model/model_best.pt " \
-                             "-out_pred_dir templates/static/images/predicted " \
-                             "-out_viz_dir templates/static/images/visualized " \
-                             "-out_synthesize_dir templates/static/images/analyzed"
-        os.system(run_inference_code)
-        return HttpResponse(str(img) + " segmantation end")
+
+        # run_inference_code = "torchrun crack_segmentation/inference_unet.py -model_type resnet34 -img_dir media/resized/ -model_path crack_segmentation/model/model_best.pt " \
+        #                      "-out_pred_dir templates/static/images/predicted " \
+        #                      "-out_viz_dir templates/static/images/visualized " \
+        #                      "-out_synthesize_dir templates/static/images/analyzed"
+        # os.system(run_inference_code)
+        return HttpResponse(str(img) + " cropping end")
     else:
         fileuploadForm = FileUploadForm
         context = {

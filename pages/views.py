@@ -12,3 +12,6 @@ def resultPage(request):
 
 def detailedResultPage(request):
     return render(request, 'index-detailed-third.html')
+
+def selectDatailedPicture(request):
+    return render(request, 'select-detailed.html')

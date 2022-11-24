@@ -75,7 +75,7 @@ crackImgModalBtn.onclick = function(){
 detailedImgModalBtn.onclick = function(){
   $('#modal-btn-area').empty()
   $('#modal-btn-area').append(`
-   <button class="button is-warning modal-btn" id="detailed-crack-btn">정밀 균열 검출하기</button>
+   <button class="button is-warning modal-btn" id="detailed-crack-btn">정밀 검출 부위 고르기</button>
   `)
    modal.style.display = "flex";
 
@@ -85,26 +85,26 @@ detailedImgModalBtn.onclick = function(){
     alert("사진 파일을 입력해주세요.")
   }
   else{
-      var formdata = new FormData();
-      const file = imgInp.files[0];
-      const pic_rand_id = makeid(15);
+      // var formdata = new FormData();
+      // const file = imgInp.files[0];
+      // const pic_rand_id = makeid(15);
+      //
+      // formdata.append("title", pic_rand_id);
+      // formdata.append("imgfile", file, fileName);
+      //
+      // var requestOptions = {
+      //   method: 'POST',
+      //   body: formdata,
+      //   redirect: 'follow'
+      // };
+      // modal.style.display = "none"
+      // toLoadingPage()
+      // localStorage.setItem("pic_name", pic_rand_id+'.jpg')
+      // await getAPI(hostAddr + "crack-seg/remove-imgs")
+      // await postAPI(hostAddr+"crack-seg/fileuplaod/detailed", requestOptions)
 
-      formdata.append("title", pic_rand_id);
-      formdata.append("imgfile", file, fileName);
 
-      var requestOptions = {
-        method: 'POST',
-        body: formdata,
-        redirect: 'follow'
-      };
-      modal.style.display = "none"
-      toLoadingPage()
-      localStorage.setItem("pic_name", pic_rand_id+'.jpg')
-      await getAPI(hostAddr + "crack-seg/remove-imgs")
-      await postAPI(hostAddr+"crack-seg/fileuplaod/detailed", requestOptions)
-
-
-      location.href = "result/detailed"
+      location.href = "select/detailed"
     }
   }
 }
