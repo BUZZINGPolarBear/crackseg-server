@@ -85,23 +85,23 @@ detailedImgModalBtn.onclick = function(){
     alert("사진 파일을 입력해주세요.")
   }
   else{
-      // var formdata = new FormData();
-      // const file = imgInp.files[0];
-      // const pic_rand_id = makeid(15);
-      //
-      // formdata.append("title", pic_rand_id);
-      // formdata.append("imgfile", file, fileName);
-      //
-      // var requestOptions = {
-      //   method: 'POST',
-      //   body: formdata,
-      //   redirect: 'follow'
-      // };
-      // modal.style.display = "none"
+      var formdata = new FormData();
+      const file = imgInp.files[0];
+      const pic_rand_id = makeid(15);
+
+      formdata.append("title", pic_rand_id);
+      formdata.append("imgfile", file, fileName);
+
+      var requestOptions = {
+        method: 'POST',
+        body: formdata,
+        redirect: 'follow'
+      };
+      modal.style.display = "none"
       // toLoadingPage()
-      // localStorage.setItem("pic_name", pic_rand_id+'.jpg')
-      // await getAPI(hostAddr + "crack-seg/remove-imgs")
-      // await postAPI(hostAddr+"crack-seg/fileuplaod/detailed", requestOptions)
+      localStorage.setItem("pic_name", pic_rand_id+'.jpg')
+      await getAPI(hostAddr + "crack-seg/remove-imgs")
+      await postAPI(hostAddr+"crack-seg/fileuplaod/detailed", requestOptions)
 
 
       location.href = "select/detailed"

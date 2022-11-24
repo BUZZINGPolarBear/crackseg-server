@@ -6,6 +6,7 @@
     <title>아이클롭스 균열검출기</title>
 
     <link rel="stylesheet" href="{% static 'css/select-detailed.css' %}">
+    <script type="text/javascript" src="/templates/static/js/hostAddr.js"></script>
     <!-- CDNS -->
     <script  src="https://code.jquery.com/jquery-3.6.1.slim.js"  integrity="sha256-tXm+sa1uzsbFnbXt8GJqsgi2Tw+m4BLGDof6eUPjbtk=" crossorigin="anonymous"></script>
 </head>
@@ -27,19 +28,25 @@
 
     <div class="image-select-area">
         <div class="row-photo top">
-            <div class="row-content" id="left-top"></div>
-            <div class="row-content" id="mid-top"></div>
-            <div class="row-content" id="right-top"></div>
+            <div class="row-content" id="leftTopResized-area">
+                <img src="#" class="cropped-imgs" id="leftTopResized">
+            </div>
+            <div class="row-content" id="midTopResized-area">
+                <img src="#" class="cropped-imgs" id="midTopResized">
+            </div>
+            <div class="row-content" id="rightTopResized-area">
+                <img src="#" class="cropped-imgs" id="rightTopResized">
+            </div>
         </div>
         <div class="row-photo mid">
-            <div class="row-content" id="left-mid"></div>
-            <div class="row-content" id="mid-mid"></div>
-            <div class="row-content" id="right-mid"></div>
+            <div class="row-content" id="leftMidResized"></div>
+            <div class="row-content" id="midMidResized"></div>
+            <div class="row-content" id="rightMidResized"></div>
         </div>
         <div class="row-photo bottom">
-            <div class="row-content" id="left-mid"></div>
-            <div class="row-content" id="mid-mid"></div>
-            <div class="row-content" id="right-mid"></div>
+            <div class="row-content" id="leftBotResized"></div>
+            <div class="row-content" id="midBotResized"></div>
+            <div class="row-content" id="rightBotResized"></div>
         </div>
     </div>
 
