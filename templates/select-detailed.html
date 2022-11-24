@@ -23,77 +23,24 @@
         <div class="status-info"><div style="text-align: center">3</div>결과 확인</div>
     </div>
 
-    <div style="width: 100vw; text-align: center; font-size: 5em; font-weight: bolder">정밀 균열 검출 결과</div>
-    <!-- 상단 -->
-    <div class="loading-area">
-        <div class="position-information">상단 균열 검출 결과</div>
-        <div class="file-upload-area">
-            <div class="img-left">
-                <img class="crack_img resized_img" src="#" id="leftTopResized" />
-                <img class="crack_img predicted_img topRow" src="#" id="leftTopPredicted" />
-            </div>
-            <div class="img-mid">
-                <img class="crack_img resized_img" src="#" id="midTopResized"/>
-                <img class="crack_img predicted_img topRow" src="#" id="midTopPredicted" />
-            </div>
-            <div class="img-right">
-                <img class="crack_img resized_img" src="#" id="rightTopResized"/>
-                <img class="crack_img predicted_img topRow" src="#" id="rightTopPredicted"/>
-            </div>
-        </div>
-    </div>
-    <div class="slidecontainer">
-        <div id="slider-info">예측 이미지의 투명도를 조절해보세요.</div>
-        <input type="range" min="1" max="100" value="50" class="slider" id="topImgSlider">
-        <p id="value-container">투명도: <span id="topValue"></span>%</p>
-    </div>
+    <div style="width: 100vw; text-align: center; font-size: 2.5em; font-weight: bolder; margin-bottom: 3vh;">조사가 필요한 균열 부위를 <br>선택해주세요.</div>
 
-    <!-- 중단 -->
-    <div class="loading-area">
-        <div class="position-information">중단 균열 검출 결과</div>
-        <div class="file-upload-area">
-            <div class="img-left">
-                <img class="crack_img resized_img" src="#" id="leftMidResized" />
-                <img class="crack_img predicted_img midRow" src="#" id="leftMidPredicted"/>
-            </div>
-            <div class="img-mid">
-                <img class="crack_img resized_img" src="#" id="midMidResized"/>
-                <img class="crack_img predicted_img midRow" src="#" id="midMidPredicted" />
-            </div>
-            <div class="img-right">
-                <img class="crack_img resized_img" src="#" id="rightMidResized"/>
-                <img class="crack_img predicted_img midRow" src="#" id="rightMidPredicted" />
-            </div>
+    <div class="image-select-area">
+        <div class="row-photo top">
+            <div class="row-content" id="left-top"></div>
+            <div class="row-content" id="mid-top"></div>
+            <div class="row-content" id="right-top"></div>
         </div>
-    </div>
-    <div class="slidecontainer">
-        <div id="slider-info">예측 이미지의 투명도를 조절해보세요.</div>
-        <input type="range" min="1" max="100" value="50" class="slider" id="midImgSlider">
-        <p id="value-container">투명도: <span id="midValue"></span>%</p>
-    </div>
-
-    <!-- 하단 -->
-    <div class="loading-area">
-        <div class="position-information">하단 균열 검출 결과</div>
-        <div class="file-upload-area">
-            <div class="img-left">
-                <img class="crack_img resized_img" src="#" id="leftBotResized" />
-                <img class="crack_img predicted_img botRow" src="#" id="leftBotPredicted" />
-            </div>
-            <div class="img-mid">
-                <img class="crack_img resized_img" src="#" id="midBotResized"/>
-                <img class="crack_img predicted_img botRow" src="#" id="midBotPredicted"/>
-            </div>
-            <div class="img-right">
-                <img class="crack_img resized_img" src="#" id="rightBotResized" />
-                <img class="crack_img predicted_img botRow" src="#" id="rightBotPredicted"/>
-            </div>
+        <div class="row-photo mid">
+            <div class="row-content" id="left-mid"></div>
+            <div class="row-content" id="mid-mid"></div>
+            <div class="row-content" id="right-mid"></div>
         </div>
-    </div>
-    <div class="slidecontainer">
-        <div id="slider-info">예측 이미지의 투명도를 조절해보세요.</div>
-        <input type="range" min="1" max="100" value="50" class="slider" id="botImgSlider">
-        <p id="value-container">투명도: <span id="botValue"></span>%</p>
+        <div class="row-photo bottom">
+            <div class="row-content" id="left-mid"></div>
+            <div class="row-content" id="mid-mid"></div>
+            <div class="row-content" id="right-mid"></div>
+        </div>
     </div>
 
 
