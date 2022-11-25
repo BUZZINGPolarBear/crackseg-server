@@ -29,49 +29,51 @@
     <div class="image-select-area">
         <div class="row-photo top">
             <div class="row-content" id="leftTopResized-area">
-                <div class="ddabong" id="ddabongLeftTop" style="display: none"> 선택됨 </div>
-                <img src="#" class="cropped-imgs" id="leftTopResized" onclick="lTclicked()">
+                <div class="ddabong" id="leftTop" style="display: none"> 선택됨 </div>
+                <img src="#" class="cropped-imgs" id="leftTopResized" onclick="selectItems('leftTop')">
             </div>
             <div class="row-content" id="midTopResized-area">
-                <div class="ddabong" id="ddabongMidTop" style="display: none"> 선택됨 </div>
-                <img src="#" class="cropped-imgs" id="midTopResized" onclick="mTclicked()">
+                <div class="ddabong" id="midTop" style="display: none"> 선택됨 </div>
+                <img src="#" class="cropped-imgs" id="midTopResized" onclick="selectItems('midTop')">
             </div>
             <div class="row-content" id="rightTopResized-area">
-                <div class="ddabong" id="ddabongRightTop" style="display: none"> 선택됨 </div>
-                <img src="#" class="cropped-imgs" id="rightTopResized" onclick="rTclicked()">
+                <div class="ddabong" id="rightTop" style="display: none"> 선택됨 </div>
+                <img src="#" class="cropped-imgs" id="rightTopResized" onclick="selectItems('rightTop')">
             </div>
         </div>
+
         <div class="row-photo mid">
             <div class="row-content" id="leftMidResized-area">
-                <div class="ddabong"> 선택됨 </div>
-                <img src="#" class="cropped-imgs" id="leftMidResized">
+                <div class="ddabong" id="leftMid" style="display: none"> 선택됨 </div>
+                <img src="#" class="cropped-imgs" id="leftMidResized" onclick="selectItems('leftMid')">
             </div>
             <div class="row-content" id="midMidResized-area">
-                <div class="ddabong"> 선택됨 </div>
-                <img src="#" class="cropped-imgs" id="midMidResized">
+                <div class="ddabong" id="midMid" style="display: none"> 선택됨 </div>
+                <img src="#" class="cropped-imgs" id="midMidResized" onclick="selectItems('midMid')">
             </div>
             <div class="row-content" id="rightMidResized-area">
-                <div class="ddabong"> 선택됨 </div>
-                <img src="#" class="cropped-imgs" id="rightMidResized">
+                <div class="ddabong" id="rightMid" style="display: none"> 선택됨 </div>
+                <img src="#" class="cropped-imgs" id="rightMidResized" onclick="selectItems('rightMid')">
             </div>
         </div>
+
         <div class="row-photo bottom">
             <div class="row-content" id="leftBotResized-area">
-                <div class="ddabong"> 선택됨 </div>
-                <img src="#" class="cropped-imgs" id="leftBotResized">
+                <div class="ddabong" id="leftBot" style="display: none"> 선택됨 </div>
+                <img src="#" class="cropped-imgs" id="leftBotResized" onclick="selectItems('leftBot')">
             </div>
             <div class="row-content" id="midBotResized-area">
-                <div class="ddabong"> 선택됨 </div>
-                <img src="#" class="cropped-imgs" id="midBotResized">
+                <div class="ddabong" id="midBot" style="display: none"> 선택됨 </div>
+                <img src="#" class="cropped-imgs" id="midBotResized" onclick="selectItems('midBot')">
             </div>
             <div class="row-content" id="rightBotResized-area">
-                <div class="ddabong"> 선택됨 </div>
-                <img src="#" class="cropped-imgs" id="rightBotResized">
+                <div class="ddabong" id="rightBot" style="display: none"> 선택됨 </div>
+                <img src="#" class="cropped-imgs" id="rightBotResized" onclick="selectItems('rightBot')">
             </div>
         </div>
     </div>
 
-
+    <button onclick="submitBtn()">확인</button>
 </body>
 <script type="text/javascript" src="/templates/static/js/select-detailed.js"></script>
 </html>

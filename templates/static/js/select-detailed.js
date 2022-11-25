@@ -26,56 +26,32 @@ window.onload = function(){
   rightBotResized.src = "/templates/static/images/resized/resized_rightBot_"+ localStorage.getItem("pic_name")
 }
 
-function lTclicked(){
-  if(ddabongLeftTop.style.display == 'none'){
-      ddabongLeftTop.style.display = 'block'
-      leftTopResized.style.filter = 'opacity(0.3)'
-      selectedArray.push("resized_leftTop_"+localStorage.getItem("pic_name"));
+function selectItems(selectedId){
+  const nowSelected = document.getElementById(selectedId)
+  const img_id = document.getElementById( selectedId+"Resized")
+
+  if(nowSelected.style.display == 'none'){
+      nowSelected.style.display = 'block'
+      img_id.style.filter = 'opacity(0.3)'
   }
   else{
-    ddabongLeftTop.style.display = 'none'
-    leftTopResized.style.filter = 'opacity(1)'
-    selectedArray.pop("resized_leftTop_"+localStorage.getItem("pic_name"));
+    nowSelected.style.display = 'none'
+    img_id.style.filter = 'opacity(1)'
   }
-  console.log("----------------------");
-  for (let value of selectedArray.values()) {
-    console.log(value);
-  }
-  console.log("----------------------");
 }
 
-function mTclicked(){
-  if(ddabongMidTop.style.display == 'none'){
-      ddabongMidTop.style.display = 'block'
-      midTopResized.style.filter = 'opacity(0.3)'
-      selectedArray.push("resized_midTop_"+localStorage.getItem("pic_name"));
-  }
-  else{
-    ddabongMidTop.style.display = 'none'
-    midTopResized.style.filter = 'opacity(1)'
-    selectedArray.pop("resized_midTop_"+localStorage.getItem("pic_name"));
-  }
-  console.log("----------------------");
-  for (let value of selectedArray.values()) {
-    console.log(value);
-  }
-  console.log("----------------------");
-}
+function submitBtn(){
+  if(leftTop.style.display == 'block') selectedArray.push("resized_leftTop_"+localStorage.getItem("pic_name"));
+  if(midTop.style.display == 'block') selectedArray.push("resized_midTop_"+localStorage.getItem("pic_name"));
+  if(rightTop.style.display == 'block') selectedArray.push("resized_rightTop_"+localStorage.getItem("pic_name"));
 
-function rTclicked(){
-  if(ddabongRightTop.style.display == 'none'){
-      ddabongRightTop.style.display = 'block'
-      rightTopResized.style.filter = 'opacity(0.3)'
-      selectedArray.push("resized_rightTop_"+localStorage.getItem("pic_name"));
-  }
-  else{
-    ddabongRightTop.style.display = 'none'
-    rightTopResized.style.filter = 'opacity(1)'
-    selectedArray.pop("resized_rightTop_"+localStorage.getItem("pic_name"));
-  }
-  console.log("----------------------");
-  for (let value of selectedArray.values()) {
-    console.log(value);
-  }
-  console.log("----------------------");
+  if(leftMid.style.display == 'block') selectedArray.push("resized_leftMid_"+localStorage.getItem("pic_name"));
+  if(midMid.style.display == 'block') selectedArray.push("resized_midMid_"+localStorage.getItem("pic_name"));
+  if(rightMid.style.display == 'block') selectedArray.push("resized_rightMid_"+localStorage.getItem("pic_name"));
+
+  if(leftBot.style.display == 'block') selectedArray.push("resized_leftBot_"+localStorage.getItem("pic_name"));
+  if(midBot.style.display == 'block') selectedArray.push("resized_midBot_"+localStorage.getItem("pic_name"));
+  if(rightBot.style.display == 'block') selectedArray.push("resized_rightBot_"+localStorage.getItem("pic_name"));
+
+  console.log(selectedArray)
 }
