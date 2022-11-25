@@ -1,3 +1,5 @@
+var selectedArray = new Array()
+
 window.onload = function(){
   //----- 상부 -----
   //좌상단
@@ -24,4 +26,56 @@ window.onload = function(){
   rightBotResized.src = "/templates/static/images/resized/resized_rightBot_"+ localStorage.getItem("pic_name")
 }
 
+function lTclicked(){
+  if(ddabongLeftTop.style.display == 'none'){
+      ddabongLeftTop.style.display = 'block'
+      leftTopResized.style.filter = 'opacity(0.3)'
+      selectedArray.push("resized_leftTop_"+localStorage.getItem("pic_name"));
+  }
+  else{
+    ddabongLeftTop.style.display = 'none'
+    leftTopResized.style.filter = 'opacity(1)'
+    selectedArray.pop("resized_leftTop_"+localStorage.getItem("pic_name"));
+  }
+  console.log("----------------------");
+  for (let value of selectedArray.values()) {
+    console.log(value);
+  }
+  console.log("----------------------");
+}
 
+function mTclicked(){
+  if(ddabongMidTop.style.display == 'none'){
+      ddabongMidTop.style.display = 'block'
+      midTopResized.style.filter = 'opacity(0.3)'
+      selectedArray.push("resized_midTop_"+localStorage.getItem("pic_name"));
+  }
+  else{
+    ddabongMidTop.style.display = 'none'
+    midTopResized.style.filter = 'opacity(1)'
+    selectedArray.pop("resized_midTop_"+localStorage.getItem("pic_name"));
+  }
+  console.log("----------------------");
+  for (let value of selectedArray.values()) {
+    console.log(value);
+  }
+  console.log("----------------------");
+}
+
+function rTclicked(){
+  if(ddabongRightTop.style.display == 'none'){
+      ddabongRightTop.style.display = 'block'
+      rightTopResized.style.filter = 'opacity(0.3)'
+      selectedArray.push("resized_rightTop_"+localStorage.getItem("pic_name"));
+  }
+  else{
+    ddabongRightTop.style.display = 'none'
+    rightTopResized.style.filter = 'opacity(1)'
+    selectedArray.pop("resized_rightTop_"+localStorage.getItem("pic_name"));
+  }
+  console.log("----------------------");
+  for (let value of selectedArray.values()) {
+    console.log(value);
+  }
+  console.log("----------------------");
+}
