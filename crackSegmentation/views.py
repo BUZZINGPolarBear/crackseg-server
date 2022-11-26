@@ -56,6 +56,7 @@ def detailInference(request):
     if request.method == 'POST':
         title = request.POST['title']
         img = request.FILES["imgfile"]
+        length = request.POST['length']
 
         fileupload = FileUpload(
             title=title,
@@ -78,26 +79,26 @@ def detailInference(request):
         midBot = resized_img[896:1344, 448:896]
         rightBot = resized_img[896:1344, 896:1344]
 
-        cv2.imwrite('media/resized' + '/resized_leftTop_' +str(title)+'.jpg', leftTop)
-        cv2.imwrite('templates/static/images/resized/' + '/resized_leftTop_' + str(title)+'.jpg', leftTop)
-        cv2.imwrite('media/resized' + '/resized_midTop_' + str(title)+'.jpg', midTop)
-        cv2.imwrite('templates/static/images/resized/' + '/resized_midTop_' + str(title)+'.jpg', midTop)
-        cv2.imwrite('media/resized' + '/resized_rightTop_' + str(title)+'.jpg', rightTop)
-        cv2.imwrite('templates/static/images/resized/' + '/resized_rightTop_' + str(title)+'.jpg', rightTop)
+        cv2.imwrite('media/resized' + '/resized_leftTop_' +str(title)+'_'+str(length)+'.jpg', leftTop)
+        cv2.imwrite('templates/static/images/resized/' + '/resized_leftTop_' + str(title)+'_'+str(length)+'.jpg', leftTop)
+        cv2.imwrite('media/resized' + '/resized_midTop_' + str(title)+'_'+str(length)+'.jpg', midTop)
+        cv2.imwrite('templates/static/images/resized/' + '/resized_midTop_' + str(title)+'_'+str(length)+'.jpg', midTop)
+        cv2.imwrite('media/resized' + '/resized_rightTop_' + str(title)+'_'+str(length)+'.jpg', rightTop)
+        cv2.imwrite('templates/static/images/resized/' + '/resized_rightTop_' + str(title)+'_'+str(length)+'.jpg', rightTop)
 
-        cv2.imwrite('media/resized' + '/resized_leftMid_' + str(title)+'.jpg', leftMid)
-        cv2.imwrite('templates/static/images/resized/' + '/resized_leftMid_' + str(title)+'.jpg', leftMid)
-        cv2.imwrite('media/resized' + '/resized_midMid_' + str(title)+'.jpg', midMid)
-        cv2.imwrite('templates/static/images/resized/' + '/resized_midMid_' + str(title)+'.jpg', midMid)
-        cv2.imwrite('media/resized' + '/resized_rightMid_' + str(title)+'.jpg', rightMid)
-        cv2.imwrite('templates/static/images/resized/' + '/resized_rightMid_' + str(title)+'.jpg', rightMid)
+        cv2.imwrite('media/resized' + '/resized_leftMid_' + str(title)+'_'+str(length)+'.jpg', leftMid)
+        cv2.imwrite('templates/static/images/resized/' + '/resized_leftMid_' + str(title)+'_'+str(length)+'.jpg', leftMid)
+        cv2.imwrite('media/resized' + '/resized_midMid_' + str(title)+'_'+str(length)+'.jpg', midMid)
+        cv2.imwrite('templates/static/images/resized/' + '/resized_midMid_' + str(title)+'_'+str(length)+'.jpg', midMid)
+        cv2.imwrite('media/resized' + '/resized_rightMid_' + str(title)+'_'+str(length)+'.jpg', rightMid)
+        cv2.imwrite('templates/static/images/resized/' + '/resized_rightMid_' + str(title)+'_'+str(length)+'.jpg', rightMid)
 
-        cv2.imwrite('media/resized' + '/resized_leftBot_' + str(title)+'.jpg', leftBot)
-        cv2.imwrite('templates/static/images/resized/' + '/resized_leftBot_' + str(title)+'.jpg', leftBot)
-        cv2.imwrite('media/resized' + '/resized_midBot_' + str(title)+'.jpg', midBot)
-        cv2.imwrite('templates/static/images/resized/' + '/resized_midBot_' + str(title)+'.jpg', midBot)
-        cv2.imwrite('media/resized' + '/resized_rightBot_' + str(title)+'.jpg', rightBot)
-        cv2.imwrite('templates/static/images/resized/' + '/resized_rightBot_' + str(title)+'.jpg', rightBot)
+        cv2.imwrite('media/resized' + '/resized_leftBot_' + str(title)+'_'+str(length)+'.jpg', leftBot)
+        cv2.imwrite('templates/static/images/resized/' + '/resized_leftBot_' + str(title)+'_'+str(length)+'.jpg', leftBot)
+        cv2.imwrite('media/resized' + '/resized_midBot_' + str(title)+'_'+str(length)+'.jpg', midBot)
+        cv2.imwrite('templates/static/images/resized/' + '/resized_midBot_' + str(title)+'_'+str(length)+'.jpg', midBot)
+        cv2.imwrite('media/resized' + '/resized_rightBot_' + str(title)+'_'+str(length)+'.jpg', rightBot)
+        cv2.imwrite('templates/static/images/resized/' + '/resized_rightBot_' + str(title)+'_'+str(length)+'.jpg', rightBot)
 
 
         return HttpResponse(str(img) + " cropping end")

@@ -91,6 +91,7 @@ detailedImgModalBtn.onclick = function(){
 
       formdata.append("title", pic_rand_id);
       formdata.append("imgfile", file, fileName);
+      formdata.append("length", length);
 
       var requestOptions = {
         method: 'POST',
@@ -99,7 +100,7 @@ detailedImgModalBtn.onclick = function(){
       };
       modal.style.display = "none"
       // toLoadingPage()
-      localStorage.setItem("pic_name", pic_rand_id+'.jpg')
+      localStorage.setItem("pic_name", pic_rand_id+`_${length}`+'.jpg')
       await getAPI(hostAddr + "crack-seg/remove-imgs")
       await postAPI(hostAddr+"crack-seg/fileuplaod/detailed", requestOptions)
       location.href = "select/detailed"
