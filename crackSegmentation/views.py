@@ -99,7 +99,10 @@ def detailInference(request):
         cv2.imwrite('media/resized' + '/resized_rightBot_' + str(title)+'.jpg', rightBot)
         cv2.imwrite('templates/static/images/resized/' + '/resized_rightBot_' + str(title)+'.jpg', rightBot)
 
-        # run_inference_code = "torchrun crack_segmentation/inference_unet.py -model_type resnet34 -img_dir media/resized/ -model_path crack_segmentation/model/model_best.pt " \
+        # run_inference_code = "torchrun crack_segmentation/inference_unet.py
+        #                       -model_type resnet34
+        #                       -img_dir media/resized/
+        #                       -model_path crack_segmentation/model/model_best.pt " \
         #                      "-out_pred_dir templates/static/images/predicted " \
         #                      "-out_viz_dir templates/static/images/visualized " \
         #                      "-out_synthesize_dir templates/static/images/analyzed"
@@ -203,6 +206,21 @@ def removeImgs(request):
 
         return HttpResponse("img remove completed")
 
+'''
+    디테일 사진 추론할 떄 안쓸 사진 지우기
+'''
+@csrf_exempt
+def removeUnusefulImgs(request):
+    if request.method == 'POST':
+        request_body = json.loads(request.body)
+        usefulImgs = request_body['selectedPicArray']
+
+        for i in range(0, len(usefulImgs)):
+            print(usefulImgs[i])
+            if(os.path.exists("media/resized/" + usefulImgs[i])):
+                os.remove("media/resized/" + usefulImgs[i])
+
+        return HttpResponse("remove completed")
 '''
  비전 추론 알고리즘(오츄) 돌리기
 '''

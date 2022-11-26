@@ -40,18 +40,39 @@ function selectItems(selectedId){
   }
 }
 
-function submitBtn(){
-  if(leftTop.style.display == 'block') selectedArray.push("resized_leftTop_"+localStorage.getItem("pic_name"));
-  if(midTop.style.display == 'block') selectedArray.push("resized_midTop_"+localStorage.getItem("pic_name"));
-  if(rightTop.style.display == 'block') selectedArray.push("resized_rightTop_"+localStorage.getItem("pic_name"));
+async function submitBtn(){
+  if(leftTop.style.display == 'none') selectedArray.push("resized_leftTop_"+localStorage.getItem("pic_name"));
+  if(midTop.style.display == 'none') selectedArray.push("resized_midTop_"+localStorage.getItem("pic_name"));
+  if(rightTop.style.display == 'none') selectedArray.push("resized_rightTop_"+localStorage.getItem("pic_name"));
 
-  if(leftMid.style.display == 'block') selectedArray.push("resized_leftMid_"+localStorage.getItem("pic_name"));
-  if(midMid.style.display == 'block') selectedArray.push("resized_midMid_"+localStorage.getItem("pic_name"));
-  if(rightMid.style.display == 'block') selectedArray.push("resized_rightMid_"+localStorage.getItem("pic_name"));
+  if(leftMid.style.display == 'none') selectedArray.push("resized_leftMid_"+localStorage.getItem("pic_name"));
+  if(midMid.style.display == 'none') selectedArray.push("resized_midMid_"+localStorage.getItem("pic_name"));
+  if(rightMid.style.display == 'none') selectedArray.push("resized_rightMid_"+localStorage.getItem("pic_name"));
 
-  if(leftBot.style.display == 'block') selectedArray.push("resized_leftBot_"+localStorage.getItem("pic_name"));
-  if(midBot.style.display == 'block') selectedArray.push("resized_midBot_"+localStorage.getItem("pic_name"));
-  if(rightBot.style.display == 'block') selectedArray.push("resized_rightBot_"+localStorage.getItem("pic_name"));
+  if(leftBot.style.display == 'none') selectedArray.push("resized_leftBot_"+localStorage.getItem("pic_name"));
+  if(midBot.style.display == 'none') selectedArray.push("resized_midBot_"+localStorage.getItem("pic_name"));
+  if(rightBot.style.display == 'none') selectedArray.push("resized_rightBot_"+localStorage.getItem("pic_name"));
+
+  var myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+
+  var raw = JSON.stringify({
+    "selectedPicArray": selectedArray
+  });
+  var requestOptions = {
+    method: 'POST',
+    headers: myHeaders,
+    body: raw,
+    redirect: 'follow'
+  };
+  await postAPI(hostAddr+"crack-seg/remove-imgs/detailed", requestOptions)
 
   console.log(selectedArray)
+}
+
+//post API AS JSON
+async function postAPI(host, options) {
+  const res = await fetch(host, options)
+  const data = res.json();
+  console.log(res)
 }
