@@ -49,7 +49,7 @@ def fileUpload(request):
         return render(request, 'fileupload.html', context)
 
 '''
-이미지를 3*3으로 잘라서 균열 검출
+이미지를 448*448*n으로 크롭할 수 있도록 패딩 추가 후 잘라서 균열 검출
 '''
 @csrf_exempt
 def detailInference(request):
@@ -96,6 +96,21 @@ def detailInference(request):
                                             )
         cv2.imwrite('media/paddingAdded/' + str(title) + '_' + str(length) + '.jpg', addZeroPadding)
 
+        row_cnt = objectWidth//448
+        col_cnt = objectHeight//448
+
+        print("====================")
+        print(row_cnt)
+        print(col_cnt)
+        print("====================")
+
+        for col_i in range(1, row_cnt+1):
+            for row_i in range(1, col_cnt+1):
+                tp1 = ((row_i-1) * 448, row_i*448)
+                tp2 = ((col_i-1) * 448, col_i*448)
+                print(tp1, tp2)
+                cv2.imwrite('media/cropped' + '/cropped_'+str(row_i)+'*'+str(col_i)+'_'+ str(title) + '_' + str(length) + '.jpg',
+                            addZeroPadding[(row_i-1) * 448:row_i*448, (col_i-1)*448:col_i*448])
         # resized_img = cv2.resize(resized_img, (1344, 1344))
         #
         # leftTop = resized_img[0:448, 0:448]
@@ -199,6 +214,7 @@ def removeImgs(request):
     if request.method == 'GET':
         media_imgs = "media/images/"
         media_paddingAdded = "media/paddingAdded/"
+        media_cropped = "media/cropped/"
         media_predicted = "templates/static/images/predicted"
         media_template_resized = "templates/static/images/resized"
         media_template_analyzed = "templates/static/images/analyzed"
@@ -212,6 +228,10 @@ def removeImgs(request):
 
         if (os.path.exists(media_paddingAdded)):
             for file in os.scandir((media_paddingAdded)):
+                os.remove(file.path)
+
+        if (os.path.exists(media_cropped)):
+            for file in os.scandir((media_cropped)):
                 os.remove(file.path)
 
         if (os.path.exists(media_predicted)):
