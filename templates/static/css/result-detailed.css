@@ -1,0 +1,56 @@
+.top-nav{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    height: 5vh;
+    background-color: rgb(1, 26, 93);
+    border-radius: 10px;
+    color: white;
+    font-weight: bolder;
+    font-size: 3vh;
+}
+
+.status-area{
+    height: 8vh;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+
+    font-size: 2em;
+    font-weight: bolder;
+}
+
+.image-select-area{
+    width: 96vw;
+    height: 96vw;
+    margin: 0 2vw 2vh 2vw;
+}
+
+.row-photo{
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    height: 28vw;
+    margin-top: 3vw;
+}
+
+.row-content{
+    display: flex;
+    justify-content: center;
+    align-item: center;
+    width: 28vw;
+    height: 100%;
+    background-color: lightgrey;
+}
+
+.ddabong{
+    z-index: 999;
+    position: absolute;
+    font-size: 2.5em;
+    font-weight: bolder;
+}
+.cropped-imgs{
+    max-width: 100%;
+    max-height: 100%;
+}
