@@ -109,8 +109,14 @@ def detailInference(request):
                 tp1 = ((row_i-1) * 448, row_i*448)
                 tp2 = ((col_i-1) * 448, col_i*448)
                 print(tp1, tp2)
-                cv2.imwrite('media/cropped' + '/cropped_'+str(row_i)+'*'+str(col_i)+'_'+ str(title) + '_' + str(length) + '.jpg',
+                cv2.imwrite(
+                    'media/cropped' + '/cropped_'+str(row_i)+'*'+str(col_i)+'_'+ str(title) + '_' + str(length) + '.jpg',
                             addZeroPadding[(row_i-1) * 448:row_i*448, (col_i-1)*448:col_i*448])
+
+                cv2.imwrite(
+                    'templates/static/images/cropped' + '/cropped_' + str(row_i) + '*' + str(col_i) + '_' + str(title) + '_' + str(
+                        length) + '.jpg',
+                    addZeroPadding[(row_i - 1) * 448:row_i * 448, (col_i - 1) * 448:col_i * 448])
         # resized_img = cv2.resize(resized_img, (1344, 1344))
         #
         # leftTop = resized_img[0:448, 0:448]
@@ -218,6 +224,7 @@ def removeImgs(request):
         media_predicted = "templates/static/images/predicted"
         media_template_resized = "templates/static/images/resized"
         media_template_analyzed = "templates/static/images/analyzed"
+        media_template_cropped = "templates/static/images/cropped"
         media_template_visualized = "templates/static/images/visualized"
         otsu_data = "crack_width_checker/data"
         otsu_result = "crack_width_checker/results/"
@@ -248,6 +255,10 @@ def removeImgs(request):
 
         if (os.path.exists(media_template_visualized)):
             for file in os.scandir((media_template_visualized)):
+                os.remove(file.path)
+
+        if (os.path.exists(media_template_cropped)):
+            for file in os.scandir((media_template_cropped)):
                 os.remove(file.path)
 
         if (os.path.exists(otsu_data)):
