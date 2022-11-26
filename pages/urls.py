@@ -7,7 +7,7 @@ from .views import *
 
 urlpatterns = [
     path('', views.indexPage, name="home"),
-    path('loading/', views.loadingPage, name="loadingPage"),
+    path('loading/detailed', views.loadingPage, name="loadingPage"),
     path('result/', views.resultPage, name="segmantationResult"),
     path('result/detailed', views.detailedResultPage, name="detailedSegmantationResult"),
     path('select/detailed', views.selectDatailedPicture, name="selectDetailedPicture")

@@ -99,14 +99,7 @@ def detailInference(request):
         cv2.imwrite('media/resized' + '/resized_rightBot_' + str(title)+'.jpg', rightBot)
         cv2.imwrite('templates/static/images/resized/' + '/resized_rightBot_' + str(title)+'.jpg', rightBot)
 
-        # run_inference_code = "torchrun crack_segmentation/inference_unet.py
-        #                       -model_type resnet34
-        #                       -img_dir media/resized/
-        #                       -model_path crack_segmentation/model/model_best.pt " \
-        #                      "-out_pred_dir templates/static/images/predicted " \
-        #                      "-out_viz_dir templates/static/images/visualized " \
-        #                      "-out_synthesize_dir templates/static/images/analyzed"
-        # os.system(run_inference_code)
+
         return HttpResponse(str(img) + " cropping end")
     else:
         fileuploadForm = FileUploadForm
@@ -114,6 +107,15 @@ def detailInference(request):
             'fileuploadForm': fileuploadForm,
         }
         return render(request, 'fileupload.html', context)
+
+def runDetailInference(request):
+    run_inference_code = "torchrun crack_segmentation/inference_unet.py -model_type resnet34 -img_dir media/resized/ -model_path crack_segmentation/model/model_best.pt " \
+                         "-out_pred_dir templates/static/images/predicted " \
+                         "-out_viz_dir templates/static/images/visualized " \
+                         "-out_synthesize_dir crack_width_checker/data"
+    os.system(run_inference_code)
+    return HttpResponse("run detailed inference end")
+
 def testResponse(request):
     return HttpResponse("Hello world!")
 
@@ -216,7 +218,6 @@ def removeUnusefulImgs(request):
         usefulImgs = request_body['selectedPicArray']
 
         for i in range(0, len(usefulImgs)):
-            print(usefulImgs[i])
             if(os.path.exists("media/resized/" + usefulImgs[i])):
                 os.remove("media/resized/" + usefulImgs[i])
 

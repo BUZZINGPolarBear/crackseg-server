@@ -9,6 +9,7 @@ urlpatterns = [
     path('test/', views.testResponse),
     path('fileupload/', fileUpload, name="fileupload"),
     path('fileuplaod/detailed', detailInference, name="detailInference"),
+    path('run/detailed', runDetailInference, name="runDatailInference"),
     path('vision-inference/', visionInference, name="computerVisionInference"),
     path('vision-inference/info/', visionInferenceInfo, name="visionInfernceInfo"),
     path('remove-imgs/', removeImgs, name="remove-images"),

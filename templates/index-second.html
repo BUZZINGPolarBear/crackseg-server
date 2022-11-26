@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>아이클롭스 균열검출기</title>
 
+    <script type="text/javascript" src="/templates/static/js/hostAddr.js"></script>
     <link rel="stylesheet" href="{% static 'css/index-second.css' %}">
     <!-- CDNS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
@@ -12,7 +13,7 @@
 </head>
 <body>
     <div class="top-nav">
-        <div class="nav-left">균열 검출기</div>
+        <div class="nav-left" onclick="location.href='/'">균열 검출기</div>
         <div class="nav-right" style="font-size: 2vh;">Aiclops X KAU</div>
     </div>
 
@@ -28,7 +29,7 @@
         <div class="file-upload-area">
             <img class="crack_img" src="/templates/static/images/loading.gif" style="z-index: 9999" />
         </div>
-        <div style="width: 100vw; text-align: center; font-size: 5em; font-weight: bolder">균열 검출중...</div>
+        <div id="loading_status" style="width: 100vw; text-align: center; font-size: 5em; font-weight: bolder">균열 검출중...</div>
     </div>
 
 </body>

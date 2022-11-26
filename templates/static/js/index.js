@@ -102,8 +102,6 @@ detailedImgModalBtn.onclick = function(){
       localStorage.setItem("pic_name", pic_rand_id+'.jpg')
       await getAPI(hostAddr + "crack-seg/remove-imgs")
       await postAPI(hostAddr+"crack-seg/fileuplaod/detailed", requestOptions)
-
-
       location.href = "select/detailed"
     }
   }
