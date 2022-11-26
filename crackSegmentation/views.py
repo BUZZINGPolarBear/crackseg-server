@@ -64,41 +64,72 @@ def detailInference(request):
         )
         fileupload.save()
         print(str(img))
-        resized_img = cv2.imread('media/images/' + str(img).replace(' ', '_'))
-        resized_img = cv2.resize(resized_img, (1344, 1344))
+        userImg = cv2.imread('media/images/' + str(img).replace(' ', '_'))
+        print("====================")
+        width = userImg.shape[1]
+        height = userImg.shape[0]
+        print(width)
+        print(height)
+        print("====================")
 
-        leftTop = resized_img[0:448, 0:448]
-        midTop = resized_img[0: 448, 448: 896]
-        rightTop = resized_img[0: 448, 896: 1344]
+        objectWidth = 0
+        objectHeight = 0
+        while width > objectWidth:
+            objectWidth += 448
+        while height > objectHeight:
+            objectHeight += 448
 
-        leftMid = resized_img[448:896, 0: 448]
-        midMid = resized_img[448:896, 448: 896]
-        rightMid = resized_img[448:896, 896:1344]
+        print("====================")
+        print(objectWidth)
+        print(objectHeight)
+        print("====================")
 
-        leftBot = resized_img[896:1344, 0:448]
-        midBot = resized_img[896:1344, 448:896]
-        rightBot = resized_img[896:1344, 896:1344]
+        widthDiffer = (objectWidth - width) // 2
+        heightDiffer = (objectHeight - height)//2
+        addZeroPadding = cv2.copyMakeBorder(userImg,
+                                            heightDiffer,
+                                            heightDiffer,
+                                            widthDiffer,
+                                            widthDiffer,
+                                            cv2.BORDER_CONSTANT,
+                                            value=[255, 255, 255]
+                                            )
+        cv2.imwrite('media/paddingAdded/' + str(title) + '_' + str(length) + '.jpg', addZeroPadding)
 
-        cv2.imwrite('media/resized' + '/resized_leftTop_' +str(title)+'_'+str(length)+'.jpg', leftTop)
-        cv2.imwrite('templates/static/images/resized/' + '/resized_leftTop_' + str(title)+'_'+str(length)+'.jpg', leftTop)
-        cv2.imwrite('media/resized' + '/resized_midTop_' + str(title)+'_'+str(length)+'.jpg', midTop)
-        cv2.imwrite('templates/static/images/resized/' + '/resized_midTop_' + str(title)+'_'+str(length)+'.jpg', midTop)
-        cv2.imwrite('media/resized' + '/resized_rightTop_' + str(title)+'_'+str(length)+'.jpg', rightTop)
-        cv2.imwrite('templates/static/images/resized/' + '/resized_rightTop_' + str(title)+'_'+str(length)+'.jpg', rightTop)
-
-        cv2.imwrite('media/resized' + '/resized_leftMid_' + str(title)+'_'+str(length)+'.jpg', leftMid)
-        cv2.imwrite('templates/static/images/resized/' + '/resized_leftMid_' + str(title)+'_'+str(length)+'.jpg', leftMid)
-        cv2.imwrite('media/resized' + '/resized_midMid_' + str(title)+'_'+str(length)+'.jpg', midMid)
-        cv2.imwrite('templates/static/images/resized/' + '/resized_midMid_' + str(title)+'_'+str(length)+'.jpg', midMid)
-        cv2.imwrite('media/resized' + '/resized_rightMid_' + str(title)+'_'+str(length)+'.jpg', rightMid)
-        cv2.imwrite('templates/static/images/resized/' + '/resized_rightMid_' + str(title)+'_'+str(length)+'.jpg', rightMid)
-
-        cv2.imwrite('media/resized' + '/resized_leftBot_' + str(title)+'_'+str(length)+'.jpg', leftBot)
-        cv2.imwrite('templates/static/images/resized/' + '/resized_leftBot_' + str(title)+'_'+str(length)+'.jpg', leftBot)
-        cv2.imwrite('media/resized' + '/resized_midBot_' + str(title)+'_'+str(length)+'.jpg', midBot)
-        cv2.imwrite('templates/static/images/resized/' + '/resized_midBot_' + str(title)+'_'+str(length)+'.jpg', midBot)
-        cv2.imwrite('media/resized' + '/resized_rightBot_' + str(title)+'_'+str(length)+'.jpg', rightBot)
-        cv2.imwrite('templates/static/images/resized/' + '/resized_rightBot_' + str(title)+'_'+str(length)+'.jpg', rightBot)
+        # resized_img = cv2.resize(resized_img, (1344, 1344))
+        #
+        # leftTop = resized_img[0:448, 0:448]
+        # midTop = resized_img[0: 448, 448: 896]
+        # rightTop = resized_img[0: 448, 896: 1344]
+        #
+        # leftMid = resized_img[448:896, 0: 448]
+        # midMid = resized_img[448:896, 448: 896]
+        # rightMid = resized_img[448:896, 896:1344]
+        #
+        # leftBot = resized_img[896:1344, 0:448]
+        # midBot = resized_img[896:1344, 448:896]
+        # rightBot = resized_img[896:1344, 896:1344]
+        #
+        # cv2.imwrite('media/resized' + '/resized_leftTop_' +str(title)+'_'+str(length)+'.jpg', leftTop)
+        # cv2.imwrite('templates/static/images/resized/' + '/resized_leftTop_' + str(title)+'_'+str(length)+'.jpg', leftTop)
+        # cv2.imwrite('media/resized' + '/resized_midTop_' + str(title)+'_'+str(length)+'.jpg', midTop)
+        # cv2.imwrite('templates/static/images/resized/' + '/resized_midTop_' + str(title)+'_'+str(length)+'.jpg', midTop)
+        # cv2.imwrite('media/resized' + '/resized_rightTop_' + str(title)+'_'+str(length)+'.jpg', rightTop)
+        # cv2.imwrite('templates/static/images/resized/' + '/resized_rightTop_' + str(title)+'_'+str(length)+'.jpg', rightTop)
+        #
+        # cv2.imwrite('media/resized' + '/resized_leftMid_' + str(title)+'_'+str(length)+'.jpg', leftMid)
+        # cv2.imwrite('templates/static/images/resized/' + '/resized_leftMid_' + str(title)+'_'+str(length)+'.jpg', leftMid)
+        # cv2.imwrite('media/resized' + '/resized_midMid_' + str(title)+'_'+str(length)+'.jpg', midMid)
+        # cv2.imwrite('templates/static/images/resized/' + '/resized_midMid_' + str(title)+'_'+str(length)+'.jpg', midMid)
+        # cv2.imwrite('media/resized' + '/resized_rightMid_' + str(title)+'_'+str(length)+'.jpg', rightMid)
+        # cv2.imwrite('templates/static/images/resized/' + '/resized_rightMid_' + str(title)+'_'+str(length)+'.jpg', rightMid)
+        #
+        # cv2.imwrite('media/resized' + '/resized_leftBot_' + str(title)+'_'+str(length)+'.jpg', leftBot)
+        # cv2.imwrite('templates/static/images/resized/' + '/resized_leftBot_' + str(title)+'_'+str(length)+'.jpg', leftBot)
+        # cv2.imwrite('media/resized' + '/resized_midBot_' + str(title)+'_'+str(length)+'.jpg', midBot)
+        # cv2.imwrite('templates/static/images/resized/' + '/resized_midBot_' + str(title)+'_'+str(length)+'.jpg', midBot)
+        # cv2.imwrite('media/resized' + '/resized_rightBot_' + str(title)+'_'+str(length)+'.jpg', rightBot)
+        # cv2.imwrite('templates/static/images/resized/' + '/resized_rightBot_' + str(title)+'_'+str(length)+'.jpg', rightBot)
 
 
         return HttpResponse(str(img) + " cropping end")
@@ -167,7 +198,7 @@ def removeImgs(request):
         return HttpResponse("img remove completed")
     if request.method == 'GET':
         media_imgs = "media/images/"
-        media_resized = "media/resized/"
+        media_paddingAdded = "media/paddingAdded/"
         media_predicted = "templates/static/images/predicted"
         media_template_resized = "templates/static/images/resized"
         media_template_analyzed = "templates/static/images/analyzed"
@@ -179,8 +210,8 @@ def removeImgs(request):
             for file in os.scandir((media_imgs)):
                 os.remove(file.path)
 
-        if (os.path.exists(media_resized)):
-            for file in os.scandir((media_resized)):
+        if (os.path.exists(media_paddingAdded)):
+            for file in os.scandir((media_paddingAdded)):
                 os.remove(file.path)
 
         if (os.path.exists(media_predicted)):
