@@ -2,13 +2,17 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
 
     height: 5vh;
-    background-color: rgb(1, 26, 93);
-    border-radius: 10px;
-    color: white;
     font-weight: bolder;
-    font-size: 3vh;
+    font-size: 2vh;
+}
+
+#now-status{
+    color: green;
+    font-weight: 800;
 }
 
 .status-area{
@@ -53,4 +57,21 @@
 .cropped-imgs{
     max-width: 100%;
     max-height: 100%;
+}
+
+#detailed-crack-img-submit-btn{
+    background-color: #7ab985;
+    color: white;
+    border-radius: 5px;
+    text-align: center;
+    width: 80vw;
+    margin-top: 2vh;
+    margin-left: 10vw;
+    margin-right: 10vw;
+
+    font-size: 2.4vh;
+    font-weight: bolder;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border: none;
 }
