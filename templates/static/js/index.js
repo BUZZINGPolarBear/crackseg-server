@@ -75,7 +75,7 @@ crackImgModalBtn.onclick = function(){
 detailedImgModalBtn.onclick = function(){
   $('#modal-btn-area').empty()
   $('#modal-btn-area').append(`
-   <button class="button is-warning modal-btn" id="detailed-crack-btn">정밀 검출 부위 고르기</button>
+   <button class="button is-warning modal-btn" id="detailed-crack-btn">균열 이미지 검출 부위 고르기</button>
   `)
    modal.style.display = "flex";
 
@@ -102,8 +102,8 @@ detailedImgModalBtn.onclick = function(){
       // toLoadingPage()
       localStorage.setItem("pic_name", pic_rand_id+`_${length}`+'.jpg')
       await getAPI(hostAddr + "crack-seg/remove-imgs")
-      await postAPI(hostAddr+"crack-seg/fileuplaod/detailed", requestOptions)
-      location.href = "select/detailed"
+      row_col_info = await postAPI(hostAddr+"crack-seg/fileuplaod/detailed", requestOptions)
+      location.href = "/select/detailed"
     }
   }
 }
@@ -137,9 +137,9 @@ function toLoadingPage(){
 
 //post API AS JSON
 async function postAPI(host, options) {
-  const res = await fetch(host, options)
-  const data = res.json();
-  console.log(res)
+    const res = await fetch(host, options)
+    const data = res.json();
+    return data
 }
 
 //get API
