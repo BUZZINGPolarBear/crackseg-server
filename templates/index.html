@@ -15,8 +15,8 @@
 </head>
 <body>
     <div class="top-nav">
-        <div class="nav-left" onclick="location.href='/'">균열 검출기</div>
-        <div class="nav-right" style="font-size: 2vh;">Aiclops X KAU</div>
+        <div class="nav-left"  style="color: rgb(1, 26, 93);" onclick="location.href='/'">Aiclops X KAU</div>
+        <div class="nav-right" style="font-size: 2vh; color: #6c6c6c">콘트리트 균열 검출기</div>
     </div>
 
     <div class="status-area">
@@ -35,17 +35,14 @@
             <div style="margin-top: 1vh">
                 <div class="filebox">
                     <input class="upload-name" value="첨부파일" placeholder="첨부파일">
-                    <label for="imgInp">사진찾기</label>
+                    <label for="imgInp">사진찍기</label>
                     <input type='file' accept="image/*"  capture="camera" id="imgInp">
                 </div>
-                <div class="submit-btn-area">
-                    <a id="detailed-crack-img-submit-btn" >정밀한 균열 검출하기</a>
-                    <a id="crack-img-submit-btn" >균열 검출하기</a>
-                </div>
-                <div id="detailed_info">정밀한 균열 검출은 사진을 3x3으로 나눠서 균열을 검출합니다. <br>시간이 조금 더 오래 걸립니다.</div>
             </div>
         </form>
     </div>
+     <div class="button-area"><button id="crack-img-submit-btn" >균열 측정하기</button></div>
+    <div class="button-area"><button id="detailed-crack-img-submit-btn" >균열 이미지 자세히 측정하기</button></div>
 
     <div id="modal" class="modal-overlay">
         <div class="modal-window">

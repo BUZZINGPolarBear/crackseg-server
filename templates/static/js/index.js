@@ -31,7 +31,7 @@ const lengthSelectChange = (target) => {
 crackImgModalBtn.onclick = function(){
     $('#modal-btn-area').empty()
     $('#modal-btn-area').append(`
-    <button class="button is-primary modal-btn" id="normal-crack-btn">일반 균열 검출하기</button>
+    <button class="button is-primary modal-btn" id="normal-crack-btn">균열 측정하기</button>
     `)
     modal.style.display = "flex";
 
@@ -113,6 +113,7 @@ closeBtn.addEventListener("click", e => {
 })
 
 function toLoadingPage(){
+    $('.button-area').empty()
   html = `
         <div class="status-info" >
           <div style="text-align: center">1</div>사진 업로드 </div>

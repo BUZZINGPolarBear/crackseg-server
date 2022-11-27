@@ -6,10 +6,8 @@
     border-bottom-right-radius: 10px;
 
     height: 5vh;
-    background-color: rgb(1, 26, 93);
-    color: white;
     font-weight: bolder;
-    font-size: 3vh;
+    font-size: 2vh;
 }
 
 .status-area{
@@ -87,25 +85,48 @@
 }
 
 #crack-img-submit-btn{
-    background-color: rgb(62, 190, 122);
+    background-color: #7ab985;
     color: white;
     border-radius: 5px;
+    text-align: center;
+    width: 80vw;
+    margin-top: 2vh;
+    margin-left: 10vw;
+    margin-right: 10vw;
 
-    padding-left: 20px;
-    padding-right: 20px;
-    padding-top:8px;
-    padding-bottom:8px;
+    font-size: 2.4vh;
+    font-weight: bolder;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border: none;
+}
+.modal-btn{
+    background-color: #7ab985;
+    color: white;
+    font-size: 2.4vh;
+    font-weight: bolder;
+
+    width: 80vw;
+    text-align: center;
+    margin-top: 10px;
 }
 
 #detailed-crack-img-submit-btn{
-    background-color: rgb(253, 219, 190);
-    color: black;
+    box-shadow: 5px 5px 5px rgb(40, 40, 40);
+    background-color: rgb(255, 255, 255);
+    color: #7ab985;
     border-radius: 5px;
+    text-align: center;
+    width: 80vw;
+    margin-top: 2vh;
+    margin-left: 10vw;
+    margin-right: 10vw;
 
-    padding-left: 20px;
-    padding-right: 20px;
-    padding-top:8px;
-    padding-bottom:8px;
+    font-size: 2.4vh;
+    font-weight: bolder;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border: none;
 }
 
 #detailed_info{
@@ -199,11 +220,3 @@
     margin-right: 150px;
 }
 
-.modal-btn{
-    font-size: 1.3em;
-    font-weight: bolder;
-    padding: 10px 30px 10px 30px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 10px;
-}
