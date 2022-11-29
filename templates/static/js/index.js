@@ -106,16 +106,7 @@ detailedImgModalBtn.onclick = function(){
       //이미지 크롭
       await getAPI(hostAddr + "crack-seg/remove-imgs")
       row_col_info = await postAPI(hostAddr+"crack-seg/fileuplaod/detailed", requestOptions)
-      alert(row_col_info.row_line + '\n' + row_col_info.col_line)
-
-      toLoadingPage()
-
-      //이미지 균열 딥러닝
-      await getAPI(hostAddr+"crack-seg/run/detailed")
-
-        $('#loading_status').empty();
-        $('#loading_status').append('검출된 균열 분석중...')
-        await getAPI(hostAddr + "crack-seg/vision-inference/")
+      location.href = "/select/detailed"
 
     }
   }
