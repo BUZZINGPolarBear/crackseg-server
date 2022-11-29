@@ -40,7 +40,12 @@ def fileUpload(request):
                              "-out_viz_dir templates/static/images/visualized " \
                              "-out_synthesize_dir crack_width_checker/data"
         os.system(run_inference_code)
-        return HttpResponse(str(img)+" segmantation end")
+        result = {
+            "status": 'ok',
+            "code" : 200,
+            "message": str(img) + "segmentation end"
+        }
+        return JsonResponse(result)
     else:
         fileuploadForm = FileUploadForm
         context = {
@@ -65,6 +70,7 @@ def detailInference(request):
         fileupload.save()
 
         userImg = cv2.imread('media/images/' + str(img).replace(' ', '_'))
+        cv2.imwrite('templates/static/images/origin/' + str(title) + '_' + str(length) + '.jpg', userImg)
         resized_img = cv2.imread('media/images/' + str(img).replace(' ', '_'))
         resized_img = cv2.resize(resized_img, (1344, 1344))
 
@@ -97,6 +103,11 @@ def detailInference(request):
             for row_i in range(1, col_cnt+1):
                 tp1 = ((row_i-1) * 448, row_i*448)
                 tp2 = ((col_i-1) * 448, col_i*448)
+                print("------------------")
+                print(row_cnt + col_cnt)
+                print(tp1)
+                print(tp2)
+                print("------------------")
                 cv2.imwrite(
                     'media/cropped' + '/cropped_'+str(row_i)+'*'+str(col_i)+'_'+ str(title) + '_' + str(length) + '.jpg',
                             addZeroPadding[(row_i-1) * 448:row_i*448, (col_i-1)*448:col_i*448])
@@ -105,40 +116,7 @@ def detailInference(request):
                     'templates/static/images/cropped' + '/cropped_' + str(row_i) + '*' + str(col_i) + '_' + str(title) + '_' + str(
                         length) + '.jpg',
                     addZeroPadding[(row_i - 1) * 448:row_i * 448, (col_i - 1) * 448:col_i * 448])
-        resized_img = cv2.resize(resized_img, (1344, 1344))
 
-        leftTop = resized_img[0:448, 0:448]
-        midTop = resized_img[0: 448, 448: 896]
-        rightTop = resized_img[0: 448, 896: 1344]
-
-        leftMid = resized_img[448:896, 0: 448]
-        midMid = resized_img[448:896, 448: 896]
-        rightMid = resized_img[448:896, 896:1344]
-
-        leftBot = resized_img[896:1344, 0:448]
-        midBot = resized_img[896:1344, 448:896]
-        rightBot = resized_img[896:1344, 896:1344]
-
-        cv2.imwrite('media/resized' + '/resized_leftTop_' +str(title)+'_'+str(length)+'.jpg', leftTop)
-        cv2.imwrite('templates/static/images/resized/' + '/resized_leftTop_' + str(title)+'_'+str(length)+'.jpg', leftTop)
-        cv2.imwrite('media/resized' + '/resized_midTop_' + str(title)+'_'+str(length)+'.jpg', midTop)
-        cv2.imwrite('templates/static/images/resized/' + '/resized_midTop_' + str(title)+'_'+str(length)+'.jpg', midTop)
-        cv2.imwrite('media/resized' + '/resized_rightTop_' + str(title)+'_'+str(length)+'.jpg', rightTop)
-        cv2.imwrite('templates/static/images/resized/' + '/resized_rightTop_' + str(title)+'_'+str(length)+'.jpg', rightTop)
-
-        cv2.imwrite('media/resized' + '/resized_leftMid_' + str(title)+'_'+str(length)+'.jpg', leftMid)
-        cv2.imwrite('templates/static/images/resized/' + '/resized_leftMid_' + str(title)+'_'+str(length)+'.jpg', leftMid)
-        cv2.imwrite('media/resized' + '/resized_midMid_' + str(title)+'_'+str(length)+'.jpg', midMid)
-        cv2.imwrite('templates/static/images/resized/' + '/resized_midMid_' + str(title)+'_'+str(length)+'.jpg', midMid)
-        cv2.imwrite('media/resized' + '/resized_rightMid_' + str(title)+'_'+str(length)+'.jpg', rightMid)
-        cv2.imwrite('templates/static/images/resized/' + '/resized_rightMid_' + str(title)+'_'+str(length)+'.jpg', rightMid)
-
-        cv2.imwrite('media/resized' + '/resized_leftBot_' + str(title)+'_'+str(length)+'.jpg', leftBot)
-        cv2.imwrite('templates/static/images/resized/' + '/resized_leftBot_' + str(title)+'_'+str(length)+'.jpg', leftBot)
-        cv2.imwrite('media/resized' + '/resized_midBot_' + str(title)+'_'+str(length)+'.jpg', midBot)
-        cv2.imwrite('templates/static/images/resized/' + '/resized_midBot_' + str(title)+'_'+str(length)+'.jpg', midBot)
-        cv2.imwrite('media/resized' + '/resized_rightBot_' + str(title)+'_'+str(length)+'.jpg', rightBot)
-        cv2.imwrite('templates/static/images/resized/' + '/resized_rightBot_' + str(title)+'_'+str(length)+'.jpg', rightBot)
 
         row_col_info = {
             'row_line': row_cnt,
@@ -153,7 +131,9 @@ def detailInference(request):
         return render(request, 'fileupload.html', context)
 
 def runDetailInference(request):
-    run_inference_code = "torchrun crack_segmentation/inference_unet.py -model_type resnet34 -img_dir media/resized/ -model_path crack_segmentation/model/model_best.pt " \
+    run_inference_code = "torchrun crack_segmentation/inference_unet.py -model_type resnet34 " \
+                         "-img_dir media/cropped/ " \
+                         "-model_path crack_segmentation/model/model_best.pt " \
                          "-out_pred_dir templates/static/images/predicted " \
                          "-out_viz_dir templates/static/images/visualized " \
                          "-out_synthesize_dir crack_width_checker/data"
@@ -212,6 +192,7 @@ def removeImgs(request):
         media_imgs = "media/images/"
         media_paddingAdded = "media/paddingAdded/"
         media_cropped = "media/cropped/"
+        media_resized = "media/resized/"
         media_predicted = "templates/static/images/predicted"
         media_template_resized = "templates/static/images/resized"
         media_template_analyzed = "templates/static/images/analyzed"
@@ -230,6 +211,10 @@ def removeImgs(request):
 
         if (os.path.exists(media_cropped)):
             for file in os.scandir((media_cropped)):
+                os.remove(file.path)
+
+        if (os.path.exists(media_resized)):
+            for file in os.scandir((media_resized)):
                 os.remove(file.path)
 
         if (os.path.exists(media_predicted)):

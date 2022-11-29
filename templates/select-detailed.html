@@ -10,6 +10,7 @@
     <!-- CDNS -->
     <script  src="https://code.jquery.com/jquery-3.6.1.slim.js"  integrity="sha256-tXm+sa1uzsbFnbXt8GJqsgi2Tw+m4BLGDof6eUPjbtk=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <script src="https://fengyuanchen.github.io/cropper/js/cropper.js"></script>
 </head>
 <body>
     <div class="top-nav">
@@ -28,50 +29,7 @@
     <div style="width: 100vw; text-align: center; font-size: 2.5em; font-weight: bolder; margin-bottom: 3vh;">조사가 필요한 균열 부위를 <br>선택해주세요.</div>
 
     <div class="image-select-area">
-        <div class="row-photo top">
-            <div class="row-content" id="leftTopResized-area">
-                <div class="ddabong" id="leftTop" style="display: none"> 선택됨 </div>
-                <img src="#" class="cropped-imgs" id="leftTopResized" onclick="selectItems('leftTop')">
-            </div>
-            <div class="row-content" id="midTopResized-area">
-                <div class="ddabong" id="midTop" style="display: none"> 선택됨 </div>
-                <img src="#" class="cropped-imgs" id="midTopResized" onclick="selectItems('midTop')">
-            </div>
-            <div class="row-content" id="rightTopResized-area">
-                <div class="ddabong" id="rightTop" style="display: none"> 선택됨 </div>
-                <img src="#" class="cropped-imgs" id="rightTopResized" onclick="selectItems('rightTop')">
-            </div>
-        </div>
-
-        <div class="row-photo mid">
-            <div class="row-content" id="leftMidResized-area">
-                <div class="ddabong" id="leftMid" style="display: none"> 선택됨 </div>
-                <img src="#" class="cropped-imgs" id="leftMidResized" onclick="selectItems('leftMid')">
-            </div>
-            <div class="row-content" id="midMidResized-area">
-                <div class="ddabong" id="midMid" style="display: none"> 선택됨 </div>
-                <img src="#" class="cropped-imgs" id="midMidResized" onclick="selectItems('midMid')">
-            </div>
-            <div class="row-content" id="rightMidResized-area">
-                <div class="ddabong" id="rightMid" style="display: none"> 선택됨 </div>
-                <img src="#" class="cropped-imgs" id="rightMidResized" onclick="selectItems('rightMid')">
-            </div>
-        </div>
-
-        <div class="row-photo bottom">
-            <div class="row-content" id="leftBotResized-area">
-                <div class="ddabong" id="leftBot" style="display: none"> 선택됨 </div>
-                <img src="#" class="cropped-imgs" id="leftBotResized" onclick="selectItems('leftBot')">
-            </div>
-            <div class="row-content" id="midBotResized-area">
-                <div class="ddabong" id="midBot" style="display: none"> 선택됨 </div>
-                <img src="#" class="cropped-imgs" id="midBotResized" onclick="selectItems('midBot')">
-            </div>
-            <div class="row-content" id="rightBotResized-area">
-                <div class="ddabong" id="rightBot" style="display: none"> 선택됨 </div>
-                <img src="#" class="cropped-imgs" id="rightBotResized" onclick="selectItems('rightBot')">
-            </div>
-        </div>
+       <img id="originImgArea" src="#">
     </div>
     <div style="width: 100vw; display: flex; justify-content: center">
              <button class="button is-success" id="detailed-crack-img-submit-btn" onclick="submitBtn()">균열 이미지 자세히 측정하기</button>

@@ -52,7 +52,7 @@ crackImgModalBtn.onclick = function(){
 
         remove_photo_formdata.append("img_name", localStorage.getItem("pic_name"))
         remove_photo_formdata.append("original_file_name", localStorage.getItem("original_img_name"))
-        await postAPI(hostAddr + "crack-seg/remove-imgs")
+        await getAPI(hostAddr + "crack-seg/remove-imgs")
 
         file_upload_formdata.append("title", pic_rand_id);
         file_upload_formdata.append("imgfile", file, fileName);
@@ -66,7 +66,8 @@ crackImgModalBtn.onclick = function(){
 
         $('#loading_status').empty();
         $('#loading_status').append('검출된 균열 분석중...')
-        await getAPI(hostAddr + "crack-seg/vision-inference")
+
+        await getAPI(hostAddr + "crack-seg/vision-inference/")
         location.href = "result/"
         }
     }
@@ -75,7 +76,7 @@ crackImgModalBtn.onclick = function(){
 detailedImgModalBtn.onclick = function(){
   $('#modal-btn-area').empty()
   $('#modal-btn-area').append(`
-   <button class="button is-warning modal-btn" id="detailed-crack-btn">균열 이미지 검출 부위 고르기</button>
+   <button class="button is-warning modal-btn" id="detailed-crack-btn">균열 이미지 자세히 측정하기</button>
   `)
    modal.style.display = "flex";
 
@@ -101,9 +102,21 @@ detailedImgModalBtn.onclick = function(){
       modal.style.display = "none"
       // toLoadingPage()
       localStorage.setItem("pic_name", pic_rand_id+`_${length}`+'.jpg')
+
+      //이미지 크롭
       await getAPI(hostAddr + "crack-seg/remove-imgs")
       row_col_info = await postAPI(hostAddr+"crack-seg/fileuplaod/detailed", requestOptions)
-      location.href = "/select/detailed"
+      alert(row_col_info.row_line + '\n' + row_col_info.col_line)
+
+      toLoadingPage()
+
+      //이미지 균열 딥러닝
+      await getAPI(hostAddr+"crack-seg/run/detailed/")
+
+        $('#loading_status').empty();
+        $('#loading_status').append('검출된 균열 분석중...')
+        await getAPI(hostAddr + "crack-seg/run/detailed")
+
     }
   }
 }
@@ -143,10 +156,13 @@ async function postAPI(host, options) {
 }
 
 //get API
-async function getAPI(host, options) {
-  const res = await fetch(host, options)
+async function getAPI(host) {
+    var requestOptions = {
+        method: 'GET',
+        redirect: 'follow'
+    };
+  const res = await fetch(host, requestOptions)
   const data = res.json();
-  console.log(res)
 }
 
 function makeid(length) {
