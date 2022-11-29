@@ -131,14 +131,20 @@ def detailInference(request):
         return render(request, 'fileupload.html', context)
 
 def runDetailInference(request):
-    run_inference_code = "torchrun crack_segmentation/inference_unet.py -model_type resnet34 " \
+    run_inference_code = "torchrun crack_segmentation/inference_unet.py " \
+                         "-model_type resnet34 " \
                          "-img_dir media/cropped/ " \
                          "-model_path crack_segmentation/model/model_best.pt " \
                          "-out_pred_dir templates/static/images/predicted " \
                          "-out_viz_dir templates/static/images/visualized " \
                          "-out_synthesize_dir crack_width_checker/data"
     os.system(run_inference_code)
-    return HttpResponse("run detailed inference end")
+    result = {
+        "status": 'ok',
+        "code": 200,
+        "message": "detailed inference code done"
+    }
+    return JsonResponse(result)
 
 def testResponse(request):
     return HttpResponse("Hello world!")
@@ -187,7 +193,12 @@ def removeImgs(request):
         if (os.path.isfile(otsu_result)):
             os.remove(otsu_result)
 
-        return HttpResponse("img remove completed")
+        result = {
+            "status": 'ok',
+            "code": 200,
+            "message": "img remove done"
+        }
+        return JsonResponse(result)
     if request.method == 'GET':
         media_imgs = "media/images/"
         media_paddingAdded = "media/paddingAdded/"
@@ -245,7 +256,12 @@ def removeImgs(request):
             shutil.rmtree(otsu_result)
             os.makedirs(otsu_result)
 
-        return HttpResponse("img remove completed")
+        result = {
+            "status": 'ok',
+            "code": 200,
+            "message": "img remove done"
+        }
+        return JsonResponse(result)
 
 '''
     디테일 사진 추론할 떄 안쓸 사진 지우기
@@ -266,7 +282,12 @@ def removeUnusefulImgs(request):
 '''
 def visionInference(request):
     os.system("python crack_width_checker/vision.py --width_func profiling_re")
-    return HttpResponse("crack inference algorithm completed")
+    result = {
+        "status": 'ok',
+        "code": 200,
+        "message": "vision inference code done"
+    }
+    return JsonResponse(result)
 
 '''
 비전추론 결과 가져오기

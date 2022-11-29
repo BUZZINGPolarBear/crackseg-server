@@ -111,11 +111,11 @@ detailedImgModalBtn.onclick = function(){
       toLoadingPage()
 
       //이미지 균열 딥러닝
-      await getAPI(hostAddr+"crack-seg/run/detailed/")
+      await getAPI(hostAddr+"crack-seg/run/detailed")
 
         $('#loading_status').empty();
         $('#loading_status').append('검출된 균열 분석중...')
-        await getAPI(hostAddr + "crack-seg/run/detailed")
+        await getAPI(hostAddr + "crack-seg/vision-inference/")
 
     }
   }
@@ -161,8 +161,7 @@ async function getAPI(host) {
         method: 'GET',
         redirect: 'follow'
     };
-  const res = await fetch(host, requestOptions)
-  const data = res.json();
+    await fetch(host, requestOptions)
 }
 
 function makeid(length) {
