@@ -30,13 +30,14 @@ function selectItems(selectedId){
   const nowSelected = document.getElementById(selectedId)
   const img_id = document.getElementById( selectedId+"Resized")
 
+  if(UrlExists("/templates/static/images/predicted/resized_"+selectedId+"_"+localStorage.getItem("pic_name")) == 0) return
   if(nowSelected.style.display == 'none'){
       nowSelected.style.display = 'block'
-      img_id.style.filter = 'opacity(0.3)'
+      img_id.src = "/templates/static/images/predicted/resized_"+selectedId+"_"+localStorage.getItem("pic_name")
   }
   else{
     nowSelected.style.display = 'none'
-    img_id.style.filter = 'opacity(1)'
+    img_id.src = "/templates/static/images/resized/resized_"+selectedId+"_"+localStorage.getItem("pic_name")
   }
 }
 
@@ -96,4 +97,12 @@ function toLoadingPage(){
   $('.file-upload-area').append(html)
 
   $('#loading_status').append('균열검출중...')
+}
+
+function UrlExists(url)
+{
+    var http = new XMLHttpRequest();
+    http.open('HEAD', url, false);
+    http.send();
+    return http.status!=404;
 }
