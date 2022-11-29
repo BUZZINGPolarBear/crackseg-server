@@ -1,6 +1,7 @@
 var selectedArray = new Array()
+var crackvisionJson = new Array()
 
-window.onload = function(){
+window.onload = async function(){
   //----- 상부 -----
   //좌상단
   leftTopResized.src = "/templates/static/images/resized/resized_leftTop_"+ localStorage.getItem("pic_name")
@@ -24,6 +25,29 @@ window.onload = function(){
   midBotResized.src = "/templates/static/images/resized/resized_midBot_"+ localStorage.getItem("pic_name")
   //우하단
   rightBotResized.src = "/templates/static/images/resized/resized_rightBot_"+ localStorage.getItem("pic_name")
+
+  const selectedBoxJson = JSON.parse(localStorage.getItem("selectedArea"))
+  for(key in selectedBoxJson){
+    var raw = JSON.stringify({
+      "img_name": selectedBoxJson[key].split('resized_')[1],
+      "length": localStorage.getItem("length")
+    });
+
+    var requestOptions = {
+      method: 'POST',
+      body: raw,
+      redirect: 'follow'
+    };
+    const crack_info = await postAPI(hostAddr+"crack-seg/vision-inference/info/", requestOptions)
+    var data = new Object();
+    data.img_name = selectedBoxJson[key];
+    data.all_crack_length = crack_info.all_crack_length
+    data.average_crack_width = crack_info.average_crack_width
+    data.real_max_width = crack_info.real_max_width
+
+    crackvisionJson.push(data)
+  }
+  console.log(crackvisionJson)
 }
 
 function selectItems(selectedId){
@@ -74,7 +98,7 @@ async function submitBtn(){
 async function postAPI(host, options) {
   const res = await fetch(host, options)
   const data = res.json();
-  console.log(res)
+  return data
 }
 
 function toLoadingPage(){
