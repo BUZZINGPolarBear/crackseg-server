@@ -26,6 +26,30 @@ window.onload = async function(){
   //우하단
   rightBotResized.src = "/templates/static/images/resized/resized_rightBot_"+ localStorage.getItem("pic_name")
 
+  //----- 상부 -----
+  //좌상단
+  BOTleftTopResized.src = "/templates/static/images/resized/resized_leftTop_"+ localStorage.getItem("pic_name")
+  //중상단
+  BOTmidTopResized.src = "/templates/static/images/resized/resized_midTop_"+ localStorage.getItem("pic_name")
+  //우상단
+  BOTrightTopResized.src = "/templates/static/images/resized/resized_rightTop_"+ localStorage.getItem("pic_name")
+
+  //----- 중간 -----
+  //좌중단
+  BOTleftMidResized.src = "/templates/static/images/resized/resized_leftMid_"+ localStorage.getItem("pic_name")
+  //중중단
+  BOTmidMidResized.src = "/templates/static/images/resized/resized_midMid_"+ localStorage.getItem("pic_name")
+  //우중단
+  BOTrightMidResized.src = "/templates/static/images/resized/resized_rightMid_"+ localStorage.getItem("pic_name")
+
+  //----- 하단 -----
+  //좌하단
+  BOTleftBotResized.src = "/templates/static/images/resized/resized_leftBot_"+ localStorage.getItem("pic_name")
+  //중하단
+  BOTmidBotResized.src = "/templates/static/images/resized/resized_midBot_"+ localStorage.getItem("pic_name")
+  //우하단
+  BOTrightBotResized.src = "/templates/static/images/resized/resized_rightBot_"+ localStorage.getItem("pic_name")
+
   const selectedBoxJson = JSON.parse(localStorage.getItem("selectedArea"))
   for(key in selectedBoxJson){
     var raw = JSON.stringify({
@@ -41,13 +65,19 @@ window.onload = async function(){
     const crack_info = await postAPI(hostAddr+"crack-seg/vision-inference/info/", requestOptions)
     var data = new Object();
     idTemp = selectedBoxJson[key].split('resized_')[1]
-    idTemp = idTemp.split('_')[0]
+    idTemp = "BOT" + idTemp.split('_')[0]
     data.img_name = idTemp;
     data.all_crack_length = crack_info.all_crack_length
     data.average_crack_width = crack_info.average_crack_width
     data.real_max_width = crack_info.real_max_width
 
     crackvisionJson.push(data)
+    html=`
+    전체 균열 길이: ${data.all_crack_length}cm<br>
+    평균 균열 길이: ${data.all_crack_length}cm<br>
+    최대 균열 너비: ${data.real_max_width}cm
+    `
+    $('#'+idTemp).append(html)
   }
   console.log(crackvisionJson)
 }
@@ -64,6 +94,21 @@ function selectItems(selectedId){
   else{
     nowSelected.style.display = 'none'
     img_id.src = "/templates/static/images/resized/resized_"+selectedId+"_"+localStorage.getItem("pic_name")
+  }
+}
+
+function BotselectItems(selectedId){
+  const nowSelected = document.getElementById(selectedId)
+  const img_id = document.getElementById( selectedId+"Resized")
+  if(UrlExists("/templates/static/images/analyzed/analyzed_"+selectedId.substr(3)+"_"+localStorage.getItem("pic_name")) == 0) return
+  if(nowSelected.style.display == 'none'){
+      nowSelected.style.display = 'block'
+      img_id.src = "/templates/static/images/analyzed/analyzed_"+selectedId.substr(3)+"_"+localStorage.getItem("pic_name")
+  }
+  else{
+    nowSelected.style.display = 'none'
+    console.log("/templates/static/images/analyzed/analyzed_"+selectedId.substr(3)+"_"+localStorage.getItem("pic_name"))
+    img_id.src = "/templates/static/images/resized/resized_"+selectedId.substr(3)+"_"+localStorage.getItem("pic_name")
   }
 }
 
