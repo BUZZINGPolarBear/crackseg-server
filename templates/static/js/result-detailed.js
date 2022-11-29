@@ -40,7 +40,9 @@ window.onload = async function(){
     };
     const crack_info = await postAPI(hostAddr+"crack-seg/vision-inference/info/", requestOptions)
     var data = new Object();
-    data.img_name = selectedBoxJson[key];
+    idTemp = selectedBoxJson[key].split('resized_')[1]
+    idTemp = idTemp.split('_')[0]
+    data.img_name = idTemp;
     data.all_crack_length = crack_info.all_crack_length
     data.average_crack_width = crack_info.average_crack_width
     data.real_max_width = crack_info.real_max_width
