@@ -1,3 +1,6 @@
+body{
+    padding-bottom: 8vh;
+}
 .top-nav{
     display: flex;
     justify-content: space-around;
@@ -124,7 +127,7 @@
     font-weight: bolder;
     padding-top: 10px;
     padding-bottom: 10px;
-    border: none;
+    border: solid 2px #7ab985;
 }
 
 #detailed_info{
