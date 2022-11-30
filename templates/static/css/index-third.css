@@ -7,7 +7,7 @@
 
     height: 5vh;
     font-weight: bolder;
-    font-size: 2vh;
+    font-size: 1.2vh;
 }
 
 .status-area{
@@ -18,7 +18,7 @@
     justify-content: space-evenly;
     align-items: center;
 
-    font-size: 2em;
+    font-size: 1.2em;
     font-weight: bolder;
 }
 
@@ -94,7 +94,7 @@
 
 #slider-info{
     width: 100%;
-    font-size: 1.5em;
+    font-size: 1.2em;
     font-weight: bolder;
     text-align: center;
 }
@@ -112,5 +112,5 @@
 .table .main{
     text-align: center;
     font-weight: bolder;
-    font-size: 1.2em;
+        font-size: 1.2em;
 }
