@@ -36,6 +36,7 @@ crackImgModalBtn.onclick = function(){
     <button class="button is-primary modal-btn" id="normal-crack-btn">균열 측정하기</button>
     `)
     modal.style.display = "flex";
+    window.scrollTo( 0, 0 );
 
     const crackImgSubmitBtn = document.getElementById("normal-crack-btn");
     crackImgSubmitBtn.onclick = async function(){
@@ -81,6 +82,7 @@ detailedImgModalBtn.onclick = function(){
    <button class="button is-warning modal-btn" id="detailed-crack-btn">균열 이미지 자세히 측정하기</button>
   `)
    modal.style.display = "flex";
+    window.scrollTo( 0, 0 );
 
   const detailedCrackImgSubmitBtn = document.getElementById("detailed-crack-btn")
   detailedCrackImgSubmitBtn.onclick = async function(){
