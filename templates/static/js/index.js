@@ -24,6 +24,7 @@ function toLoadingPage(){
 
 const lengthSelectChange = (target) => {
         length = target.value;
+        localStorage.setItem("length", length)
         console.log(length)
 }
 

@@ -72,10 +72,13 @@ def detailInference(request):
         userImg = cv2.imread('media/images/' + str(img).replace(' ', '_'))
         cv2.imwrite('templates/static/images/origin/' + str(title) + '_' + str(length) + '.jpg', userImg)
         resized_img = cv2.imread('media/images/' + str(img).replace(' ', '_'))
-        resized_img = cv2.resize(resized_img, (1344, 1344))
 
         width = userImg.shape[1]
         height = userImg.shape[0]
+
+        #resized_img = resized_img[(height-1344)//2:((height-1344)//2)+1344, (width-1344)//2:((width-1344)//2)+1344]
+        resized_img = cv2.resize(resized_img, (1344, 1344))
+
 
         objectWidth = 0
         objectHeight = 0
