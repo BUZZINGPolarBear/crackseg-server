@@ -2,6 +2,7 @@ const crackImgModalBtn = document.getElementById("crack-img-submit-btn");
 const detailedImgModalBtn = document.getElementById("detailed-crack-img-submit-btn");
 var fileName = $("#imgInp").val();
 var length = 2;
+localStorage.setItem("length", 2)
 
 
 imgInp.onchange = evt => {
