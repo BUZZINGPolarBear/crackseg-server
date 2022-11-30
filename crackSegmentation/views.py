@@ -76,8 +76,8 @@ def detailInference(request):
         width = userImg.shape[1]
         height = userImg.shape[0]
 
-        #resized_img = resized_img[(height-1344)//2:((height-1344)//2)+1344, (width-1344)//2:((width-1344)//2)+1344]
-        resized_img = cv2.resize(resized_img, (1344, 1344))
+        resized_img = resized_img[(height-1344)//2:((height-1344)//2)+1344, (width-1344)//2:((width-1344)//2)+1344]
+        # resized_img = cv2.resize(resized_img, (1344, 1344))
 
 
         objectWidth = 0
@@ -187,6 +187,7 @@ def runDetailInference(request):
                          "-out_pred_dir templates/static/images/predicted " \
                          "-out_viz_dir templates/static/images/visualized " \
                          "-out_synthesize_dir crack_width_checker/data"
+    print(run_inference_code)
     os.system(run_inference_code)
     result = {
         "status": 'ok',
