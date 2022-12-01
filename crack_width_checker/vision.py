@@ -15,12 +15,14 @@ from function import *
 
 # 디렉토리를 로컬 폴더 상황에 맞게 변경 요망
 PATH = os.getcwd()+'/crack_width_checker'
-IMG_PATH = PATH+'/data/'
-SAVE_DIR = PATH+'/results/'
+IMG_PATH = PATH + '/data/org_img/'
+MASK_PATH = PATH + '/data/deep_mask/'
+SAVE_DIR = PATH + '/results/'
 
 '''API 확인 후 조치 예정'''
 parser = arg.ArgumentParser()
-parser.add_argument('--data_dir', default=IMG_PATH, help="Directory containing the data")
+parser.add_argument('--img_dir', default=IMG_PATH, help="Directory containing the data")
+parser.add_argument('--mask_dir', default=MASK_PATH, help="Directory containing the data")
 parser.add_argument('--save_dir', default=SAVE_DIR, help="Directory in which to store results")
 parser.add_argument('--mode', default='normal', help="write debug for debug mode")
 parser.add_argument('--img_name', default='GQ2_05_2.jpg', help="One image that we want")
@@ -128,13 +130,19 @@ def show_result(title, total_length_list, total_width_list, save_dir, distance, 
 ############################################################################
 def main4():
     table.make_table()
-
-    for img_file in os.listdir(args.data_dir):  # type: ignore
-        if os.path.isdir(args.data_dir + img_file):
+    img_index = 0
+    for img_file in os.listdir(args.img_dir):  # type: ignore
+        if os.path.isdir(args.img_dir + img_file):
             continue
         if os.path.splitext(img_file)[-1] != '.jpg' and os.path.splitext(img_file)[-1] != '.png':
             continue
-
+        if os.path.isdir(args.mask_dir + img_file):
+            continue
+        if os.path.splitext(img_file)[-1] != '.jpg' and os.path.splitext(img_file)[-1] != '.png':
+            continue
+        mask_file = os.listdir(args.mask_dir)[img_index]  # type: ignore
+        img_index += 1
+        print(mask_file)
         start_time = 0.0
         if args.mode == 'debug':
             start_time = time.time()
@@ -154,14 +162,22 @@ def main4():
         each_save_dir = '{0}{1}/'.format(args.save_dir, img_name)
         if not os.path.exists(each_save_dir):
             os.makedirs(each_save_dir)  # type: ignore
-        img_path = '{0}{1}'.format(args.data_dir, img_file)
+        img_path = '{0}{1}'.format(args.img_dir, img_file)
+        mask_path = '{0}{1}'.format(args.mask_dir, img_file)
         #       print(img_path) # 확인용 디렉토리 출력
 
         #       1.  전처리할 이미지 불러오기
         img = cv2.imread(img_path)
         img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         # img = cv2.imread(IMG_PATH, cv2.IMREAD_GRAYSCALE)
-        cv2.imwrite(each_save_dir + '{0}_01_grayscale.jpg'.format(img_name), img)
+        cv2.imwrite(each_save_dir + '{0}_01_0_grayscale.jpg'.format(img_name), img)
+
+        #       1-1. 딥러닝 마스크 불러오기 - 흑백 영상
+        mask = cv2.imread(mask_path)
+        mask = cv2.cvtColor(mask, cv2.COLOR_BGR2GRAY)
+        resized_mask = cv2.resize(mask, (int(len(img[0])), int(len(img))))
+        otsu_mask = otsu_func(resized_mask)
+        cv2.imwrite(each_save_dir + '{0}_01_1_otsu_mask.jpg'.format(img_name), otsu_mask)
 
         #       2. closing 연산 적용하기 : 검은 색 노이즈 제거
         img = closing_func(img)
@@ -173,6 +189,8 @@ def main4():
 
         # 3-1. 가우시안 블러 적용 기존 : (7,7) -> (3,3)
         img = cv2.GaussianBlur(img, (7, 7), 0)
+        cv2.imwrite(each_save_dir + '{0}_03_0_blur.jpg'.format(img_name), img)
+
         # 3-2 오츄 알고리즘 적용 : 임계값 T로 이진화
         # ?: 적응형 오츄를 사용하지 않은 이유가 무엇인가?(야외라서, 빛의 영향이 골고루 반영되기 때문, 처음에 closing을 해서?
         otsu_img = otsu_func(img)
@@ -185,10 +203,14 @@ def main4():
 
         #        5. 큰 덩어리의 노이즈 제거
         img = circle_noise_removal_using_packing_density_func(img)
-        cv2.imwrite(each_save_dir + '{0}_05_circle_noise_removal.jpg'.format(img_name), img)
+        cv2.imwrite(each_save_dir + '{0}_05_0_circle_noise_removal.jpg'.format(img_name), img)
+
+        #        5-1. 노이즈 제거 영상과 딥러닝 마스크 and 연산
+        img_and_mask = combine_mask(img, otsu_mask)
+        cv2.imwrite(each_save_dir + '{0}_05_1_and_mask.jpg'.format(img_name), img_and_mask)
 
         #        6. 세선화 과정
-        img_thinned = thinning_func(img)
+        img_thinned = thinning_func(img_and_mask)
         cv2.imwrite(each_save_dir + '{0}_06_thinning.jpg'.format(img_name), img_thinned)
 
         #        7. 세선화된 영상에서 각 edge(crack의 뼈대)의 시작점 및 분기점을 검출
@@ -209,33 +231,38 @@ def main4():
         #        7-4. 균열 선분 이미지에 분기점 시각화하기
         color = pm.Color()
         img_thinBGR = cv2.cvtColor(img_thinned, cv2.COLOR_GRAY2BGR)
+        img_BGR = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
         # for i, j, _ in start_interval_point_direction_key_list: cv2.circle(img_thinBGR, (j, i), 10, (0, 255, 0), thickness=3)
         img_length_interval_point = color.display_crack_color(img_thinBGR, total_segment_list, total_length_list,
                                                               mode='interval_point')
-        cv2.imwrite(each_save_dir + '{0}_7_img_length_interval_point.jpg'.format(img_name), img_length_interval_point)
+        cv2.imwrite(each_save_dir + '{0}_7_0_img_length_interval_point.jpg'.format(img_name), img_length_interval_point)
+        img_length_interval_point = color.display_crack_color(img_BGR, total_segment_list, total_length_list,
+                                                              mode='interval_point')
+        cv2.imwrite(each_save_dir + '{0}_7_1_img_length_interval_point.jpg'.format(img_name), img_length_interval_point)
 
         #        8. 선분의 너비를 구하기 위한 함수
         #        8-1. 폭을 계산한 리스트 만들기(모든 균열 포인트마다)
         #        default : adaptive
         #        usable width func : normal, adaptive, profiling_1 profiling_2
         if args.width_func == 'adaptive':
-            total_width_list = adaptive_crack_width_func(img, total_segment_list)
+            total_width_list = adaptive_crack_width_func(img_and_mask, total_segment_list)
         elif args.width_func == 'normal':
-            total_width_list = normal_crack_width_func(img, total_segment_list, radius=7)
+            total_width_list = normal_crack_width_func(img_and_mask, total_segment_list, radius=7)
         elif args.width_func == 'profiling_1':
-            total_width_list, img_pro = profiling_crack_width_func(img, img_thinned, total_chain_list)
+            total_width_list, img_pro = profiling_crack_width_func(img_and_mask, img_thinned, total_chain_list)
         elif args.width_func == 'profiling_re':
-            total_width_list, img_pro = renewal_profiling_crack_width_func(img, img_thinned, total_segment_list,
-                                                                           total_chain_list)
+            total_width_list, img_pro = renewal_profiling_crack_width_func(img_and_mask, img_thinned,
+                                                                           total_segment_list, total_chain_list)
         else:
-            total_width_list, img_pro = profiling_crack_width_func_new(img, img_thinned, total_chain_list)
+            total_width_list, img_pro = profiling_crack_width_func_new(img_and_mask, img_thinned, total_chain_list)
 
         #        8-2. 균열 선분 이미지에 폭을 색상으로 시각화하기
         img_width = color.display_crack_color(img_thinBGR, total_segment_list, total_width_list, mode='width')
         cv2.imwrite(each_save_dir + '{0}_8_thin_width_visualization.jpg'.format(img_name), img_width)
 
         #        8-3. 균열 이미지에 폭을 색상으로 시각화하기
-        img_full_width = fill_crack_width_func(img, img_thinned, total_segment_list, total_chain_list, total_width_list)
+        img_full_width = fill_crack_width_func(img_and_mask, img_thinned, total_segment_list, total_chain_list,
+                                               total_width_list)
         cv2.imwrite(each_save_dir + '{0}_9_full_width_visualization.jpg'.format(img_name), img_full_width)
 
         show_result(args.width_func, total_length_list, total_width_list, each_save_dir, distance, lens)
@@ -265,3 +292,4 @@ def main4():
 
 if __name__ == '__main__':
     main4()
+

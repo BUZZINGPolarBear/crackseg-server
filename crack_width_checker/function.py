@@ -33,6 +33,12 @@ neighbor_key = ['NW', 'N', 'NE', 'E', 'SE', 'S', 'SW', 'W']
 
 color = pm.Color()
 
+def combine_mask(img, mask):
+    if img.shape != mask.shape:
+        print(img.shape, mask.shape)
+    if type(img) != type(mask) :
+        print(type(img) , type(mask))
+    return cv2.bitwise_and(img, mask)
 
 def find_max(list):
     block_max = []
