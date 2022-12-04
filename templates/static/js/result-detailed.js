@@ -73,7 +73,7 @@ window.onload = async function(){
 
     crackvisionJson.push(data)
     html=`
-    전체 균열 길이: ${data.all_crack_length}mm<br>
+    전체 균열 길이: ${data.all_crack_length}cm<br>
     평균 균열 너비: ${data.average_crack_width}mm<br>
     최대 균열 너비: ${data.real_max_width}mm
     `
