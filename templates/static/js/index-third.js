@@ -43,7 +43,7 @@ async function showCrackInfo(){
 
   $('#max-width-td').append(crack_info.real_max_width)
   $('#average-width-td').append(crack_info.average_crack_width)
-  $('#total-width-td').append(crack_info.all_crack_length)
+  $('#total-width-td').append(crack_info.all_crack_length * ((localStorage.getItem("width")/448) + localStorage.getItem("height")/448))
 
 }
 

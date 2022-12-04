@@ -31,6 +31,8 @@ def fileUpload(request):
         fileupload.save()
 
         resized_img = cv2.imread('media/images/' + str(img).replace(' ', '_'))
+        width = resized_img.shape[1]
+        height = resized_img.shape[0]
         resized_img = cv2.resize(resized_img, (448, 448))
         cv2.imwrite('media/resized' +'/resized_'+ str(title)+'_'+str(length)+'.jpg', resized_img)
         cv2.imwrite('crack_width_checker/data/org_img' + '/resized_' + str(title) + '_' + str(length) + '.jpg', resized_img)
@@ -44,6 +46,8 @@ def fileUpload(request):
         result = {
             "status": 'ok',
             "code" : 200,
+            "width" : width,
+            "height" : height,
             "message": str(img) + "segmentation end"
         }
         return JsonResponse(result)

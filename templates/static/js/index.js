@@ -8,15 +8,17 @@ localStorage.setItem("length", 2)
 imgInp.onchange = evt => {
   const [file] = imgInp.files
   if (file) {
-    crack_img.src = URL.createObjectURL(file)
-    localStorage.setItem("pic_url", toString(crack_img.src))
+        crack_img.src = URL.createObjectURL(file)
+        localStorage.setItem("pic_url", toString(crack_img.src))
+
   }
 }
 
 $("#imgInp").on('change',function(){
-  fileName = $("#imgInp").val();
-  localStorage.setItem("original_img_name", fileName.split('\\')[2])
-  $(".upload-name").val(fileName);
+    fileName = $("#imgInp").val();
+    localStorage.setItem("original_img_name", fileName.split('\\')[2])
+
+    $(".upload-name").val(fileName);
 });
 
 function toLoadingPage(){
@@ -65,8 +67,10 @@ crackImgModalBtn.onclick = function(){
         body: file_upload_formdata,
         redirect: 'follow'
         };
-        await postAPI(hostAddr+"crack-seg/fileupload/", requestOptions)
+        response = await postAPI(hostAddr+"crack-seg/fileupload/", requestOptions)
 
+        localStorage.setItem("width", response.width)
+        localStorage.setItem("height", response.height)
         $('#loading_status').empty();
         $('#loading_status').append('검출된 균열 분석중...')
 
