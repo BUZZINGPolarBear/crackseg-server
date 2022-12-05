@@ -27,6 +27,9 @@ class Lens:
         print("SPP(0.39):", self.SPP, ",  HFOV(1572):", self.HFOV, ", PMAG(0.004):", self.PMAG)
         self.R = 0.045 * ((self.WD) ** 2) - 0.355 * (self.WD) + 0.82  # 감소계수
 
+        #~~~~~~~~~~~~~~~~ REMOVABLE ~~~~~~~~~~~~~~~~~~~~~~
+        self.R *= 1.2
+
     def real_width(self, pixel_width_list):
         real_width_list = [pixels * self.SPP * self.R for pixels in pixel_width_list]
         # [math.exp((pixel_num * SPP - (0.28 * WD) - 2.23) / 0.578) for pixel_num in pixel_num_list]

@@ -16,7 +16,7 @@ IMG_PATH = PATH+'/data/'
 SAVE_DIR = PATH+'/results/'
 
 MIN_CIRCULAR_MASK_RADIUS_RANGE = 7
-MAX_CIRCULAR_MASK_RADIUS_RANGE = 15
+MAX_CIRCULAR_MASK_RADIUS_RANGE = 50  # 원래 : 15
 
 direction_set = ['N', 'NW', 'W', 'SW', 'S', 'SE', 'E', 'NE']
 positive_table = direction_set[2:] + direction_set[:2]
@@ -29,16 +29,10 @@ n_f_table = direction_set[5:] + direction_set[:5]  # 진행 방향의 멀리의 
 # ['E', 'NE', 'N', 'NW', 'W', 'SW', 'S', 'SE']
 neighbor_key = ['NW', 'N', 'NE', 'E', 'SE', 'S', 'SW', 'W']
 
-
+import params as pm
 
 color = pm.Color()
 
-def combine_mask(img, mask):
-    if img.shape != mask.shape:
-        print(img.shape, mask.shape)
-    if type(img) != type(mask) :
-        print(type(img) , type(mask))
-    return cv2.bitwise_and(img, mask)
 
 def find_max(list):
     block_max = []
@@ -117,7 +111,7 @@ def search_width_in_table(total_item_list, radius, crack_area_pixel_num):
 # ac1에 있던 함수들 추가 -----------------------------------------------------
 
 def closing_func(img):
-    kernel = np.ones((15, 15), np.uint8)
+    kernel = np.ones((19, 19), np.uint8)
     img_closing = cv2.morphologyEx(img, cv2.MORPH_CLOSE, kernel)
     result = cv2.subtract(img_closing, img)
     return result
@@ -126,8 +120,8 @@ def closing_func(img):
 def erode_func(img):
     kernel = np.ones((3, 3), np.uint8)
     img_closing = cv2.morphologyEx(img, cv2.MORPH_ERODE, kernel)
-    # result = cv2.subtract(img_closing, img)
-    return img_closing
+    result = cv2.subtract(img_closing, img)
+    return result
 
 
 def sharpening_func(img):
@@ -135,6 +129,16 @@ def sharpening_func(img):
                        [-1, 5, -1],
                        [0, -1, 0]])
     img = cv2.filter2D(img, -1, kernel)
+    return img
+
+
+def impacting_func(img, low=200, high=255):
+    # int(input("최댓값 : "))
+    height, width = img.shape
+    for i in range(height):
+        for a in range(width):
+            if low <= img[i][a] <= high:
+                img[i][a] = 255
     return img
 
 
@@ -163,7 +167,23 @@ def closing_opening_func(img):
 
 def otsu_func(img):
     ret2, th2 = cv2.threshold(img, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
-    return th2
+    print(ret2)
+    return ret2, th2
+
+
+def threshold_otsu_func(img, th):
+    # ret2,th2 = cv2.threshold(img,0,255,cv2.THRESH_OTSU)
+    # th2 = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY_INV, blk_size, C)
+    ret2, th2 = cv2.threshold(img, th, 255, cv2.THRESH_BINARY)
+    print(ret2)
+    return ret2, th2
+
+
+def adaptive_gaussian_otsu_func(img):
+    blk_size = 9  # 블럭 사이즈
+    C = 5  # 차감 상수
+    th3 = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, blk_size, C)
+    return th3
 
 
 def noise_reduction_func(img, kernel_r=3, threshold=220):
@@ -197,6 +217,14 @@ def circle_noise_removal_using_packing_density_func(img):
 
         if key > threshold: img[top: top + height, left: left + width] = 0
     return img
+
+
+def combine_mask(img, mask):
+    if img.shape != mask.shape:
+        print(img.shape, mask.shape)
+    if type(img) != type(mask):
+        print(type(img), type(mask))
+    return cv2.bitwise_and(img, mask)
 
 
 def thinning_func(img):
@@ -336,6 +364,7 @@ def search_edge_segment(img, start_interval_point_direction_key_list):
                             total_chain_list.append(chain_code)
                         break
                     else:
+                        # print(row, col, possible_key, len(possible_key), img.shape)
                         next_point = [next_key for next_key in possible_key if
                                       img[tuple(direction_dict[next_key])] == 255]
                         # if end_point:
@@ -385,7 +414,7 @@ def direction_func(direction, LorR=-1):
     d = direction_set.index(direction)
     positive_d = positive_table[d]
     negative_d = negative_table[d]
-    p_c = p_c_table[d]
+    p_c = p_c_table[d]  # type: ignore
     p_f = p_f_table[d]
     n_c = n_c_table[d]
     n_f = n_f_table[d]
@@ -453,35 +482,39 @@ def finding_white_until_black(img, img_th, start, direction, LorR=0):
     # while 끝!!
     return width
 
-# 추가된 너비 측정 방식 - 길이 수정 - new one
+
+# 너비 색상 표시 기법
 def fill_crack_width_func(img, img_th, total_segment_list, total_chain_list, total_width_list):
     img_BGR = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
     num_1st_lowest, num_2nd, num_3th, num_4th_highest = (0, 4, 5, 60)
-    try:
-        for j in range(len(total_width_list)):
-            segment_block = total_chain_list[j]
-            center_pixel_block = total_segment_list[j]
-            width_block = total_width_list[j]
 
-            for i in range(0, len(segment_block)):
-                start = center_pixel_block[i-1]
-                if i == 0 : direc = segment_block[1]
-                else :      direc = segment_block[i]
-                width = width_block[i]
-                clr = color.pick_color_paint(num_1st_lowest, num_2nd, num_3th, num_4th_highest, width)
-                # left : 진행 방향 기준 왼쪽 수직 방향
-                img_BGR  = fill_color_until_black(img_BGR, img, img_th, start, direc, LorR=0, clr = clr)
-                # right : 진행 방향 기준 오른쪽 수직 방향
-                img_BGR = fill_color_until_black(img_BGR, img, img_th, start, direc, LorR=1, clr = clr)
-            #
+    for j in range(len(total_width_list)):
+        segment_block = total_chain_list[j]
+        center_pixel_block = total_segment_list[j]
+        width_block = total_width_list[j]
+        for i in range(len(segment_block)):
+            if len(segment_block) != len(width_block):
+                print(len(segment_block), len(width_block), segment_block, width_block)
+                break
+            start = center_pixel_block[i - 1]
+            if i == 0:
+                direc = segment_block[1]
+            else:
+                direc = segment_block[i]
+            width = width_block[i]
+            clr = color.pick_color_paint(num_1st_lowest, num_2nd, num_3th, num_4th_highest, width)
+            # left : 진행 방향 기준 왼쪽 수직 방향
+            img_BGR = fill_color_until_black(img_BGR, img, img_th, start, direc, LorR=0, clr=clr)
+            # right : 진행 방향 기준 오른쪽 수직 방향
+            img_BGR = fill_color_until_black(img_BGR, img, img_th, start, direc, LorR=1, clr=clr)
         #
-    except IndexError:
-        print("Index Error")
+    #
     return img_BGR
 
 
-# 추가된 너비 측정 방식 - 길이 수정 - new one
+# 추가된 너비 측정 방식 re
 def renewal_profiling_crack_width_func(img, img_th, total_segment_list, total_chain_list):
+    max_width = 23  # 20>1.3194938271604937, 23>1.5174179012345677
     total_width_list = []
     for j in range(len(total_chain_list)):
         segment_block = total_chain_list[j]
@@ -497,8 +530,8 @@ def renewal_profiling_crack_width_func(img, img_th, total_segment_list, total_ch
             left_width = finding_white_until_black(img, img_th, start, direc, LorR=0)
             # right : 진행 방향 기준 오른쪽 수직 방향
             right_width = finding_white_until_black(img, img_th, start, direc, LorR=1)
-
-            segment_width_block.append(left_width + right_width)
+            total_width = left_width + right_width - 1
+            segment_width_block.append(max(total_width, 1))  # min(total_width, max_width)
 
         #
         total_width_list.append(segment_width_block)
@@ -600,9 +633,16 @@ def adaptive_crack_width_func(img, total_segment_list):
 
     for segment_block in total_segment_list:
         width_list = []
+        len_seg = len(segment_block)
+        visit_list = np.zeros(len_seg)
+        visit_idx = 0
+        try_idx = 0
         for row, col in segment_block:
+            # if try_idx != visit_idx :
+            #     print(try_idx, visit_idx, visit_list)
             try:
                 tempRadius = tempRatio = tempArea = 0
+                crack_width = -2
                 for radius, mask, mask_area_pixel_num in circular_mask_cache_zip_list:
                     crack_area_pixel_num = masking_circular_area(img, row, col, radius, mask)
                     if crack_area_pixel_num < mask_area_pixel_num / 2:
@@ -611,16 +651,27 @@ def adaptive_crack_width_func(img, total_segment_list):
                             crack_width = search_width_in_table(total_rxw_item_list, tempRadius, tempArea)
                         else:
                             crack_width = search_width_in_table(total_rxw_item_list, radius, crack_area_pixel_num)
-                        width_list.append(crack_width)
                         break
                     tempRadius = radius
                     tempArea = crack_area_pixel_num
                     tempRatio = crack_area_pixel_num / mask_area_pixel_num
-
+                width_list.append(crack_width)
+                visit_list[try_idx] = 1
+                try_idx += 1
             except ValueError:
                 # 이미지의 4방면의 끝은 원 마스크의 인덱스를 적용하지 못하기 때문에, 연산 불가 에러가 나왔으며, 이경우 너비 구하기를 포기하고 너비를 0으로 선언한다.
-                width_list.append(0)
-
+                err = "error"
+                # print(err)#,width_list)
+            visit_idx += 1
+            if try_idx < visit_idx:
+                width_list.append(1)
+                visit_list[try_idx] = 1
+                # print(try_idx, visit_idx, visit_list[try_idx], width_list[try_idx], width_list)
+                try_idx += 1
+            #
+        #
+        if len(segment_block) != len(width_list):
+            print(len(segment_block), len(width_list))
         total_width_list.append(width_list)
 
     return total_width_list
@@ -647,4 +698,6 @@ def normal_crack_width_func(img, total_segment_list, radius=20):
         total_width_list.append(width_list)
 
     return total_width_list
+
+
 
