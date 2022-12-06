@@ -34,11 +34,17 @@ import params as pm
 color = pm.Color()
 
 
+def try_max(list):
+    if len(list) == 0:
+        list.append(0)
+    return max(list)
+
 def find_max(list):
     block_max = []
     for block in list:
-        block_max.append(max(block))
+        block_max.append(try_max(block))
     return (block_max)
+
 
 
 def direction_dictionary(row, col):

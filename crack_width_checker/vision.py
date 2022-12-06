@@ -55,7 +55,7 @@ def show_result(title, total_length_list, total_width_list, save_dir, distance, 
 
     total_max_width_list = []
     total_average_width_list = []
-
+    if len(total_width_list) == 0 : total_width_list.append([0])
     for width_block in total_width_list:
         # pdb.set_trace()
         # 너비가 0인 경우는 이미지의 외각에서 벌어나는 인덱스 에러 상황뿐이다. 평균을 구하거나 연산 시 제외
@@ -65,15 +65,14 @@ def show_result(title, total_length_list, total_width_list, save_dir, distance, 
             max_width = 0
             average_width = 0
         else:
-            max_width = max(width_block_zero_removed)
+            max_width = try_max(width_block_zero_removed)
             average_width = sum(width_block_zero_removed) / len(width_block_zero_removed)
 
         total_max_width_list.append(max_width)
         total_average_width_list.append(average_width)
     #
-
     total_length = sum(total_length_list)
-    total_max_width = max(total_max_width_list)
+    total_max_width = try_max(total_max_width_list)
     total_average_width = sum(total_average_width_list) / len(total_average_width_list)
 
     real_total_max_width_list = lens.real_width(total_max_width_list)

@@ -53,6 +53,7 @@
     position: absolute;
     font-size: 2.5em;
     font-weight: bolder;
+    color: #237f45
 }
 .cropped-imgs{
     max-width: 100%;
