@@ -183,6 +183,8 @@ def detailInference(request):
 
 
         row_col_info = {
+            "status": 'ok',
+            "code": 200,
             'row_line': row_cnt,
             'col_line': col_cnt,
         }
