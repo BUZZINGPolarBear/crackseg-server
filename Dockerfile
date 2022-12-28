@@ -1,16 +1,18 @@
 # ./Dockerfile
 FROM python:3.10
-WORKDIR /usr/src/app
+ENV PYTHONUNBUFFERED 1
+RUN apt-get -y update
+RUN apt-get -y install vim
 
-## Install packages
-RUN  pip install --upgrade pip
-COPY requirements.txt ./
+RUN mkdir /srv/docker-server
+ADD . /srv/docker-server
+
+WORKDIR /srv/docker-server
+
+RUN pip install --upgrade pip
+RUN apt-get -y install libgl1-mesa-glx
 RUN pip install -r requirements.txt
+RUN pip install opencv-python
 
-## Copy all src files
-COPY . .
-
-## Run the application on the port 8080
 EXPOSE 8000
-
-CMD python manage.py runserver o.o.o.o:8000
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
