@@ -1,15 +1,15 @@
-# tasks.py
-from __future__ import absolute_import, unicode_literals
-from celery import shared_task
-from datetime import datetime
+import pika
 
-from aiclops_server.celery import app
+# RabbitMQ에 연결
+connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
+channel = connection.channel()
 
-# test 용 함수
-@shared_task
-def printTime():
-    print("Testtime: ", datetime.now())
+# 송신할 큐 이름
+queue_name = 'Q_API'
 
-@shared_task
-def printName(name):
-    print(f"Hello {name}")
+# 큐에 메시지 송신
+message = 'Hello, RabbitMQ!'
+channel.basic_publish(exchange='', routing_key=queue_name, body=message)
+
+# 연결 종료
+connection.close()

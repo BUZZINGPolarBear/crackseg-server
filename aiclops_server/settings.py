@@ -32,6 +32,7 @@ def get_secret(setting):
 SECRET_KEY = get_secret("SECRET_KEY")
 MQTT_USERNAME = get_secret("MQTT_USERNAME")
 MQTT_PASSWORD = get_secret("MQTT_PASSWORD")
+MQTT_LOCAL_BROKER_UTL = get_secret("MQTT_LOCAL_BROKER_UTL")
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
@@ -152,7 +153,7 @@ CRONJOBS = [
 ]
 
 # Celery
-CELERY_BROKER_URL = 'amqp://localhost'  # 로컬 테스트용
+CELERY_BROKER_URL = MQTT_LOCAL_BROKER_UTL  # 로컬 테스트용
 CELERY_RESULT_BACKEND = 'django-db'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
