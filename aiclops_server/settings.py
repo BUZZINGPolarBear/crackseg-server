@@ -11,17 +11,32 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
-import os
+import os, json
+from django.core.exceptions import ImproperlyConfigured
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+secret_file = os.path.join(BASE_DIR, './aiclops_server/secrets.json')
 
+with open(secret_file) as f:
+    secrets = json.loads(f.read())
 
+def get_secret(setting):
+    """비밀 변수를 가져오거나 명시적 예외를 반환한다."""
+    try:
+        return secrets[setting]
+    except KeyError:
+        error_msg = "Set the {} environment variable".format(setting)
+        raise ImproperlyConfigured(error_msg)
+
+SECRET_KEY = get_secret("SECRET_KEY")
+MQTT_USERNAME = get_secret("MQTT_USERNAME")
+MQTT_PASSWORD = get_secret("MQTT_PASSWORD")
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-!g_4@)7gp)aj+u5e=t&v=h#08_f098gqq%z*_bx3e$8*h**)g1"
+SECRET_KEY = SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -42,6 +57,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    'django_celery_beat',
+    'django_celery_results',
 ]
 
 MIDDLEWARE = [
@@ -133,3 +150,10 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 CRONJOBS = [
     ('*/1 * * * *', 'aiclops_server.cron.delete_files')
 ]
+
+# Celery
+CELERY_BROKER_URL = 'amqp://localhost'  # 로컬 테스트용
+CELERY_RESULT_BACKEND = 'django-db'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
