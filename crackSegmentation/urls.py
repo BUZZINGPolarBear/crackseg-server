@@ -14,4 +14,6 @@ urlpatterns = [
     path('vision-inference/info/', visionInferenceInfo, name="visionInfernceInfo"),
     path('remove-imgs/', removeImgs, name="remove-images"),
     path('remove-imgs/detailed', removeUnusefulImgs, name="remove-unuseful images"),
+
+    path('run/detailed/mq', runMQDetailInference),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

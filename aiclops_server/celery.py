@@ -13,8 +13,8 @@ app.config_from_object('django.conf:settings', namespace='CELERY')
 
 # 작업 큐 생성
 app.conf.task_queues = (
-    Queue("Q_API", routing_key="API.#"),
-    Queue("Q_AI", routing_key="AI.#"),
+    Queue("Q_API", routing_key="Q_API"),
+    Queue("Q_AI", routing_key="Q_AI"),
 )
 #등록된 장고 앱 설정에서 task 불러오기
 app.autodiscover_tasks()

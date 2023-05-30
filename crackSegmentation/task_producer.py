@@ -21,7 +21,7 @@ body = {
     "origId": "e32d2e35EZ33846Azx33",
     "analysisId": "d277323f23aa425abd4cd772ceba5566",
     "index": 3,
-    "fileDir": "/Users/joonhwi/Desktop/KAU/5-1/capstone/crack_semantic_segmentation/crack_segmentation_dataset/images/CFD_001.jpg",
+    "fileDir": "/Users/joonhwi/Desktop/KAU/5-1/capstone/rabbitTest/",
     "distance": "4.71"
 }
 
@@ -34,7 +34,8 @@ message = {
 message_json = json.dumps(message['body'])
 
 # 큐에 메시지 송신
-channel.basic_publish(exchange='', routing_key=queue_name, body=message_json)
+channel.basic_publish(exchange='', routing_key=queue_name, body=message_json, properties=pika.BasicProperties(headers=header))
+
 
 # 연결 종료
 connection.close()

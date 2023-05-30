@@ -110,24 +110,6 @@ def detailInference(request):
         row_cnt = objectWidth//448
         col_cnt = objectHeight//448
 
-        # for col_i in range(1, row_cnt+1):
-        #     for row_i in range(1, col_cnt+1):
-        #         tp1 = ((row_i-1) * 448, row_i*448)
-        #         tp2 = ((col_i-1) * 448, col_i*448)
-        #         print("------------------")
-        #         print(row_cnt + col_cnt)
-        #         print(tp1)
-        #         print(tp2)
-        #         print("------------------")
-        #         cv2.imwrite(
-        #             'media/cropped' + '/cropped_'+str(row_i)+'*'+str(col_i)+'_'+ str(title) + '_' + str(length) + '.jpg',
-        #                     addZeroPadding[(row_i-1) * 448:row_i*448, (col_i-1)*448:col_i*448])
-        #
-        #         cv2.imwrite(
-        #             'templates/static/images/cropped' + '/cropped_' + str(row_i) + '*' + str(col_i) + '_' + str(title) + '_' + str(
-        #                 length) + '.jpg',
-        #             addZeroPadding[(row_i - 1) * 448:row_i * 448, (col_i - 1) * 448:col_i * 448])
-
         resized_img = cv2.resize(resized_img, (1344, 1344))
 
         leftTop = resized_img[0:448, 0:448]
@@ -202,6 +184,26 @@ def runDetailInference(request):
                          "-img_dir media/resized/ " \
                          "-model_path crack_segmentation/model/model_best.pt " \
                          "-out_pred_dir templates/static/images/predicted " \
+                         "-out_viz_dir templates/static/images/visualized " \
+                         "-out_synthesize_dir crack_width_checker/data/deep_mask"
+    print(run_inference_code)
+    os.system(run_inference_code)
+    result = {
+        "status": 'ok',
+        "code": 200,
+        "message": "detailed inference code done"
+    }
+    return JsonResponse(result)
+
+def runMQDetailInference(request):
+    fileDir = request.GET.get("fileDir")
+    origId = request.GET.get("origId")
+    print(fileDir)
+    run_inference_code = "torchrun crack_segmentation/inference_unet.py " \
+                         "-model_type resnet34 " \
+                         f"-img_dir {fileDir} " \
+                         "-model_path crack_segmentation/model/model_best.pt " \
+                         f"-out_pred_dir {fileDir}/{origId}-prediction/ " \
                          "-out_viz_dir templates/static/images/visualized " \
                          "-out_synthesize_dir crack_width_checker/data/deep_mask"
     print(run_inference_code)
@@ -359,7 +361,9 @@ def removeUnusefulImgs(request):
  비전 추론 알고리즘(오츄) 돌리기
 '''
 def visionInference(request):
-    os.system("python crack_width_checker/vision.py --width_func profiling_re")
+    fileDir = request.GET.get("fileDir")
+    origId = request.GET.get("origId")
+    os.system(f"python crack_width_checker/vision.py --width_func profiling_re --img_dir {fileDir}/{origId}-prediction/ --save_dir {fileDir}/{origId}-prediction/results")
     result = {
         "status": 'ok',
         "code": 200,
@@ -407,6 +411,42 @@ def visionInferenceInfo(request):
 
             return JsonResponse(crack_info_dict)
 
+@csrf_exempt
+def rabbitVisionInferenceInfo(request):
+    if request.method == 'POST':
+        request_body = json.loads(request.body)
+        pic_name = request_body['img_name']
+        length = request_body['length']
+        pic_name = pic_name.split('.')[0]
+        if os.path.exists('crack_width_checker/results/resized_'+pic_name+'/'+str(length)+'000profiling_re_result_summary.txt'):
+            textFile = open(r'crack_width_checker/results/resized_'+pic_name+'/'+str(length)+'000profiling_re_result_summary.txt', "r")
+            first_line = textFile.readline().split(' ')[1]
+            second_line = textFile.readline().split(' ')[1]
+            first_line = re.sub(r'[\n]', '', first_line)
+            second_line = re.sub(r'[\n]', '', second_line)
+            first_line = float(first_line)
+            second_line = float(second_line)
+
+            csvFile = open(r'crack_width_checker/results/resized_'+pic_name+'/profiling_re_result_summary.csv', "r")
+            csvReader = csv.reader(csvFile)
+
+            index = 0
+            all_crack_length = 0.0
+            average_crack_width = 0.0
+            for line in csvReader:
+                if index == 1: all_crack_length = float(line[0])
+                if index == 5: average_crack_width = float(line[0])
+                index += 1
+
+            crack_info_dict = {
+                'real_max_width': second_line,
+                'all_crack_length' : all_crack_length,
+                'average_crack_width': average_crack_width
+            }
+            shutil.copyfile('crack_width_checker/results/resized_'+pic_name+'/resized_'+pic_name+'_9_full_width_visualization.jpg',
+                            'templates/static/images/analyzed/analyzed_'+pic_name+'.jpg')
+
+            return JsonResponse(crack_info_dict)
 
 
 def rescale(image, width):
