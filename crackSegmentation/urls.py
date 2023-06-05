@@ -16,5 +16,5 @@ urlpatterns = [
     path('remove-imgs/detailed', removeUnusefulImgs, name="remove-unuseful images"),
 
     path('app/run/detailed', runMQDetailInference),
-    path('app/run/detailed/test', testrunMQDetailInference),
+    # path('app/run/detailed/test', testrunMQDetailInference),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

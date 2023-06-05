@@ -214,88 +214,90 @@ def rename_image_file(file_path, new_file_name):
     new_file_path = os.path.join(directory, new_file_name)
     os.rename(file_path, new_file_path)
 
-def testrunMQDetailInference(request):
-    json_data = json.loads(request.body)
-
-    # 필요한 데이터 추출
-    op = json_data['header']['op']
-    type = json_data['header']['type']
-    tid = json_data['header']['tid']
-    msgFrom = json_data['header']['msgFrom']
-    timestamp = json_data['header']['timestamp']
-    origId = json_data['body']['origId']
-    analysisId = json_data['body']['analysisId']
-    index = json_data['body']['index']
-    fileDir = json_data['body']['fileDir']
-    distance = json_data['body']['distance']
-
-
-    result_dict={}
-    result_arr=[]
-
-    origin_dir = get_image_files(fileDir)
-    for pic_name in origin_dir:
-        print(pic_name)
-        distance_meter: int
-        try:
-            distance_meter = distance.split('.')[0]
-        except:
-            distance_meter = 1
-        rename_image_file(fileDir + pic_name, f"{pic_name.split('.')[0]}_{distance_meter}.{pic_name.split('.')[1]}")
-
-    run_inference_code = "torchrun crack_segmentation/inference_unet.py " \
-                         "-model_type resnet34 " \
-                         f"-img_dir {fileDir} " \
-                         "-model_path crack_segmentation/model/model_best.pt " \
-                         f"-out_pred_dir {fileDir}/{origId}-prediction/ " \
-                         "-out_viz_dir templates/static/images/visualized " \
-                         "-out_synthesize_dir crack_width_checker/data/deep_mask"
-
-    os.system(run_inference_code)
-
-    os.system(
-        f"python crack_width_checker/vision.py --width_func profiling_re --img_dir {fileDir}{origId}-prediction/ --save_dir {fileDir}{origId}-prediction/results")
-
-    image_files = get_image_files(f"{fileDir}{origId}-prediction/")
-    print(image_files)
-    index = 0
-    for pic_name in image_files:
-        orig_pic_name = pic_name
-        pic_name = pic_name.split('.')[0]
-        distance = pic_name.split('_')[-1]
-        if os.path.exists(f'{fileDir}{origId}-prediction/results{pic_name}/{distance}000profiling_re_result_summary.txt'):
-            textFile = open(f'{fileDir}{origId}-prediction/results{pic_name}/{distance}000profiling_re_result_summary.txt', "r")
-            first_line = textFile.readline().split(' ')[1]
-            second_line = textFile.readline().split(' ')[1]
-            first_line = re.sub(r'[\n]', '', first_line)
-            second_line = re.sub(r'[\n]', '', second_line)
-            first_line = float(first_line)
-            second_line = float(second_line)
-
-            csvFile = open(f'{fileDir}{origId}-prediction/results{pic_name}/profiling_re_result_summary.csv', "r")
-            csvReader = csv.reader(csvFile)
-
-            index = 0
-            all_crack_length = 0.0
-            average_crack_width = 0.0
-            for line in csvReader:
-                if index == 1: all_crack_length = float(line[0])
-                if index == 5: average_crack_width = float(line[0])
-                index += 1
-
-            crack_info_dict = {
-                "originId": origId,
-                "analysisId": analysisId,
-                "index": index,
-                "fileDir": f"{fileDir}{origId}-prediction/{orig_pic_name}",
-                'real_max_width': second_line,
-                'all_crack_length': all_crack_length,
-                'average_crack_width': average_crack_width
-            }
-            index += 1
-            result_arr.append(crack_info_dict)
-    result_dict={"header": json_data['header'],"body": result_arr}
-    return JsonResponse(result_dict)
+# def testrunMQDetailInference(request):
+#     if request.method == 'POST':
+#         try:
+#         json_data = json.loads(request.body)
+#
+#         # 필요한 데이터 추출
+#         op = json_data['header']['op']
+#         type = json_data['header']['type']
+#         tid = json_data['header']['tid']
+#         msgFrom = json_data['header']['msgFrom']
+#         timestamp = json_data['header']['timestamp']
+#         origId = json_data['body']['origId']
+#         analysisId = json_data['body']['analysisId']
+#         index = json_data['body']['index']
+#         fileDir = json_data['body']['fileDir']
+#         distance = json_data['body']['distance']
+#
+#
+#         result_dict={}
+#         result_arr=[]
+#
+#         origin_dir = get_image_files(fileDir)
+#         for pic_name in origin_dir:
+#             print(pic_name)
+#             distance_meter: int
+#             try:
+#                 distance_meter = distance.split('.')[0]
+#             except:
+#                 distance_meter = 1
+#             rename_image_file(fileDir + pic_name, f"{pic_name.split('.')[0]}_{distance_meter}.{pic_name.split('.')[1]}")
+#
+#         run_inference_code = "torchrun crack_segmentation/inference_unet.py " \
+#                              "-model_type resnet34 " \
+#                              f"-img_dir {fileDir} " \
+#                              "-model_path crack_segmentation/model/model_best.pt " \
+#                              f"-out_pred_dir {fileDir}/{origId}-prediction/ " \
+#                              "-out_viz_dir templates/static/images/visualized " \
+#                              "-out_synthesize_dir crack_width_checker/data/deep_mask"
+#
+#         os.system(run_inference_code)
+#
+#         os.system(
+#             f"python crack_width_checker/vision.py --width_func profiling_re --img_dir {fileDir}{origId}-prediction/ --save_dir {fileDir}{origId}-prediction/results")
+#
+#         image_files = get_image_files(f"{fileDir}{origId}-prediction/")
+#         print(image_files)
+#         index = 0
+#         for pic_name in image_files:
+#             orig_pic_name = pic_name
+#             pic_name = pic_name.split('.')[0]
+#             distance = pic_name.split('_')[-1]
+#             if os.path.exists(f'{fileDir}{origId}-prediction/results{pic_name}/{distance}000profiling_re_result_summary.txt'):
+#                 textFile = open(f'{fileDir}{origId}-prediction/results{pic_name}/{distance}000profiling_re_result_summary.txt', "r")
+#                 first_line = textFile.readline().split(' ')[1]
+#                 second_line = textFile.readline().split(' ')[1]
+#                 first_line = re.sub(r'[\n]', '', first_line)
+#                 second_line = re.sub(r'[\n]', '', second_line)
+#                 first_line = float(first_line)
+#                 second_line = float(second_line)
+#
+#                 csvFile = open(f'{fileDir}{origId}-prediction/results{pic_name}/profiling_re_result_summary.csv', "r")
+#                 csvReader = csv.reader(csvFile)
+#
+#                 index = 0
+#                 all_crack_length = 0.0
+#                 average_crack_width = 0.0
+#                 for line in csvReader:
+#                     if index == 1: all_crack_length = float(line[0])
+#                     if index == 5: average_crack_width = float(line[0])
+#                     index += 1
+#
+#                 crack_info_dict = {
+#                     "originId": origId,
+#                     "analysisId": analysisId,
+#                     "index": index,
+#                     "fileDir": f"{fileDir}{origId}-prediction/{orig_pic_name}",
+#                     'real_max_width': second_line,
+#                     'all_crack_length': all_crack_length,
+#                     'average_crack_width': average_crack_width
+#                 }
+#                 index += 1
+#                 result_arr.append(crack_info_dict)
+#         result_dict={"header": json_data['header'],"body": result_arr}
+#         return JsonResponse(result_dict)
 
 
 
@@ -303,7 +305,6 @@ def testrunMQDetailInference(request):
 def runMQDetailInference(request):
     if request.method == 'POST':
         try:
-            # POST 요청의 본문(body)에서 JSON 데이터 가져오기
             json_data = json.loads(request.body)
 
             # 필요한 데이터 추출
@@ -318,6 +319,20 @@ def runMQDetailInference(request):
             fileDir = json_data['body']['fileDir']
             distance = json_data['body']['distance']
 
+            result_dict = {}
+            result_arr = []
+
+            origin_dir = get_image_files(fileDir)
+            for pic_name in origin_dir:
+                print(pic_name)
+                distance_meter: int
+                try:
+                    distance_meter = distance.split('.')[0]
+                except:
+                    distance_meter = 1
+                rename_image_file(fileDir + pic_name,
+                                  f"{pic_name.split('.')[0]}_{distance_meter}.{pic_name.split('.')[1]}")
+
             run_inference_code = "torchrun crack_segmentation/inference_unet.py " \
                                  "-model_type resnet34 " \
                                  f"-img_dir {fileDir} " \
@@ -328,19 +343,58 @@ def runMQDetailInference(request):
 
             os.system(run_inference_code)
 
+            os.system(
+                f"python crack_width_checker/vision.py --width_func profiling_re --img_dir {fileDir}{origId}-prediction/ --save_dir {fileDir}{origId}-prediction/results")
 
-            result = {
-                "status": 'ok',
-                "code": 200,
-                "message": "detailed inference code done"
-            }
+            image_files = get_image_files(f"{fileDir}{origId}-prediction/")
+            print(image_files)
+            index = 0
+            for pic_name in image_files:
+                orig_pic_name = pic_name
+                pic_name = pic_name.split('.')[0]
+                distance = pic_name.split('_')[-1]
+                if os.path.exists(
+                        f'{fileDir}{origId}-prediction/results{pic_name}/{distance}000profiling_re_result_summary.txt'):
+                    textFile = open(
+                        f'{fileDir}{origId}-prediction/results{pic_name}/{distance}000profiling_re_result_summary.txt',
+                        "r")
+                    first_line = textFile.readline().split(' ')[1]
+                    second_line = textFile.readline().split(' ')[1]
+                    first_line = re.sub(r'[\n]', '', first_line)
+                    second_line = re.sub(r'[\n]', '', second_line)
+                    first_line = float(first_line)
+                    second_line = float(second_line)
 
+                    csvFile = open(f'{fileDir}{origId}-prediction/results{pic_name}/profiling_re_result_summary.csv',
+                                   "r")
+                    csvReader = csv.reader(csvFile)
 
-            return JsonResponse(result)
+                    index = 0
+                    all_crack_length = 0.0
+                    average_crack_width = 0.0
+                    for line in csvReader:
+                        if index == 1: all_crack_length = float(line[0])
+                        if index == 5: average_crack_width = float(line[0])
+                        index += 1
+
+                    crack_info_dict = {
+                        "originId": origId,
+                        "analysisId": analysisId,
+                        "index": index,
+                        "fileDir": f"{fileDir}{origId}-prediction/{orig_pic_name}",
+                        'real_max_width': second_line,
+                        'all_crack_length': all_crack_length,
+                        'average_crack_width': average_crack_width
+                    }
+                    index += 1
+                    result_arr.append(crack_info_dict)
+            result_dict = {"header": json_data['header'], "body": result_arr}
+            return JsonResponse(result_dict)
+
         except:
             response_data = {
-                'status': 'error',
-                'message': '부적절한 형식입니다.'
+            'status': 'error',
+            'message': '부적절한 형식입니다.'
             }
             return JsonResponse(response_data, status=405)
 
