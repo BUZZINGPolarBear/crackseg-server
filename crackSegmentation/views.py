@@ -196,24 +196,46 @@ def runDetailInference(request):
     return JsonResponse(result)
 
 def runMQDetailInference(request):
-    fileDir = request.GET.get("fileDir")
-    origId = request.GET.get("origId")
-    print(fileDir)
-    run_inference_code = "torchrun crack_segmentation/inference_unet.py " \
-                         "-model_type resnet34 " \
-                         f"-img_dir {fileDir} " \
-                         "-model_path crack_segmentation/model/model_best.pt " \
-                         f"-out_pred_dir {fileDir}/{origId}-prediction/ " \
-                         "-out_viz_dir templates/static/images/visualized " \
-                         "-out_synthesize_dir crack_width_checker/data/deep_mask"
-    print(run_inference_code)
-    os.system(run_inference_code)
-    result = {
-        "status": 'ok',
-        "code": 200,
-        "message": "detailed inference code done"
-    }
-    return JsonResponse(result)
+    if request.method == 'POST':
+        try:
+            # POST 요청의 본문(body)에서 JSON 데이터 가져오기
+            json_data = json.loads(request.body)
+
+            # 필요한 데이터 추출
+            op = json_data['header']['op']
+            type = json_data['header']['type']
+            tid = json_data['header']['tid']
+            msgFrom = json_data['header']['msgFrom']
+            timestamp = json_data['header']['timestamp']
+            origId = json_data['body']['origId']
+            analysisId = json_data['body']['analysisId']
+            index = json_data['body']['index']
+            fileDir = json_data['body']['fileDir']
+            distance = json_data['body']['distance']
+
+            run_inference_code = "torchrun crack_segmentation/inference_unet.py " \
+                                 "-model_type resnet34 " \
+                                 f"-img_dir {fileDir} " \
+                                 "-model_path crack_segmentation/model/model_best.pt " \
+                                 f"-out_pred_dir {fileDir}/{origId}-prediction/ " \
+                                 "-out_viz_dir templates/static/images/visualized " \
+                                 "-out_synthesize_dir crack_width_checker/data/deep_mask"
+
+            os.system(run_inference_code)
+
+
+            result = {
+                "status": 'ok',
+                "code": 200,
+                "message": "detailed inference code done"
+            }
+            return JsonResponse(result)
+        except:
+            response_data = {
+                'status': 'error',
+                'message': '부적절한 형식입니다.'
+            }
+            return JsonResponse(response_data, status=405)
 
 def testResponse(request):
     return HttpResponse("Hello world!")
