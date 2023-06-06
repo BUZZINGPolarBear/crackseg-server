@@ -260,7 +260,7 @@ def runMQDetailInference(request):
 
             image_files = get_image_files(f"{fileDir}{origId}-prediction/")
             print(image_files)
-            index = 0
+            inference_index = 0
             for pic_name in image_files:
                 orig_pic_name = pic_name
                 pic_name = pic_name.split('.')[0]
@@ -281,7 +281,7 @@ def runMQDetailInference(request):
                                    "r")
                     csvReader = csv.reader(csvFile)
 
-                    index = 0
+
                     all_crack_length = 0.0
                     average_crack_width = 0.0
                     for line in csvReader:
@@ -292,13 +292,13 @@ def runMQDetailInference(request):
                     crack_info_dict = {
                         "originId": origId,
                         "analysisId": analysisId,
-                        "index": index,
+                        "index": inference_index,
                         "fileDir": f"{fileDir}{origId}-prediction/{orig_pic_name}",
                         'real_max_width': second_line,
                         'all_crack_length': all_crack_length,
                         'average_crack_width': average_crack_width
                     }
-                    index += 1
+                    inference_index += 1
                     result_arr.append(crack_info_dict)
             result_dict = {"header": json_data['header'], "body": result_arr}
             return JsonResponse(result_dict)
