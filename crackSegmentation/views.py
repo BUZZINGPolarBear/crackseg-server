@@ -298,9 +298,11 @@ def runMQDetailInference(request):
                         "analysisId": analysisId,
                         "index": inference_index,
                         "fileDir": f"{fileDir}{origId}-prediction/{orig_pic_name}",
-                        'real_max_width': second_line,
-                        'all_crack_length': all_crack_length,
-                        'average_crack_width': average_crack_width
+                        "crackInfo": {
+                            "totalLength": all_crack_length,
+                            "aveWidth": average_crack_width,
+                            "maxWidth": second_line,
+                        }
                     }
                     inference_index += 1
                     result_arr.append(crack_info_dict)
