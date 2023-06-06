@@ -256,7 +256,7 @@ def runMQDetailInference(request):
             os.system(run_inference_code)
 
             os.system(
-                f"python crack_width_checker/vision.py --width_func profiling_re --img_dir {fileDir}{origId}-prediction/ --save_dir {fileDir}{origId}-prediction/results")
+                f"python crack_width_checker/vision.py --width_func profiling_re --img_dir {fileDir}  --mask_dir {fileDir}{origId}-prediction/ --save_dir {fileDir}{origId}-prediction/results")
 
             image_files = get_image_files(f"{fileDir}{origId}-prediction/")
             print(image_files)
