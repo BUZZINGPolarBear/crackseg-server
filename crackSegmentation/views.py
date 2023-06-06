@@ -236,7 +236,7 @@ def runMQDetailInference(request):
 
             origin_dir = get_image_files(fileDir)
             for pic_name in origin_dir:
-                print(pic_name)
+                # print(pic_name)
                 distance_meter: int
                 try:
                     distance_meter = distance.split('.')[0]
@@ -259,7 +259,7 @@ def runMQDetailInference(request):
                 f"python crack_width_checker/vision.py --width_func profiling_re --img_dir {fileDir}  --mask_dir {fileDir}{origId}-prediction/ --save_dir {fileDir}{origId}-prediction/results")
 
             image_files = get_image_files(f"{fileDir}{origId}-prediction/")
-            print(image_files)
+            # print(image_files)
             inference_index = 0
             for pic_name in image_files:
                 orig_pic_name = pic_name
@@ -279,16 +279,19 @@ def runMQDetailInference(request):
 
                     csvFile = open(f'{fileDir}{origId}-prediction/results{pic_name}/profiling_re_result_summary.csv',
                                    "r")
-                    print(f'{fileDir}{origId}-prediction/results{pic_name}/profiling_re_result_summary.csv')
+                    # print(f'{fileDir}{origId}-prediction/results{pic_name}/profiling_re_result_summary.csv')
                     csvReader = csv.reader(csvFile)
 
 
                     all_crack_length = 0.0
                     average_crack_width = 0.0
+
+                    csv_index = 1
                     for line in csvReader:
-                        if index == 1: all_crack_length = float(line[0])
-                        if index == 5: average_crack_width = float(line[0])
-                        index += 1
+                        # print(f"CSV LINE: {line}")
+                        if csv_index == 1: all_crack_length = float(line[0])
+                        if csv_index == 5: average_crack_width = float(line[0])
+                        csv_index += 1
 
                     crack_info_dict = {
                         "originId": origId,
