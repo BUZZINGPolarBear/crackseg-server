@@ -279,6 +279,7 @@ def runMQDetailInference(request):
 
                     csvFile = open(f'{fileDir}{origId}-prediction/results{pic_name}/profiling_re_result_summary.csv',
                                    "r")
+                    print(f'{fileDir}{origId}-prediction/results{pic_name}/profiling_re_result_summary.csv')
                     csvReader = csv.reader(csvFile)
 
 
