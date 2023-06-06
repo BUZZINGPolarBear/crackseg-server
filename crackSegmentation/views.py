@@ -284,13 +284,13 @@ def runMQDetailInference(request):
 
 
                     all_crack_length = 0.0
-                    average_crack_width = 0.0
+                    max_crack_width = 0.0
 
                     csv_index = 1
                     for line in csvReader:
                         # print(f"CSV LINE: {line}")
                         if csv_index == 1: all_crack_length = float(line[0])
-                        if csv_index == 5: average_crack_width = float(line[0])
+                        if csv_index == 5: max_crack_width = float(line[0])
                         csv_index += 1
 
                     crack_info_dict = {
@@ -300,8 +300,8 @@ def runMQDetailInference(request):
                         "fileDir": f"{fileDir}{origId}-prediction/{orig_pic_name}",
                         "crackInfo": {
                             "totalLength": all_crack_length,
-                            "aveWidth": average_crack_width,
-                            "maxWidth": second_line,
+                            "aveWidth": second_line,
+                            "maxWidth": max_crack_width,
                         }
                     }
                     inference_index += 1
