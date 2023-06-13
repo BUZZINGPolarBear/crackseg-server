@@ -13,6 +13,7 @@ import os
 import json
 import re
 import shutil
+import math
 
 '''
 이미지를 다운받아서 한번에 균열 검출
@@ -214,6 +215,59 @@ def rename_image_file(file_path, new_file_name):
     new_file_path = os.path.join(directory, new_file_name)
     os.rename(file_path, new_file_path)
 
+def crop_and_save_image(image_path, meter):
+    # 이미지 열기
+    image = Image.open(image_path)
+    print('image found')
+    # 입력 이미지 크기 가져오기
+    width, height = image.size
+
+    # 이미지 crop할 수 있는 최대 개수 계산
+    num_rows = math.ceil(height / 448)
+    num_cols = math.ceil(width / 448)
+
+    # crop된 이미지 저장 위치
+    output_dir_arr = image_path.split('/')[0:-1]
+    output_dir = ""
+    for dir in output_dir_arr:
+        if dir == '': output_dir += '/'
+        else:
+            output_dir += dir
+            output_dir += '/'
+    output_dir += 'cropped/'
+    os.makedirs(output_dir, exist_ok=True)
+
+    distance_meter: int
+    try:
+        distance_meter = meter.split('.')[0]
+    except:
+        distance_meter = 1
+
+    # crop과 저장 수행
+    count = 1
+    for row in range(num_rows):
+        for col in range(num_cols):
+            # Calculate the crop coordinates
+            left = col * 448
+            upper = row * 448
+            right = min(left + 448, width)
+            lower = min(upper + 448, height)
+
+            # Crop the image
+            cropped_image = image.crop((left, upper, right, lower))
+
+            # Discard if the cropped image is not 448x448
+            if cropped_image.size != (448, 448):
+                continue
+
+            # Save the cropped image with an index as the filename
+            output_path = os.path.join(output_dir, f'{count}_{distance_meter}.jpg')
+            cropped_image.save(output_path)
+
+            print(f'Saved {output_path}')
+
+            count += 1
+
 def runMQDetailInference(request):
     if request.method == 'POST':
         try:
@@ -242,21 +296,13 @@ def runMQDetailInference(request):
 
             result_dict = {}
             result_arr = []
+
         try:
-            origin_dir = get_image_files(fileDir)
-            for pic_name in origin_dir:
-                print(pic_name)
-                distance_meter: int
-                try:
-                    distance_meter = distance.split('.')[0]
-                except:
-                    distance_meter = 1
-                rename_image_file(fileDir + pic_name,
-                                  f"{pic_name.split('.')[0]}_{distance_meter}.{pic_name.split('.')[1]}")
+            crop_and_save_image(fileDir, distance)
         except:
             response_data = {
                 'status': 'error',
-                'message': '이미지 파일을 찾을 수 없습니다. 이미지가 저장된 폴더의 Full path인지 확인해주세요. ex) home/data/temp/'
+                'message': '이미지 파일을 찾을 수 없습니다. 이미지가 저장된 폴더의 Full path인지 확인해주세요. ex) home/data/temp/aaa.jpg(png)'
             }
             return JsonResponse(response_data, status=406)
         try:
