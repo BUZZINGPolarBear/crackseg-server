@@ -339,57 +339,62 @@ def runMQDetailInference(request):
                 'message': 'Server busy. 이미지 분석에 실패했습니다.'
             }
             return JsonResponse(response_data, status=501)
-            image_files = get_image_files(f"{fileDir}{origId}-prediction/")
+            # image_files = get_image_files(f"{croppedImagePath}{index}/prediction/")
+        try:
+            print(f'{croppedImagePath}{index}/{index}_{distance_meter}.jpg')
 
-            # print(image_files)
-            inference_index = 0
-            for pic_name in image_files:
-                orig_pic_name = pic_name
-                pic_name = pic_name.split('.')[0]
-                distance = pic_name.split('_')[-1]
-                if os.path.exists(
-                        f'{fileDir}{origId}-prediction/results{pic_name}/{distance}000profiling_re_result_summary.txt'):
-                    textFile = open(
-                        f'{fileDir}{origId}-prediction/results{pic_name}/{distance}000profiling_re_result_summary.txt',
-                        "r")
-                    first_line = textFile.readline().split(' ')[1]
-                    second_line = textFile.readline().split(' ')[1]
-                    first_line = re.sub(r'[\n]', '', first_line)
-                    second_line = re.sub(r'[\n]', '', second_line)
-                    first_line = float(first_line)
-                    second_line = float(second_line)
+            tempPicName= f'{croppedImagePath}{index}/{index}_{distance_meter}.jpg'
+            pic_name = f'{index}_{distance_meter}'
+            distance = tempPicName.split('_')[-1]
 
-                    csvFile = open(f'{fileDir}{origId}-prediction/results{pic_name}/profiling_re_result_summary.csv',
-                                   "r")
-                    # print(f'{fileDir}{origId}-prediction/results{pic_name}/profiling_re_result_summary.csv')
-                    csvReader = csv.reader(csvFile)
+            print( f'{croppedImagePath}{index}/prediction/results{pic_name}/{distance_meter}000profiling_re_result_summary.txt')
+            if os.path.exists(
+                    f'{croppedImagePath}{index}/prediction/results{pic_name}/{distance_meter}000profiling_re_result_summary.txt'):
+                textFile = open(
+                    f'{croppedImagePath}{index}/prediction/results{pic_name}/{distance_meter}000profiling_re_result_summary.txt',
+                    "r")
+                first_line = textFile.readline().split(' ')[1]
+                second_line = textFile.readline().split(' ')[1]
+                first_line = re.sub(r'[\n]', '', first_line)
+                second_line = re.sub(r'[\n]', '', second_line)
+                first_line = float(first_line)
+                second_line = float(second_line)
 
+                csvFile = open(f'{croppedImagePath}{index}/prediction/results{pic_name}/profiling_re_result_summary.csv',
+                               "r")
+                # print(f'{fileDir}{origId}-prediction/results{pic_name}/profiling_re_result_summary.csv')
+                csvReader = csv.reader(csvFile)
 
-                    all_crack_length = 0.0
-                    max_crack_width = 0.0
+                all_crack_length = 0.0
+                max_crack_width = 0.0
 
-                    csv_index = 1
-                    for line in csvReader:
-                        # print(f"CSV LINE: {line}")
-                        if csv_index == 1: all_crack_length = float(line[0])
-                        if csv_index == 5: max_crack_width = float(line[0])
-                        csv_index += 1
+                csv_index = 1
+                for line in csvReader:
+                    # print(f"CSV line: {line}")
+                    if csv_index == 1: all_crack_length = float(line[0])
+                    if csv_index == 5: max_crack_width = float(line[0])
+                    csv_index += 1
 
-                    crack_info_dict = {
-                        "originId": origId,
-                        "analysisId": analysisId,
-                        "index": inference_index,
-                        "fileDir": f"{fileDir}{origId}-prediction/{orig_pic_name}",
-                        "crackInfo": {
-                            "totalLength": all_crack_length,
-                            "aveWidth": second_line,
-                            "maxWidth": max_crack_width,
-                        }
+                crack_info_dict = {
+                    "originId": origId,
+                    "analysisId": analysisId,
+                    "index": index,
+                    "fileDir": f"{croppedImagePath}{index}/prediction/{index}_{distance_meter}.jpg",
+                    "crackInfo": {
+                        "totalLength": all_crack_length,
+                        "aveWidth": second_line,
+                        "maxWidth": max_crack_width,
                     }
-                    inference_index += 1
-                    result_arr.append(crack_info_dict)
-            result_dict = {"header": json_data['header'], "body": result_arr}
-            return JsonResponse(result_dict)
+                }
+
+                result_dict = {"header": json_data['header'], "body": crack_info_dict}
+                return JsonResponse(result_dict)
+        except:
+            response_data = {
+                'status': 'error',
+                'message': '데이터 불러오기에 실패했습니다.'
+            }
+            return JsonResponse(response_data, status=502)
 
 
 
