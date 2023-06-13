@@ -215,18 +215,7 @@ def rename_image_file(file_path, new_file_name):
     new_file_path = os.path.join(directory, new_file_name)
     os.rename(file_path, new_file_path)
 
-def crop_and_save_image(image_path, meter):
-    # 이미지 열기
-    image = Image.open(image_path)
-    print('image found')
-    # 입력 이미지 크기 가져오기
-    width, height = image.size
-
-    # 이미지 crop할 수 있는 최대 개수 계산
-    num_rows = math.ceil(height / 448)
-    num_cols = math.ceil(width / 448)
-
-    # crop된 이미지 저장 위치
+def getCroppedImagePath(image_path):
     output_dir_arr = image_path.split('/')[0:-1]
     output_dir = ""
     for dir in output_dir_arr:
@@ -235,6 +224,21 @@ def crop_and_save_image(image_path, meter):
             output_dir += dir
             output_dir += '/'
     output_dir += 'cropped/'
+
+    return output_dir
+
+def crop_and_save_image(image_path, meter):
+    # 이미지 열기
+    image = Image.open(image_path)
+    # 입력 이미지 크기 가져오기
+    width, height = image.size
+
+    # 이미지 crop할 수 있는 최대 개수 계산
+    num_rows = math.ceil(height / 448)
+    num_cols = math.ceil(width / 448)
+
+    # crop된 이미지 저장 위치
+    output_dir = getCroppedImagePath(image_path)
     os.makedirs(output_dir, exist_ok=True)
 
     distance_meter: int
@@ -260,11 +264,15 @@ def crop_and_save_image(image_path, meter):
             if cropped_image.size != (448, 448):
                 continue
 
-            # Save the cropped image with an index as the filename
-            output_path = os.path.join(output_dir, f'{count}_{distance_meter}.jpg')
+            # Create a directory for the current index
+            index_dir = os.path.join(output_dir, str(count))
+            os.makedirs(index_dir, exist_ok=True)
+
+            # Save the cropped image in the index directory
+            output_path = os.path.join(index_dir, f'{count}_{distance_meter}.jpg')
             cropped_image.save(output_path)
 
-            print(f'Saved {output_path}')
+            # print(f'Saved {output_path}')
 
             count += 1
 
@@ -306,12 +314,14 @@ def runMQDetailInference(request):
             }
             return JsonResponse(response_data, status=406)
         try:
+            croppedImagePath = getCroppedImagePath(fileDir)
 
+            print(croppedImagePath)
             run_inference_code = "torchrun crack_segmentation/inference_unet.py " \
                                  "-model_type resnet34 " \
-                                 f"-img_dir {fileDir} " \
+                                 f"-img_dir {croppedImagePath}{index} " \
                                  "-model_path crack_segmentation/model/model_best.pt " \
-                                 f"-out_pred_dir {fileDir}/{origId}-prediction/ " \
+                                 f"-out_pred_dir {croppedImagePath}{index}/prediction/ " \
                                  "-out_viz_dir templates/static/images/visualized " \
                                  "-out_synthesize_dir crack_width_checker/data/deep_mask"
 
