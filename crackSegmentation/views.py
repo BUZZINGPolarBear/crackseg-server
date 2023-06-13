@@ -236,10 +236,9 @@ def runMQDetailInference(request):
 
             result_dict = {}
             result_arr = []
-
             origin_dir = get_image_files(fileDir)
             for pic_name in origin_dir:
-                # print(pic_name)
+                print(pic_name)
                 distance_meter: int
                 try:
                     distance_meter = distance.split('.')[0]
