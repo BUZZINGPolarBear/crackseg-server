@@ -227,7 +227,13 @@ def getCroppedImagePath(image_path):
 
     return output_dir
 
-def crop_and_save_image(image_path, meter):
+def crop_and_save_image(image_path, distance_meter):
+    # crop된 이미지 저장 위치
+    output_dir = getCroppedImagePath(image_path)
+    if os.path.exists(output_dir):
+        print("Cropped directory already exists. Skipping cropping.")
+        return
+    os.makedirs(output_dir, exist_ok=True)
     # 이미지 열기
     image = Image.open(image_path)
     # 입력 이미지 크기 가져오기
@@ -236,16 +242,6 @@ def crop_and_save_image(image_path, meter):
     # 이미지 crop할 수 있는 최대 개수 계산
     num_rows = math.ceil(height / 448)
     num_cols = math.ceil(width / 448)
-
-    # crop된 이미지 저장 위치
-    output_dir = getCroppedImagePath(image_path)
-    os.makedirs(output_dir, exist_ok=True)
-
-    distance_meter: int
-    try:
-        distance_meter = meter.split('.')[0]
-    except:
-        distance_meter = 1
 
     # crop과 저장 수행
     count = 1
@@ -293,6 +289,11 @@ def runMQDetailInference(request):
             fileDir = json_data['body']['fileDir']
             distance = json_data['body']['distance']
 
+            distance_meter: int
+            try:
+                distance_meter = distance.split('.')[0]
+            except:
+                distance_meter = 1
             print(f"op: {op}, type: {type}, tid: {tid}, msgFrom: {msgFrom}, timestamp: {timestamp}")
             print(f"origId: {origId}, analysisId: {analysisId}, index: {index}, fileDir: {fileDir}, distance: {distance}")
         except:
@@ -306,7 +307,7 @@ def runMQDetailInference(request):
             result_arr = []
 
         try:
-            crop_and_save_image(fileDir, distance)
+            crop_and_save_image(fileDir, distance_meter)
         except:
             response_data = {
                 'status': 'error',
@@ -327,8 +328,10 @@ def runMQDetailInference(request):
 
             os.system(run_inference_code)
 
+            print(f'{croppedImagePath}{index}/')
+            print(f'{croppedImagePath}{index}/prediction/')
             os.system(
-                f"python crack_width_checker/vision.py --width_func profiling_re --img_dir {fileDir}  --mask_dir {fileDir}{origId}-prediction/ --save_dir {fileDir}{origId}-prediction/results")
+                f"python crack_width_checker/vision.py --width_func profiling_re --img_dir {croppedImagePath}{index}/ --mask_dir {croppedImagePath}{index}/prediction/ --save_dir {croppedImagePath}{index}/prediction/results")
 
         except:
             response_data = {
