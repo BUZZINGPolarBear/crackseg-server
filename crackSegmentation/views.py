@@ -233,9 +233,16 @@ def runMQDetailInference(request):
 
             print(f"op: {op}, type: {type}, tid: {tid}, msgFrom: {msgFrom}, timestamp: {timestamp}")
             print(f"origId: {origId}, analysisId: {analysisId}, index: {index}, fileDir: {fileDir}, distance: {distance}")
+        except:
+            response_data = {
+                'status': 'error',
+                'message': '부적절한 형식입니다.'
+            }
+            return JsonResponse(response_data, status=405)
 
             result_dict = {}
             result_arr = []
+        try:
             origin_dir = get_image_files(fileDir)
             for pic_name in origin_dir:
                 print(pic_name)
@@ -246,6 +253,13 @@ def runMQDetailInference(request):
                     distance_meter = 1
                 rename_image_file(fileDir + pic_name,
                                   f"{pic_name.split('.')[0]}_{distance_meter}.{pic_name.split('.')[1]}")
+        except:
+            response_data = {
+                'status': 'error',
+                'message': '이미지 파일을 찾을 수 없습니다. 이미지가 저장된 폴더의 Full path인지 확인해주세요. ex) home/data/temp/'
+            }
+            return JsonResponse(response_data, status=406)
+        try:
 
             run_inference_code = "torchrun crack_segmentation/inference_unet.py " \
                                  "-model_type resnet34 " \
@@ -260,7 +274,14 @@ def runMQDetailInference(request):
             os.system(
                 f"python crack_width_checker/vision.py --width_func profiling_re --img_dir {fileDir}  --mask_dir {fileDir}{origId}-prediction/ --save_dir {fileDir}{origId}-prediction/results")
 
+        except:
+            response_data = {
+                'status': 'error',
+                'message': 'Server busy. 이미지 분석에 실패했습니다.'
+            }
+            return JsonResponse(response_data, status=501)
             image_files = get_image_files(f"{fileDir}{origId}-prediction/")
+
             # print(image_files)
             inference_index = 0
             for pic_name in image_files:
@@ -311,12 +332,7 @@ def runMQDetailInference(request):
             result_dict = {"header": json_data['header'], "body": result_arr}
             return JsonResponse(result_dict)
 
-        except:
-            response_data = {
-            'status': 'error',
-            'message': '부적절한 형식입니다.'
-            }
-            return JsonResponse(response_data, status=405)
+
 
 def testResponse(request):
     return HttpResponse("Hello world!")
