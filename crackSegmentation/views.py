@@ -231,6 +231,9 @@ def runMQDetailInference(request):
             fileDir = json_data['body']['fileDir']
             distance = json_data['body']['distance']
 
+            print(f"op: {op}, type: {type}, tid: {tid}, msgFrom: {msgFrom}, timestamp: {timestamp}")
+            print(f"origId: {origId}, analysisId: {analysisId}, index: {index}, fileDir: {fileDir}, distance: {distance}")
+
             result_dict = {}
             result_arr = []
 
