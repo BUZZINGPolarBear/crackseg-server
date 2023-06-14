@@ -215,7 +215,7 @@ def rename_image_file(file_path, new_file_name):
     new_file_path = os.path.join(directory, new_file_name)
     os.rename(file_path, new_file_path)
 
-def getCroppedImagePath(image_path):
+def getCroppedImagePath(image_path, analysisId):
     output_dir_arr = image_path.split('/')[0:-1]
     output_dir = ""
     for dir in output_dir_arr:
@@ -223,13 +223,13 @@ def getCroppedImagePath(image_path):
         else:
             output_dir += dir
             output_dir += '/'
-    output_dir += 'cropped/'
+    output_dir += f'{analysisId}/'
 
     return output_dir
 
-def crop_and_save_image(image_path, distance_meter):
+def crop_and_save_image(image_path, distance_meter, analysisId):
     # crop된 이미지 저장 위치
-    output_dir = getCroppedImagePath(image_path)
+    output_dir = getCroppedImagePath(image_path, analysisId)
     if os.path.exists(output_dir):
         print("Cropped directory already exists. Skipping cropping.")
         return
@@ -307,7 +307,7 @@ def runMQDetailInference(request):
             result_arr = []
 
         try:
-            crop_and_save_image(fileDir, distance_meter)
+            crop_and_save_image(fileDir, distance_meter, analysisId)
         except:
             response_data = {
                 'status': 'error',
@@ -315,7 +315,7 @@ def runMQDetailInference(request):
             }
             return JsonResponse(response_data, status=406)
         try:
-            croppedImagePath = getCroppedImagePath(fileDir)
+            croppedImagePath = getCroppedImagePath(fileDir, analysisId)
 
             print(croppedImagePath)
             run_inference_code = "torchrun crack_segmentation/inference_unet.py " \
