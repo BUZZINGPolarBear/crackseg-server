@@ -318,7 +318,7 @@ def runMQDetailInference(request):
             croppedImagePath = getCroppedImagePath(fileDir, analysisId)
 
             print(croppedImagePath)
-            run_inference_code = "./torchrun ./crack_segmentation/inference_unet.py " \
+            run_inference_code = "torchrun ./crack_segmentation/inference_unet.py " \
                                  "-model_type resnet34 " \
                                  f"-img_dir {croppedImagePath}{index} " \
                                  "-model_path crack_segmentation/model/model_best.pt " \
