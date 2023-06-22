@@ -331,7 +331,7 @@ def runMQDetailInference(request):
             print(f'{croppedImagePath}{index}/')
             print(f'{croppedImagePath}{index}/prediction/')
             os.system(
-                f"python crack_width_checker/vision.py --width_func profiling_re --img_dir {croppedImagePath}{index}/ --mask_dir {croppedImagePath}{index}/prediction/ --save_dir {croppedImagePath}{index}/prediction/results")
+                f"python3 crack_width_checker/vision.py --width_func profiling_re --img_dir {croppedImagePath}{index}/ --mask_dir {croppedImagePath}{index}/prediction/ --save_dir {croppedImagePath}{index}/prediction/results")
 
         except:
             response_data = {
