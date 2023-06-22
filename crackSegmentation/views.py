@@ -238,7 +238,15 @@ def crop_and_save_image(image_path, distance_meter, analysisId):
     image = Image.open(image_path)
     # 입력 이미지 크기 가져오기
     width, height = image.size
+    if width == 448 and height == 448:
+        print(f"its 448 and 448!")
+        # Create a directory for the current index
+        index_dir = os.path.join(output_dir, '1')
+        os.makedirs(index_dir, exist_ok=True)
 
+        # Save the cropped image in the index directory
+        output_path = os.path.join(index_dir, f'{1}_{distance_meter}.jpg')
+        image.save(output_path)
     # 이미지 crop할 수 있는 최대 개수 계산
     num_rows = math.ceil(height / 448)
     num_cols = math.ceil(width / 448)
