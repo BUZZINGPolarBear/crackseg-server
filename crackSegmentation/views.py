@@ -318,7 +318,7 @@ def runMQDetailInference(request):
             croppedImagePath = getCroppedImagePath(fileDir, analysisId)
 
             print(croppedImagePath)
-            run_inference_code = "torchrun crack_segmentation/inference_unet.py " \
+            run_inference_code = "torchrun ./crack_segmentation/inference_unet.py " \
                                  "-model_type resnet34 " \
                                  f"-img_dir {croppedImagePath}{index} " \
                                  "-model_path crack_segmentation/model/model_best.pt " \
@@ -331,7 +331,7 @@ def runMQDetailInference(request):
             print(f'{croppedImagePath}{index}/')
             print(f'{croppedImagePath}{index}/prediction/')
             os.system(
-                f"python crack_width_checker/vision.py --width_func profiling_re --img_dir {croppedImagePath}{index}/ --mask_dir {croppedImagePath}{index}/prediction/ --save_dir {croppedImagePath}{index}/prediction/results")
+                f"python3 crack_width_checker/vision.py --width_func profiling_re --img_dir {croppedImagePath}{index}/ --mask_dir {croppedImagePath}{index}/prediction/ --save_dir {croppedImagePath}{index}/prediction/results")
 
         except:
             response_data = {
