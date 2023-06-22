@@ -540,13 +540,12 @@ def removeUnusefulImgs(request):
                 os.remove("crack_width_checker/data/org_img/" + usefulImgs[i])
 
         return HttpResponse("remove completed")
+
 '''
  비전 추론 알고리즘(오츄) 돌리기
 '''
 def visionInference(request):
-    fileDir = request.GET.get("fileDir")
-    origId = request.GET.get("origId")
-    os.system(f"python crack_width_checker/vision.py --width_func profiling_re --img_dir {fileDir}/{origId}-prediction/ --save_dir {fileDir}/{origId}-prediction/results")
+    os.system("python crack_width_checker/vision.py --width_func profiling_re")
     result = {
         "status": 'ok',
         "code": 200,
