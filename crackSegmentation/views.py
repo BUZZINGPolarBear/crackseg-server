@@ -239,6 +239,7 @@ def crop_and_save_image(image_path, distance_meter, analysisId):
     image = Image.open(image_path)
     # 입력 이미지 크기 가져오기
     width, height = image.size
+    print(f"image size is Width: {width}, height: {height}")
     if width == 448 and height == 448:
         print(f"its 448 and 448!")
         # Create a directory for the current index
