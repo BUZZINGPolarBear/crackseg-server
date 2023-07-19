@@ -334,6 +334,7 @@ def runMQDetailInference(request):
                                  "-out_viz_dir templates/static/images/visualized " \
                                  "-out_synthesize_dir crack_width_checker/data/deep_mask"
             print("실행 전")
+            print(run_inference_code)
             os.system(run_inference_code)
             print("실행 됨")
 
