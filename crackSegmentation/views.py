@@ -314,8 +314,8 @@ def runMQDetailInference(request):
                 distance_meter = distance.split('.')[0]
             except:
                 distance_meter = 1
-            print(f"op: {op}, type: {type}, tid: {tid}, msgFrom: {msgFrom}, timestamp: {timestamp}")
-            print(f"origId: {origId}, analysisId: {analysisId}, index: {index}, fileDir: {fileDir}, distance: {distance}")
+            #print(f"op: {op}, type: {type}, tid: {tid}, msgFrom: {msgFrom}, timestamp: {timestamp}")
+            #print(f"origId: {origId}, analysisId: {analysisId}, index: {index}, fileDir: {fileDir}, distance: {distance}")
         except:
             response_data = {
                 'status': 'error',
@@ -344,13 +344,13 @@ def runMQDetailInference(request):
                                  f"-out_pred_dir {croppedImagePath}{index}/prediction/ " \
                                  "-out_viz_dir templates/static/images/visualized " \
                                  "-out_synthesize_dir crack_width_checker/data/deep_mask"
-            print("실행 전")
-            print(run_inference_code)
+            #print("실행 전")
+            #print(run_inference_code)
             os.system(run_inference_code)
-            print("실행 됨")
+            #print("실행 됨")
 
-            print(f'{croppedImagePath}{index}/')
-            print(f'{croppedImagePath}{index}/prediction/')
+            #print(f'{croppedImagePath}{index}/')
+            #print(f'{croppedImagePath}{index}/prediction/')
             os.system(
                 f"python3 crack_width_checker/vision.py --width_func profiling_re --img_dir {croppedImagePath}{index}/ --mask_dir {croppedImagePath}{index}/prediction/ --save_dir {croppedImagePath}{index}/prediction/results")
 
@@ -362,13 +362,13 @@ def runMQDetailInference(request):
             return JsonResponse(response_data, status=501)
             # image_files = get_image_files(f"{croppedImagePath}{index}/prediction/")
         try:
-            print(f'{croppedImagePath}{index}/{index}_{distance_meter}.jpg')
+            #print(f'{croppedImagePath}{index}/{index}_{distance_meter}.jpg')
 
             tempPicName= f'{croppedImagePath}{index}/{index}_{distance_meter}.jpg'
             pic_name = f'{index}_{distance_meter}'
             distance = tempPicName.split('_')[-1]
 
-            print( f'{croppedImagePath}{index}/prediction/results{pic_name}/{distance_meter}000profiling_re_result_summary.txt')
+            #print( f'{croppedImagePath}{index}/prediction/results{pic_name}/{distance_meter}000profiling_re_result_summary.txt')
             if os.path.exists(
                     f'{croppedImagePath}{index}/prediction/results{pic_name}/{distance_meter}000profiling_re_result_summary.txt'):
                 textFile = open(
