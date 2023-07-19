@@ -243,8 +243,12 @@ def crop_and_save_image(image_path, distance_meter, analysisId):
     if width == 448 and height == 448:
         print(f"its 448 and 448!")
         # Create a directory for the current index
-        index_dir = os.path.join(output_dir, '1')
-        os.makedirs(index_dir, exist_ok=True)
+        try:
+            index_dir = os.path.join(output_dir, '1')
+            os.makedirs(index_dir, exist_ok=True)
+        except Exception as error:
+            print(f"Error occured: {error}")
+
 
         # Save the cropped image in the index directory
         output_path = os.path.join(index_dir, f'{1}_{distance_meter}.jpg')
