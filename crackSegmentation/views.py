@@ -248,7 +248,9 @@ def crop_and_save_image(image_path, distance_meter, analysisId):
             os.makedirs(index_dir, exist_ok=True)
             # Save the cropped image in the index directory
             output_path = os.path.join(index_dir, f'{1}_{distance_meter}.jpg')
-            image.save(output_path)
+            # convert to rgb
+            rgb_im = image.convert('RGB')
+            rgb_im.save(output_path)
         except Exception as error:
             print(f"Error occured: {error}")
 
@@ -281,7 +283,10 @@ def crop_and_save_image(image_path, distance_meter, analysisId):
 
             # Save the cropped image in the index directory
             output_path = os.path.join(index_dir, f'{count}_{distance_meter}.jpg')
-            cropped_image.save(output_path)
+            # convert to rgb
+            rgb_im = cropped_image.convert('RGB')
+            rgb_im.save(output_path)
+            # cropped_image.save(output_path)
 
             # print(f'Saved {output_path}')
 
