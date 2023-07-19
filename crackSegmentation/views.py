@@ -230,6 +230,7 @@ def getCroppedImagePath(image_path, analysisId):
 def crop_and_save_image(image_path, distance_meter, analysisId):
     # crop된 이미지 저장 위치
     output_dir = getCroppedImagePath(image_path, analysisId)
+    # print(output_dir)
     if os.path.exists(output_dir):
         print("Cropped directory already exists. Skipping cropping.")
         return
