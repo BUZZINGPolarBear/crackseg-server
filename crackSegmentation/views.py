@@ -326,7 +326,6 @@ def runMQDetailInference(request):
         try:
             croppedImagePath = getCroppedImagePath(fileDir, analysisId)
 
-            print(croppedImagePath)
             run_inference_code = "torchrun ./crack_segmentation/inference_unet.py " \
                                  "-model_type resnet34 " \
                                  f"-img_dir {croppedImagePath}{index} " \
@@ -334,8 +333,9 @@ def runMQDetailInference(request):
                                  f"-out_pred_dir {croppedImagePath}{index}/prediction/ " \
                                  "-out_viz_dir templates/static/images/visualized " \
                                  "-out_synthesize_dir crack_width_checker/data/deep_mask"
-
+            print("실행 전")
             os.system(run_inference_code)
+            print("실행 됨")
 
             print(f'{croppedImagePath}{index}/')
             print(f'{croppedImagePath}{index}/prediction/')
